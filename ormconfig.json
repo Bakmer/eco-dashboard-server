@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "logi4674",
+  "database": "eco-dashboard",
+  "entities": ["src/entities/*.js"],
+  "migrations": ["src/migrations/*.js"]
+}
