@@ -1,10 +1,17 @@
 {
   "type": "mysql",
-  "host": "localhost",
+  "host": "dev-dashboard-1.crv4fz7nguzt.sa-east-1.rds.amazonaws.com",
   "port": 3306,
-  "username": "root",
+  "username": "admin",
   "password": "logi4674",
-  "database": "eco-dashboard",
-  "entities": ["src/entities/*.js"],
-  "migrations": ["src/migrations/*.js"]
+  "database": "dev_dashboard-1",
+  "entities": ["dist/entities/*.js"],
+  "migrations": ["dist/migrations/*.js"],
+  "subscribers": ["dist/subscribers/*.js"],
+  "logging": true,
+  "cli": {
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migrations",
+    "subscribersDir": "src/subscribers"
+ }
 }

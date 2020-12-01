@@ -19,19 +19,10 @@ import {
 const main = async () => {
   await createConnection();
 
-  const schema = await createSchema();
-
   const app = express();
 
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
-
-  app.use(
-    cors({
-      origin: process.env.CORS_ORIGIN,
-      credentials: true,
-    })
-  );
 
   app.use(
     session({
@@ -52,6 +43,15 @@ const main = async () => {
       resave: false,
     })
   );
+
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGIN,
+      credentials: true,
+    })
+  );
+
+  const schema = await createSchema();
 
   const apolloServer = new ApolloServer({
     schema,
