@@ -9,6 +9,7 @@ import {
   Mutation,
   FieldResolver,
   Root,
+  Query,
 } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
@@ -72,6 +73,24 @@ export class UserResolver {
     console.log("sdfdsfsfdsf");
 
     return { user };
+  }
+
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: MyContext): Promise<User | null> {
+    if (!req.session.userId) {
+      return null;
+    }
+
+    const user = await getConnection()
+      .createQueryBuilder()
+      .select("user")
+      .from(User, "user")
+      .where("user.id = :id", { id: req.session.userId })
+      .getOne();
+
+    // I can also do it without query builder
+    // const user = await User.findOne({ id: req.session.userId });
+    return user!;
   }
 
   @Mutation(() => String)

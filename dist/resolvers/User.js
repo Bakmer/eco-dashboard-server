@@ -92,6 +92,20 @@ let UserResolver = class UserResolver {
             return { user };
         });
     }
+    me({ req }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.userId) {
+                return null;
+            }
+            const user = yield typeorm_1.getConnection()
+                .createQueryBuilder()
+                .select("user")
+                .from(User_1.User, "user")
+                .where("user.id = :id", { id: req.session.userId })
+                .getOne();
+            return user;
+        });
+    }
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             yield typeorm_1.getConnection().createQueryBuilder().delete().from(User_1.User).execute();
@@ -114,6 +128,13 @@ __decorate([
     __metadata("design:paramtypes", [UsernamePasswordInput, Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
+__decorate([
+    type_graphql_1.Query(() => User_1.User, { nullable: true }),
+    __param(0, type_graphql_1.Ctx()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "me", null);
 __decorate([
     type_graphql_1.Mutation(() => String),
     __metadata("design:type", Function),
