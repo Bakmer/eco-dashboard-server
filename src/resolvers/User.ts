@@ -1,8 +1,5 @@
 import { MyContext } from "src/types/MyContext";
 import {
-  InputType,
-  Field,
-  ObjectType,
   Resolver,
   Arg,
   Ctx,
@@ -12,32 +9,11 @@ import {
   Query,
 } from "type-graphql";
 import { getConnection } from "typeorm";
-import { User } from "../entities/User";
+import { storeNotFoundResponse } from "../constants";
+import { UserResponse, UsernamePasswordInput } from "./types";
 
-@InputType()
-export class UsernamePasswordInput {
-  @Field()
-  username: string;
-  @Field()
-  password: string;
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => User, { nullable: true })
-  user?: User;
-}
+import { Users as User } from "../entities/User";
+import { Stores as Store } from "../entities/Store";
 
 @Resolver(User)
 export class UserResolver {
@@ -51,6 +27,19 @@ export class UserResolver {
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
+    try {
+      const store = await Store.findOne({ id: options.storeId });
+      if (!store) {
+        return {
+          errors: [storeNotFoundResponse],
+        };
+      }
+    } catch (error) {
+      return {
+        errors: [storeNotFoundResponse],
+      };
+    }
+
     let user;
     try {
       const newUser = await User.create({
@@ -69,8 +58,6 @@ export class UserResolver {
     }
 
     req.session!.userId = user.id;
-    console.log(req.session);
-    console.log("sdfdsfsfdsf");
 
     return { user };
   }
@@ -81,11 +68,12 @@ export class UserResolver {
       return null;
     }
 
-    const user = await getConnection()
+    let user = await getConnection()
       .createQueryBuilder()
       .select("user")
       .from(User, "user")
       .where("user.id = :id", { id: req.session.userId })
+      .leftJoinAndSelect("user.store", "store")
       .getOne();
 
     // I can also do it without query builder

@@ -21,59 +21,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserResolver = exports.UsernamePasswordInput = void 0;
+exports.UserResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const constants_1 = require("../constants");
+const types_1 = require("./types");
 const User_1 = require("../entities/User");
-let UsernamePasswordInput = class UsernamePasswordInput {
-};
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], UsernamePasswordInput.prototype, "username", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], UsernamePasswordInput.prototype, "password", void 0);
-UsernamePasswordInput = __decorate([
-    type_graphql_1.InputType()
-], UsernamePasswordInput);
-exports.UsernamePasswordInput = UsernamePasswordInput;
-let FieldError = class FieldError {
-};
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], FieldError.prototype, "field", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], FieldError.prototype, "message", void 0);
-FieldError = __decorate([
-    type_graphql_1.ObjectType()
-], FieldError);
-let UserResponse = class UserResponse {
-};
-__decorate([
-    type_graphql_1.Field(() => [FieldError], { nullable: true }),
-    __metadata("design:type", Array)
-], UserResponse.prototype, "errors", void 0);
-__decorate([
-    type_graphql_1.Field(() => User_1.User, { nullable: true }),
-    __metadata("design:type", User_1.User)
-], UserResponse.prototype, "user", void 0);
-UserResponse = __decorate([
-    type_graphql_1.ObjectType()
-], UserResponse);
+const Store_1 = require("../entities/Store");
 let UserResolver = class UserResolver {
     name(user) {
         return `Se ha creado a ${user.username}`;
     }
     register(options, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const store = yield Store_1.Stores.findOne({ id: options.storeId });
+                if (!store) {
+                    return {
+                        errors: [constants_1.storeNotFoundResponse],
+                    };
+                }
+            }
+            catch (error) {
+                return {
+                    errors: [constants_1.storeNotFoundResponse],
+                };
+            }
             let user;
             try {
-                const newUser = yield User_1.User.create(Object.assign({}, options)).save();
+                const newUser = yield User_1.Users.create(Object.assign({}, options)).save();
                 user = newUser;
             }
             catch (error) {
@@ -87,8 +63,6 @@ let UserResolver = class UserResolver {
                 };
             }
             req.session.userId = user.id;
-            console.log(req.session);
-            console.log("sdfdsfsfdsf");
             return { user };
         });
     }
@@ -97,18 +71,19 @@ let UserResolver = class UserResolver {
             if (!req.session.userId) {
                 return null;
             }
-            const user = yield typeorm_1.getConnection()
+            let user = yield typeorm_1.getConnection()
                 .createQueryBuilder()
                 .select("user")
-                .from(User_1.User, "user")
+                .from(User_1.Users, "user")
                 .where("user.id = :id", { id: req.session.userId })
+                .leftJoinAndSelect("user.store", "store")
                 .getOne();
             return user;
         });
     }
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield typeorm_1.getConnection().createQueryBuilder().delete().from(User_1.User).execute();
+            yield typeorm_1.getConnection().createQueryBuilder().delete().from(User_1.Users).execute();
             return "Se han eliminado todos los usuarios";
         });
     }
@@ -117,19 +92,19 @@ __decorate([
     type_graphql_1.FieldResolver(() => String),
     __param(0, type_graphql_1.Root()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [User_1.User]),
+    __metadata("design:paramtypes", [User_1.Users]),
     __metadata("design:returntype", void 0)
 ], UserResolver.prototype, "name", null);
 __decorate([
-    type_graphql_1.Mutation(() => UserResponse),
+    type_graphql_1.Mutation(() => types_1.UserResponse),
     __param(0, type_graphql_1.Arg("options")),
     __param(1, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [UsernamePasswordInput, Object]),
+    __metadata("design:paramtypes", [types_1.UsernamePasswordInput, Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
 __decorate([
-    type_graphql_1.Query(() => User_1.User, { nullable: true }),
+    type_graphql_1.Query(() => User_1.Users, { nullable: true }),
     __param(0, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -142,7 +117,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "deleteAllUsers", null);
 UserResolver = __decorate([
-    type_graphql_1.Resolver(User_1.User)
+    type_graphql_1.Resolver(User_1.Users)
 ], UserResolver);
 exports.UserResolver = UserResolver;
 //# sourceMappingURL=User.js.map

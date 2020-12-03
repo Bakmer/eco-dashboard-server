@@ -6,40 +6,23 @@ import {
   UpdateDateColumn,
   Column,
   BaseEntity,
-  ManyToOne,
+  OneToMany,
 } from "typeorm";
-import { Stores as Store } from "./Store";
+import { Users as User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Users extends BaseEntity {
+export class Stores extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
   @Column({ unique: true })
-  username!: string;
+  name!: string;
 
-  @Field()
-  @Column({ nullable: true })
-  name?: string;
-
-  @Field()
-  @Column({ nullable: true })
-  last_name?: string;
-
-  @Field()
-  @Column()
-  password!: string;
-
-  @Field()
-  @Column()
-  storeId: number;
-
-  @Field(() => Store)
-  @ManyToOne(() => Store, (store) => store.users)
-  store: Store;
+  @OneToMany(() => User, (user) => user.store)
+  users: User[];
 
   @Field(() => String)
   @CreateDateColumn()
