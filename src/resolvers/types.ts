@@ -1,6 +1,4 @@
 import { InputType, Field, ObjectType } from "type-graphql";
-import { Users as User } from "../entities/User";
-import { Stores as Store } from "../entities/Store";
 
 @InputType()
 export class UsernamePasswordInput {
@@ -21,19 +19,13 @@ export class FieldError {
 }
 
 @ObjectType()
-export class UserResponse {
+export class ApiResponse {
   @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
+  errors: FieldError[] | null;
 
-  @Field(() => User, { nullable: true })
-  user?: User;
-}
+  @Field(() => Object)
+  data?: object;
 
-@ObjectType()
-export class StoreResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => Store, { nullable: true })
-  store?: Store;
+  @Field({ nullable: true })
+  message?: string;
 }

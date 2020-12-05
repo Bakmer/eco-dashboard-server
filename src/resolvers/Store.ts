@@ -1,23 +1,26 @@
 import { Arg, Mutation } from "type-graphql";
 import { Resolver } from "type-graphql";
-import { StoreResponse } from "./types";
+import { ApiResponse } from "./types";
+import messages from "../constants/messages";
 
 import { Stores as Store } from "../entities/Store";
 
+const { STORE_REGISTER_ERROR, STORE_REGISTER_SUCCESS } = messages;
+
 @Resolver(Store)
 export class StoreResolver {
-  @Mutation(() => StoreResponse)
-  async createStore(@Arg("name") name: string): Promise<StoreResponse> {
+  @Mutation(() => ApiResponse)
+  async createStore(@Arg("name") name: string): Promise<ApiResponse> {
     try {
       const newStore = await Store.create({ name }).save();
 
-      return { store: newStore };
+      return { data: newStore, errors: null, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
       return {
         errors: [
           {
             field: "error",
-            message: "Hubo un problema al intentar crear la tienda",
+            message: STORE_REGISTER_ERROR,
           },
         ],
       };

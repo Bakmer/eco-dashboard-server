@@ -9,11 +9,20 @@ import {
   Query,
 } from "type-graphql";
 import { getConnection } from "typeorm";
-import { storeNotFoundResponse } from "../constants";
-import { UserResponse, UsernamePasswordInput } from "./types";
+import messages from "../constants/messages";
+import { ApiResponse, UsernamePasswordInput } from "./types";
 
 import { Users as User } from "../entities/User";
 import { Stores as Store } from "../entities/Store";
+
+const {
+  GENERIC_ERROR,
+  LOGIN_REGISTER_FAIL,
+  REGISTER_SUCCESS,
+  STORE_NOT_FOUND_RESPONSE,
+  USER_NOT_FOUND,
+  ME_SUCCESS,
+} = messages;
 
 @Resolver(User)
 export class UserResolver {
@@ -22,28 +31,38 @@ export class UserResolver {
     return `Se ha creado a ${user.username}`;
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => ApiResponse)
   async register(
-    @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { req }: MyContext
-  ): Promise<UserResponse> {
+    @Arg("data") data: UsernamePasswordInput
+  ): Promise<ApiResponse> {
     try {
-      const store = await Store.findOne({ id: options.storeId });
+      const store = await Store.findOne({ id: data.storeId });
       if (!store) {
         return {
-          errors: [storeNotFoundResponse],
+          errors: [
+            {
+              field: "error",
+              message: STORE_NOT_FOUND_RESPONSE,
+            },
+          ],
         };
       }
     } catch (error) {
       return {
-        errors: [storeNotFoundResponse],
+        errors: [
+          {
+            field: "error",
+            message: GENERIC_ERROR,
+          },
+        ],
       };
     }
 
     let user;
+
     try {
       const newUser = await User.create({
-        ...options,
+        ...data,
       }).save();
       user = newUser;
     } catch (error) {
@@ -57,15 +76,65 @@ export class UserResolver {
       };
     }
 
-    req.session!.userId = user.id;
-
-    return { user };
+    return {
+      data: user,
+      message: REGISTER_SUCCESS,
+      errors: null,
+    };
   }
 
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() { req }: MyContext): Promise<User | null> {
+  @Mutation(() => ApiResponse)
+  async login(
+    @Arg("username") username: string,
+    @Arg("password") password: string,
+    @Ctx() { req }: MyContext
+  ): Promise<ApiResponse> {
+    const user = await User.findOne({ where: { username: username } });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "error",
+            message: LOGIN_REGISTER_FAIL,
+          },
+        ],
+      };
+    }
+
+    const validatePassword: boolean = user.password === password;
+
+    if (!validatePassword) {
+      return {
+        errors: [
+          {
+            field: "error",
+            message: LOGIN_REGISTER_FAIL,
+          },
+        ],
+      };
+    }
+
+    req.session.userId = user.id;
+
+    return {
+      data: user,
+      errors: null,
+      message: "",
+    };
+  }
+
+  @Query(() => ApiResponse)
+  async me(@Ctx() { req }: MyContext): Promise<ApiResponse> {
     if (!req.session.userId) {
-      return null;
+      return {
+        errors: [
+          {
+            field: "error",
+            message: USER_NOT_FOUND,
+          },
+        ],
+      };
     }
 
     let user = await getConnection()
@@ -78,7 +147,11 @@ export class UserResolver {
 
     // I can also do it without query builder
     // const user = await User.findOne({ id: req.session.userId });
-    return user!;
+    return {
+      errors: null,
+      data: user,
+      message: ME_SUCCESS,
+    };
   }
 
   @Mutation(() => String)

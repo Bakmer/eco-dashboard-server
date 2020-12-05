@@ -9,10 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StoreResponse = exports.UserResponse = exports.FieldError = exports.UsernamePasswordInput = void 0;
+exports.ApiResponse = exports.FieldError = exports.UsernamePasswordInput = void 0;
 const type_graphql_1 = require("type-graphql");
-const User_1 = require("../entities/User");
-const Store_1 = require("../entities/Store");
 let UsernamePasswordInput = class UsernamePasswordInput {
 };
 __decorate([
@@ -45,32 +43,22 @@ FieldError = __decorate([
     type_graphql_1.ObjectType()
 ], FieldError);
 exports.FieldError = FieldError;
-let UserResponse = class UserResponse {
+let ApiResponse = class ApiResponse {
 };
 __decorate([
     type_graphql_1.Field(() => [FieldError], { nullable: true }),
-    __metadata("design:type", Array)
-], UserResponse.prototype, "errors", void 0);
+    __metadata("design:type", Object)
+], ApiResponse.prototype, "errors", void 0);
 __decorate([
-    type_graphql_1.Field(() => User_1.Users, { nullable: true }),
-    __metadata("design:type", User_1.Users)
-], UserResponse.prototype, "user", void 0);
-UserResponse = __decorate([
+    type_graphql_1.Field(() => Object),
+    __metadata("design:type", Object)
+], ApiResponse.prototype, "data", void 0);
+__decorate([
+    type_graphql_1.Field({ nullable: true }),
+    __metadata("design:type", String)
+], ApiResponse.prototype, "message", void 0);
+ApiResponse = __decorate([
     type_graphql_1.ObjectType()
-], UserResponse);
-exports.UserResponse = UserResponse;
-let StoreResponse = class StoreResponse {
-};
-__decorate([
-    type_graphql_1.Field(() => [FieldError], { nullable: true }),
-    __metadata("design:type", Array)
-], StoreResponse.prototype, "errors", void 0);
-__decorate([
-    type_graphql_1.Field(() => Store_1.Stores, { nullable: true }),
-    __metadata("design:type", Store_1.Stores)
-], StoreResponse.prototype, "store", void 0);
-StoreResponse = __decorate([
-    type_graphql_1.ObjectType()
-], StoreResponse);
-exports.StoreResponse = StoreResponse;
+], ApiResponse);
+exports.ApiResponse = ApiResponse;
 //# sourceMappingURL=types.js.map

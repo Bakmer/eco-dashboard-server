@@ -20,25 +20,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoreResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const type_graphql_2 = require("type-graphql");
 const types_1 = require("./types");
+const messages_1 = __importDefault(require("../constants/messages"));
 const Store_1 = require("../entities/Store");
+const { STORE_REGISTER_ERROR, STORE_REGISTER_SUCCESS } = messages_1.default;
 let StoreResolver = class StoreResolver {
     createStore(name) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const newStore = yield Store_1.Stores.create({ name }).save();
-                return { store: newStore };
+                return { data: newStore, errors: null, message: STORE_REGISTER_SUCCESS };
             }
             catch (error) {
                 return {
                     errors: [
                         {
                             field: "error",
-                            message: "Hubo un problema al intentar crear la tienda",
+                            message: STORE_REGISTER_ERROR,
                         },
                     ],
                 };
@@ -47,7 +52,7 @@ let StoreResolver = class StoreResolver {
     }
 };
 __decorate([
-    type_graphql_1.Mutation(() => types_1.StoreResponse),
+    type_graphql_1.Mutation(() => types_1.ApiResponse),
     __param(0, type_graphql_1.Arg("name")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
