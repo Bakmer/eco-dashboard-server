@@ -1,4 +1,5 @@
 import { InputType, Field, ObjectType } from "type-graphql";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 @InputType()
 export class UsernamePasswordInput {
@@ -23,7 +24,7 @@ export class ApiResponse {
   @Field(() => [FieldError], { nullable: true })
   errors: FieldError[] | null;
 
-  @Field(() => Object)
+  @Field(() => GraphQLJSONObject, { nullable: true })
   data?: object;
 
   @Field({ nullable: true })

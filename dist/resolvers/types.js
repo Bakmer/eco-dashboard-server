@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiResponse = exports.FieldError = exports.UsernamePasswordInput = void 0;
 const type_graphql_1 = require("type-graphql");
+const graphql_type_json_1 = require("graphql-type-json");
 let UsernamePasswordInput = class UsernamePasswordInput {
 };
 __decorate([
@@ -50,7 +51,7 @@ __decorate([
     __metadata("design:type", Object)
 ], ApiResponse.prototype, "errors", void 0);
 __decorate([
-    type_graphql_1.Field(() => Object),
+    type_graphql_1.Field(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),
     __metadata("design:type", Object)
 ], ApiResponse.prototype, "data", void 0);
 __decorate([
