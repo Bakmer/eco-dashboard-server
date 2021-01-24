@@ -7,6 +7,7 @@ import { createConnection } from "typeorm";
 import cors from "cors";
 import { __prod__, COOKIE_NAME } from "./constants";
 
+import { CustomError } from "./types";
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
 import { createSchema } from "./utils/createSchema";
@@ -62,6 +63,23 @@ const main = async () => {
       //   userLoader: createUserLoader(),
       //   updootLoader: createUpdootLoader(),
     }),
+    formatError: (error): CustomError => {
+      if (error.extensions?.exception.validationErrors.length) {
+        let errors = [];
+        const validationErrors = error.extensions.exception.validationErrors;
+        for (let i = 0; i < validationErrors.length; i++) {
+          const constraints = Object.values(validationErrors[i].constraints);
+          for (let x = 0; x < constraints.length; x++) {
+            errors.push({
+              field: validationErrors[i].property,
+              message: constraints[x],
+            });
+          }
+        }
+        return { ...error, errors };
+      }
+      return error;
+    },
     plugins: [
       {
         requestDidStart: () => ({

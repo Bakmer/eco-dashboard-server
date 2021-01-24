@@ -9,27 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiResponse = exports.FieldError = exports.UsernamePasswordInput = void 0;
+exports.ApiResponse = exports.FieldError = void 0;
 const type_graphql_1 = require("type-graphql");
 const graphql_type_json_1 = require("graphql-type-json");
-let UsernamePasswordInput = class UsernamePasswordInput {
-};
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], UsernamePasswordInput.prototype, "username", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", String)
-], UsernamePasswordInput.prototype, "password", void 0);
-__decorate([
-    type_graphql_1.Field(),
-    __metadata("design:type", Number)
-], UsernamePasswordInput.prototype, "storeId", void 0);
-UsernamePasswordInput = __decorate([
-    type_graphql_1.InputType()
-], UsernamePasswordInput);
-exports.UsernamePasswordInput = UsernamePasswordInput;
 let FieldError = class FieldError {
 };
 __decorate([
@@ -48,7 +30,7 @@ let ApiResponse = class ApiResponse {
 };
 __decorate([
     type_graphql_1.Field(() => [FieldError], { nullable: true }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], ApiResponse.prototype, "errors", void 0);
 __decorate([
     type_graphql_1.Field(() => graphql_type_json_1.GraphQLJSONObject, { nullable: true }),

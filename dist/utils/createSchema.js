@@ -7,6 +7,11 @@ const Hello_1 = require("../resolvers/Hello");
 const Store_1 = require("../resolvers/Store");
 const createSchema = () => type_graphql_1.buildSchema({
     resolvers: [User_1.UserResolver, Hello_1.HelloResolver, Store_1.StoreResolver],
+    authChecker: ({ context: { req } }, roles) => {
+        console.log(req.session);
+        console.log(roles);
+        return false;
+    },
 });
 exports.createSchema = createSchema;
 //# sourceMappingURL=createSchema.js.map

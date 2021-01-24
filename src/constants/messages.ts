@@ -1,7 +1,12 @@
 export default {
   // Generics
   GENERIC_ERROR:
-    "Estamos teniendo problemsa. Por favor intente nuevamente mas tarde",
+    "Estamos teniendo problemas. Por favor intente nuevamente mas tarde",
+
+  // Role
+  ROLE_CREATED_SUCCESSFULLY: "Rol creado exitosamente",
+  ROLE_NAME_LENGTH_ERROR:
+    "El nombre del rol debe tener entre 3 y 20 caracteres",
 
   // User
   LOGIN_REGISTER_FAIL: "Usuario o contraseña incorrecto",
@@ -9,9 +14,16 @@ export default {
   USER_NOT_AUTHORIZED: "No autorizado",
   USER_NOT_FOUND: "Usuario no encontrado",
   ME_SUCCESS: "Datos de usuario",
+  NOT_AUTHENTICATED: "Debe iniciar sesión",
+  USERNAME_LENGTH_ERROR:
+    "El nombre de usuario debe tener entre 3 a 50 caracteres",
+  PASSWORD_LENGTH_ERROR: "La contraseña debe tener entre 3 a 50 caracteres",
+  SUCCESSFUL_LOGOUT: "Successful logout",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
   STORE_REGISTER_ERROR: "Hubo un problema al intentar crear la tienda",
   STORE_REGISTER_SUCCESS: "Tienda creada con éxito",
+  STORE_NAME_LENGTH_ERROR:
+    "El nombre de la tienda debe tener entre 3 y 20 caracteres",
 };

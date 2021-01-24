@@ -58,6 +58,24 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             res,
             redis,
         }),
+        formatError: (error) => {
+            var _a;
+            if ((_a = error.extensions) === null || _a === void 0 ? void 0 : _a.exception.validationErrors.length) {
+                let errors = [];
+                const validationErrors = error.extensions.exception.validationErrors;
+                for (let i = 0; i < validationErrors.length; i++) {
+                    const constraints = Object.values(validationErrors[i].constraints);
+                    for (let x = 0; x < constraints.length; x++) {
+                        errors.push({
+                            field: validationErrors[i].property,
+                            message: constraints[x],
+                        });
+                    }
+                }
+                return Object.assign(Object.assign({}, error), { errors });
+            }
+            return error;
+        },
         plugins: [
             {
                 requestDidStart: () => ({

@@ -1,28 +1,18 @@
-import { InputType, Field, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import { GraphQLJSONObject } from "graphql-type-json";
-
-@InputType()
-export class UsernamePasswordInput {
-  @Field()
-  username: string;
-  @Field()
-  password: string;
-  @Field()
-  storeId: number;
-}
 
 @ObjectType()
 export class FieldError {
   @Field()
-  field: string;
+  field?: string;
   @Field()
-  message: string;
+  message?: string;
 }
 
 @ObjectType()
 export class ApiResponse {
   @Field(() => [FieldError], { nullable: true })
-  errors: FieldError[] | null;
+  errors?: FieldError[];
 
   @Field(() => GraphQLJSONObject, { nullable: true })
   data?: object;

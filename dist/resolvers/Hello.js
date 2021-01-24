@@ -18,6 +18,7 @@ let HelloResolver = class HelloResolver {
     }
 };
 __decorate([
+    type_graphql_1.Authorized("asdfasdf"),
     type_graphql_1.Query(() => String),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

@@ -7,7 +7,9 @@ import { StoreResolver } from "../resolvers/Store";
 export const createSchema = () =>
   buildSchema({
     resolvers: [UserResolver, HelloResolver, StoreResolver],
-    // authChecker: ({ context: { req } }) => {
-    //   return !!req.session.userId;
-    // },
+    authChecker: ({ context: { req } }, roles) => {
+      console.log(req.session);
+      console.log(roles);
+      return false;
+    },
   });

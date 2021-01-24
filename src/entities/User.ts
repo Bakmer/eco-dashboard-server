@@ -9,6 +9,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Stores as Store } from "./Store";
+import { Roles as Role } from "./Role";
 
 @ObjectType()
 @Entity()
@@ -29,7 +30,6 @@ export class Users extends BaseEntity {
   @Column({ nullable: true })
   last_name?: string;
 
-  @Field()
   @Column()
   password!: string;
 
@@ -37,9 +37,17 @@ export class Users extends BaseEntity {
   @Column()
   storeId: number;
 
+  @Field()
+  @Column()
+  roleId: number;
+
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.users)
   store: Store;
+
+  @Field(() => Role)
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 
   @Field(() => String)
   @CreateDateColumn()

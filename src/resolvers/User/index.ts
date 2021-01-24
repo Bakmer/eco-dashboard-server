@@ -9,18 +9,21 @@ import {
   Query,
 } from "type-graphql";
 import { getConnection } from "typeorm";
-import messages from "../constants/messages";
-import { ApiResponse, UsernamePasswordInput } from "./types";
+import { COOKIE_NAME } from "../../constants";
+import messages from "../../constants/messages";
+import { UsernamePasswordInput, RegisterFields } from "./types";
+import { ApiResponse } from "../sharedTypes";
+import argon2 from "argon2";
 
-import { Users as User } from "../entities/User";
-import { Stores as Store } from "../entities/Store";
+import { Users as User } from "../../entities/User";
+import { Stores as Store } from "../../entities/Store";
 
 const {
   GENERIC_ERROR,
   LOGIN_REGISTER_FAIL,
   REGISTER_SUCCESS,
   STORE_NOT_FOUND_RESPONSE,
-  USER_NOT_FOUND,
+  NOT_AUTHENTICATED,
   ME_SUCCESS,
 } = messages;
 
@@ -32,9 +35,7 @@ export class UserResolver {
   }
 
   @Mutation(() => ApiResponse)
-  async register(
-    @Arg("data") data: UsernamePasswordInput
-  ): Promise<ApiResponse> {
+  async register(@Arg("data") data: RegisterFields): Promise<ApiResponse> {
     try {
       const store = await Store.findOne({ id: data.storeId });
       if (!store) {
@@ -59,10 +60,12 @@ export class UserResolver {
     }
 
     let user;
+    const hashedPassword = await argon2.hash(data.password);
 
     try {
       const newUser = await User.create({
         ...data,
+        password: hashedPassword,
       }).save();
       user = newUser;
     } catch (error) {
@@ -79,49 +82,55 @@ export class UserResolver {
     return {
       data: user,
       message: REGISTER_SUCCESS,
-      errors: null,
     };
   }
 
   @Mutation(() => ApiResponse)
   async login(
-    @Arg("username") username: string,
-    @Arg("password") password: string,
+    @Arg("data") { username, password }: UsernamePasswordInput,
     @Ctx() { req }: MyContext
   ): Promise<ApiResponse> {
-    const user = await User.findOne({ where: { username: username } });
+    try {
+      const user = await User.findOne({ where: { username: username } });
+      if (!user) {
+        return {
+          errors: [
+            {
+              field: "error",
+              message: LOGIN_REGISTER_FAIL,
+            },
+          ],
+        };
+      }
 
-    if (!user) {
+      const validatePassword = await argon2.verify(user.password, password);
+      if (!validatePassword) {
+        return {
+          errors: [
+            {
+              field: "error",
+              message: LOGIN_REGISTER_FAIL,
+            },
+          ],
+        };
+      }
+
+      req.session.userId = user.id;
+      return {
+        data: user,
+        message: "",
+      };
+    } catch (error) {
+      console.log(error);
       return {
         errors: [
           {
             field: "error",
-            message: LOGIN_REGISTER_FAIL,
+            message: GENERIC_ERROR,
           },
         ],
       };
     }
-
-    const validatePassword: boolean = user.password === password;
-
-    if (!validatePassword) {
-      return {
-        errors: [
-          {
-            field: "error",
-            message: LOGIN_REGISTER_FAIL,
-          },
-        ],
-      };
-    }
-
-    req.session.userId = user.id;
-
-    return {
-      data: user,
-      errors: null,
-      message: "",
-    };
   }
 
   @Query(() => ApiResponse)
@@ -131,7 +140,7 @@ export class UserResolver {
         errors: [
           {
             field: "error",
-            message: USER_NOT_FOUND,
+            message: NOT_AUTHENTICATED,
           },
         ],
       };
@@ -148,10 +157,25 @@ export class UserResolver {
     // I can also do it without query builder
     // const user = await User.findOne({ id: req.session.userId });
     return {
-      errors: null,
       data: user,
       message: ME_SUCCESS,
     };
+  }
+
+  @Mutation(() => ApiResponse)
+  logout(@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) =>
+      req.session?.destroy((err) => {
+        res.clearCookie(COOKIE_NAME);
+        if (err) {
+          console.log(err);
+          resolve(false);
+          return [{ field: "error", message: GENERIC_ERROR }];
+        }
+
+        return resolve(true);
+      })
+    );
   }
 
   @Mutation(() => String)

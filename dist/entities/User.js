@@ -13,6 +13,7 @@ exports.Users = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Store_1 = require("./Store");
+const Role_1 = require("./Role");
 let Users = class Users extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -36,7 +37,6 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "last_name", void 0);
 __decorate([
-    type_graphql_1.Field(),
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
@@ -46,10 +46,20 @@ __decorate([
     __metadata("design:type", Number)
 ], Users.prototype, "storeId", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Users.prototype, "roleId", void 0);
+__decorate([
     type_graphql_1.Field(() => Store_1.Stores),
     typeorm_1.ManyToOne(() => Store_1.Stores, (store) => store.users),
     __metadata("design:type", Store_1.Stores)
 ], Users.prototype, "store", void 0);
+__decorate([
+    type_graphql_1.Field(() => Role_1.Roles),
+    typeorm_1.ManyToOne(() => Role_1.Roles, (role) => role.users),
+    __metadata("design:type", Role_1.Roles)
+], Users.prototype, "role", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
