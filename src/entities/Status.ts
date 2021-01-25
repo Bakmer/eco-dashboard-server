@@ -12,7 +12,7 @@ import { Users as User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Stores extends BaseEntity {
+export class Status extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -21,8 +21,7 @@ export class Stores extends BaseEntity {
   @Column({ unique: true })
   name!: string;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.store)
+  @OneToMany(() => User, (user) => user.status)
   users: User[];
 
   @Field(() => String)

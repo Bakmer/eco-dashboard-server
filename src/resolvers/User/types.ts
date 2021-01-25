@@ -1,8 +1,17 @@
-import { InputType, Field } from "type-graphql";
-import { Length } from "class-validator";
+import { InputType, Field, ObjectType } from "type-graphql";
+import { Length, Min } from "class-validator";
 import messages from "../../constants/messages";
+import { ApiResponse } from "../sharedTypes";
+import { Users as User } from "../../entities/User";
 
-const { USERNAME_LENGTH_ERROR, PASSWORD_LENGTH_ERROR } = messages;
+const {
+  USERNAME_LENGTH_ERROR,
+  PASSWORD_LENGTH_ERROR,
+  NAME_LENGTH_ERROR,
+  LAST_NAME_LENGTH_ERROR,
+  ROLE_REQUIRED,
+  STORE_REQUIRED,
+} = messages;
 
 @InputType()
 export class UsernamePasswordInput {
@@ -15,13 +24,27 @@ export class UsernamePasswordInput {
 @InputType()
 export class RegisterFields {
   @Field()
+  @Length(3, 50, { message: NAME_LENGTH_ERROR })
+  name: string;
+  @Field()
+  @Length(3, 50, { message: LAST_NAME_LENGTH_ERROR })
+  last_name: string;
+  @Field()
   @Length(3, 50, { message: USERNAME_LENGTH_ERROR })
   username: string;
   @Field()
   @Length(3, 50, { message: PASSWORD_LENGTH_ERROR })
   password: string;
   @Field()
+  @Min(1, { message: STORE_REQUIRED })
   storeId: number;
   @Field()
+  @Min(1, { message: ROLE_REQUIRED })
   roleId: number;
+}
+
+@ObjectType()
+export class UserResponse extends ApiResponse {
+  @Field(() => User, { nullable: true })
+  data?: User;
 }

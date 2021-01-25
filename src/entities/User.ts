@@ -1,4 +1,4 @@
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, Authorized } from "type-graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -10,6 +10,8 @@ import {
 } from "typeorm";
 import { Stores as Store } from "./Store";
 import { Roles as Role } from "./Role";
+import { Status } from "./Status";
+import { ADMIN } from "../constants/roles";
 
 @ObjectType()
 @Entity()
@@ -30,6 +32,8 @@ export class Users extends BaseEntity {
   @Column({ nullable: true })
   last_name?: string;
 
+  @Field()
+  @Authorized(ADMIN)
   @Column()
   password!: string;
 
@@ -41,6 +45,10 @@ export class Users extends BaseEntity {
   @Column()
   roleId: number;
 
+  @Field()
+  @Column()
+  statusId: number;
+
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.users)
   store: Store;
@@ -48,6 +56,10 @@ export class Users extends BaseEntity {
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
+
+  @Field(() => Status)
+  @ManyToOne(() => Status, (status) => status.users)
+  status: Status;
 
   @Field(() => String)
   @CreateDateColumn()

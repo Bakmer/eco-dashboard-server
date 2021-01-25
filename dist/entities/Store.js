@@ -26,6 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], Stores.prototype, "name", void 0);
 __decorate([
+    type_graphql_1.Field(() => [User_1.Users]),
     typeorm_1.OneToMany(() => User_1.Users, (user) => user.store),
     __metadata("design:type", Array)
 ], Stores.prototype, "users", void 0);

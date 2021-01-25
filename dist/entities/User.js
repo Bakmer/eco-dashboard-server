@@ -14,6 +14,8 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Store_1 = require("./Store");
 const Role_1 = require("./Role");
+const Status_1 = require("./Status");
+const roles_1 = require("../constants/roles");
 let Users = class Users extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -37,6 +39,8 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "last_name", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    type_graphql_1.Authorized(roles_1.ADMIN),
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
@@ -51,6 +55,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Users.prototype, "roleId", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Users.prototype, "statusId", void 0);
+__decorate([
     type_graphql_1.Field(() => Store_1.Stores),
     typeorm_1.ManyToOne(() => Store_1.Stores, (store) => store.users),
     __metadata("design:type", Store_1.Stores)
@@ -60,6 +69,11 @@ __decorate([
     typeorm_1.ManyToOne(() => Role_1.Roles, (role) => role.users),
     __metadata("design:type", Role_1.Roles)
 ], Users.prototype, "role", void 0);
+__decorate([
+    type_graphql_1.Field(() => Status_1.Status),
+    typeorm_1.ManyToOne(() => Status_1.Status, (status) => status.users),
+    __metadata("design:type", Status_1.Status)
+], Users.prototype, "status", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),

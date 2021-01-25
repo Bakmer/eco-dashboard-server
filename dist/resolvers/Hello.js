@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HelloResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const roles_1 = require("../constants/roles");
 let HelloResolver = class HelloResolver {
     hello() {
         console.log("hello resolver triggered");
@@ -18,7 +19,7 @@ let HelloResolver = class HelloResolver {
     }
 };
 __decorate([
-    type_graphql_1.Authorized("asdfasdf"),
+    type_graphql_1.Authorized(roles_1.ADMIN),
     type_graphql_1.Query(() => String),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

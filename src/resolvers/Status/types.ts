@@ -2,21 +2,21 @@ import { InputType, Field, ObjectType } from "type-graphql";
 import { Length } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse } from "../sharedTypes";
-import { Roles as Role } from "../../entities/Role";
+import { Status } from "../../entities/Status";
 
-const { STORE_NAME_LENGTH_ERROR } = messages;
+const { STATUS_LENGTH_ERROR } = messages;
 
 @InputType()
-export class CreateRoleField {
+export class CreateStatusFields {
   @Field()
   @Length(3, 20, {
-    message: STORE_NAME_LENGTH_ERROR,
+    message: STATUS_LENGTH_ERROR,
   })
   name: string;
 }
 
 @ObjectType()
-export class RoleResponse extends ApiResponse {
-  @Field(() => Role, { nullable: true })
-  data?: Role;
+export class StatusResponse extends ApiResponse {
+  @Field(() => Status, { nullable: true })
+  data?: Status;
 }

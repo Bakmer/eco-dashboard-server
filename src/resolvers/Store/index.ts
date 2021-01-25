@@ -1,31 +1,54 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Resolver, Authorized, Query } from "type-graphql";
 import { CreateStoreFields } from "./types";
-import { ApiResponse } from "../sharedTypes";
+import { getConnection } from "typeorm";
 import messages from "../../constants/messages";
+import { StoreResponse, ListStoresResponse } from "./types";
 
 import { Stores as Store } from "../../entities/Store";
+import { ADMIN } from "../../constants/roles";
 
-const { STORE_REGISTER_ERROR, STORE_REGISTER_SUCCESS } = messages;
+const {
+  STORE_REGISTER_ERROR,
+  STORE_REGISTER_SUCCESS,
+  STORE_LIST_SUCCESSFUL,
+} = messages;
 
 @Resolver(Store)
 export class StoreResolver {
-  @Mutation(() => ApiResponse)
+  @Mutation(() => StoreResponse)
+  @Authorized(ADMIN)
   async createStore(
     @Arg("data") { name }: CreateStoreFields
-  ): Promise<ApiResponse> {
+  ): Promise<StoreResponse> {
     try {
       const newStore = await Store.create({ name }).save();
 
       return { data: newStore, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
+      return new Error(STORE_REGISTER_ERROR);
+    }
+  }
+
+  @Query(() => ListStoresResponse)
+  @Authorized()
+  async listStores(): Promise<ListStoresResponse> {
+    try {
+      const stores = await getConnection()
+        .createQueryBuilder()
+        .select("store")
+        .from(Store, "store")
+        .leftJoinAndSelect("store.users", "users")
+        .getMany();
+
+      console.log(stores);
+
       return {
-        errors: [
-          {
-            field: "error",
-            message: STORE_REGISTER_ERROR,
-          },
-        ],
+        data: stores,
+        message: STORE_LIST_SUCCESSFUL,
       };
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 }

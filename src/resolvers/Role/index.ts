@@ -1,31 +1,26 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
-import { CreateRolField } from "./types";
-import { ApiResponse } from "../sharedTypes";
+import { Arg, Mutation, Resolver, Authorized } from "type-graphql";
+import { CreateRoleField } from "./types";
 import messages from "../../constants/messages";
+import { RoleResponse } from "./types";
 
-import { Stores as Store } from "../../entities/Store";
+import { Roles as Role } from "../../entities/Role";
+import { ADMIN } from "../../constants/roles";
 
-const { ROLE_CREATED_SUCCESSFULLY, GENERIC_ERROR } = messages;
+const { ROLE_CREATED_SUCCESSFULLY, ROLE_REGISTER_ERROR } = messages;
 
-@Resolver(Store)
-export class StoreResolver {
-  @Mutation(() => ApiResponse)
+@Resolver(Role)
+export class RoleResolver {
+  @Mutation(() => RoleResponse)
+  @Authorized(ADMIN)
   async createRole(
-    @Arg("data") { name }: CreateRolField
-  ): Promise<ApiResponse> {
+    @Arg("data") { name }: CreateRoleField
+  ): Promise<RoleResponse> {
     try {
-      const newRole = await Store.create({ name }).save();
+      const newRole = await Role.create({ name }).save();
 
       return { data: newRole, message: ROLE_CREATED_SUCCESSFULLY };
     } catch (error) {
-      return {
-        errors: [
-          {
-            field: "error",
-            message: GENERIC_ERROR,
-          },
-        ],
-      };
+      return new Error(ROLE_REGISTER_ERROR);
     }
   }
 }
