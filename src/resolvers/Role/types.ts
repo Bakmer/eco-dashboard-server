@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from "type-graphql";
-import { Length } from "class-validator";
+import { Length, MinLength } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse } from "../sharedTypes";
 import { Roles as Role } from "../../entities/Role";
@@ -12,6 +12,7 @@ export class CreateRoleField {
   @Length(3, 20, {
     message: STORE_NAME_LENGTH_ERROR,
   })
+  @MinLength(3, { message: "globglob" })
   name: string;
 }
 
