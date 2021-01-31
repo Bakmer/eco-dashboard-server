@@ -80,9 +80,18 @@ export class UserResolver {
         return new UserInputError(LOGIN_REGISTER_FAIL);
       }
 
+      const meData = await getConnection()
+        .createQueryBuilder()
+        .select("user")
+        .from(User, "user")
+        .where("user.id = :id", { id: user.id })
+        .leftJoinAndSelect("user.store", "store")
+        .leftJoinAndSelect("user.role", "role")
+        .getOne();
+
       req.session.user = { id: user.id, roleId: user.roleId };
       return {
-        data: user,
+        data: meData,
         message: "",
       };
     } catch (error) {

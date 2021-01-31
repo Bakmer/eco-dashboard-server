@@ -16,6 +16,7 @@ export const createSchema = () =>
       StatusResolver,
     ],
     authChecker: ({ context: { req } }, roles) => {
+      console.log(req.session.user);
       const user = req.session.user;
       if (roles.length === 0) {
         return user !== undefined;
