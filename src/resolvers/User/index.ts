@@ -17,6 +17,7 @@ const {
   STORE_NOT_FOUND_RESPONSE,
   ME_SUCCESS,
   ROLE_NOT_FOUND,
+  LOGIN_WITH_USERNAME_PASSWORD,
 } = messages;
 
 @Resolver(User)
@@ -101,23 +102,32 @@ export class UserResolver {
   }
 
   @Query(() => UserResponse)
-  @Authorized()
   async me(@Ctx() { req }: MyContext): Promise<UserResponse> {
-    const user = await getConnection()
-      .createQueryBuilder()
-      .select("user")
-      .from(User, "user")
-      .where("user.id = :id", { id: req.session.user.id })
-      .leftJoinAndSelect("user.store", "store")
-      .leftJoinAndSelect("user.role", "role")
-      .getOne();
+    const userSession = req.session.user;
 
-    // I can also do it without query builder
-    // const user = await User.findOne({ id: req.session.user });
-    return {
-      data: user,
-      message: ME_SUCCESS,
-    };
+    if (!userSession) {
+      return new Error(LOGIN_WITH_USERNAME_PASSWORD);
+    }
+
+    try {
+      const user = await getConnection()
+        .createQueryBuilder()
+        .select("user")
+        .from(User, "user")
+        .where("user.id = :id", { id: userSession.id })
+        .leftJoinAndSelect("user.store", "store")
+        .leftJoinAndSelect("user.role", "role")
+        .getOne();
+
+      // I can also do it without query builder
+      // const user = await User.findOne({ id: req.session.user });
+      return {
+        data: user,
+        message: ME_SUCCESS,
+      };
+    } catch (error) {
+      return new Error(GENERIC_ERROR);
+    }
   }
 
   @Mutation(() => UserResponse)

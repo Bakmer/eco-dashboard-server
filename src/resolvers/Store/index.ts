@@ -40,8 +40,6 @@ export class StoreResolver {
         .leftJoinAndSelect("store.users", "users")
         .getMany();
 
-      console.log(stores);
-
       return {
         data: stores,
         message: STORE_LIST_SUCCESSFUL,

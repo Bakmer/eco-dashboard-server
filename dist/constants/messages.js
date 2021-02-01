@@ -20,6 +20,7 @@ exports.default = {
     SUCCESSFUL_LOGOUT: "Successful logout",
     NAME_LENGTH_ERROR: "El nombre debe tener entre 3 a 50 caracteres",
     LAST_NAME_LENGTH_ERROR: "El apellido debe tener entre 3 a 50 caracteres",
+    LOGIN_WITH_USERNAME_PASSWORD: "Ingrese con usuario y contraseña",
     STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
     STORE_REGISTER_ERROR: "Hubo un problema al intentar crear la tienda",
     STORE_REGISTER_SUCCESS: "Tienda creada con éxito",

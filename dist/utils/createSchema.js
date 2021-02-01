@@ -16,7 +16,6 @@ const createSchema = () => type_graphql_1.buildSchema({
         Status_1.StatusResolver,
     ],
     authChecker: ({ context: { req } }, roles) => {
-        console.log(req.session.user);
         const user = req.session.user;
         if (roles.length === 0) {
             return user !== undefined;
