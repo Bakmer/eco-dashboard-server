@@ -12,5 +12,6 @@ interface userSession extends Session {
   user: {
     id: number;
     roleId: number;
+    storeId: number;
   };
 }

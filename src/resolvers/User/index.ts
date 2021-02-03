@@ -90,7 +90,11 @@ export class UserResolver {
         .leftJoinAndSelect("user.role", "role")
         .getOne();
 
-      req.session.user = { id: user.id, roleId: user.roleId };
+      req.session.user = {
+        id: user.id,
+        roleId: user.roleId,
+        storeId: user.storeId,
+      };
       return {
         data: meData,
         message: "",

@@ -15,6 +15,7 @@ export default {
   STATUS_LENGTH_ERROR:
     "El nombre del estado debe tener entre 3 a 50 caracteres",
   STATUS_REQUIRED: "Debe seleccionar un estado de usuario",
+  STATUS_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
 
   // User
   LOGIN_REGISTER_FAIL: "Usuario o contraseña incorrecto",
@@ -30,6 +31,18 @@ export default {
   NAME_LENGTH_ERROR: "El nombre debe tener entre 3 a 50 caracteres",
   LAST_NAME_LENGTH_ERROR: "El apellido debe tener entre 3 a 50 caracteres",
   LOGIN_WITH_USERNAME_PASSWORD: "Ingrese con usuario y contraseña",
+  PHONE_1_LENGTH_ERROR: "El telefono 1 debe tener por lo menos 8 caracteres",
+  PHONE_2_LENGTH_ERROR: "El telefono 2 debe tener por lo menos 8 caracteres",
+  PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
+  ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
+
+  // Clients
+  RAZON_SOCIAL_LENGTH_ERROR:
+    "La razón social debe tener entre 3 a 50 caracteres",
+  CUIT_LENGTH_ERROR: "El CUIT debe tener 11 caracteres",
+  IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
+  EMAIL_ERROR: "Ingrese un email valido",
+  CLIENT_CREATE_SUCCESS: "El cliente ha sido creado con éxito",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",

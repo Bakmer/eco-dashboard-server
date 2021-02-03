@@ -13,6 +13,7 @@ exports.Stores = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
+const Client_1 = require("./Client");
 let Stores = class Stores extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -30,6 +31,11 @@ __decorate([
     typeorm_1.OneToMany(() => User_1.Users, (user) => user.store),
     __metadata("design:type", Array)
 ], Stores.prototype, "users", void 0);
+__decorate([
+    type_graphql_1.Field(() => [Client_1.Clients]),
+    typeorm_1.OneToMany(() => Client_1.Clients, (client) => client.store),
+    __metadata("design:type", Array)
+], Stores.prototype, "clients", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
