@@ -14,6 +14,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Store_1 = require("./Store");
 const Role_1 = require("./Role");
+const Client_1 = require("./Client");
 const Status_1 = require("./Status");
 const roles_1 = require("../constants/roles");
 let Users = class Users extends typeorm_1.BaseEntity {
@@ -74,6 +75,11 @@ __decorate([
     typeorm_1.ManyToOne(() => Status_1.Status, (status) => status.users),
     __metadata("design:type", Status_1.Status)
 ], Users.prototype, "status", void 0);
+__decorate([
+    type_graphql_1.Field(() => [Client_1.Clients]),
+    typeorm_1.OneToMany(() => Client_1.Clients, (client) => client.user),
+    __metadata("design:type", Array)
+], Users.prototype, "clients", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),

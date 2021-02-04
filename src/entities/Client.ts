@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { Stores as Store } from "./Store";
 import { Status } from "./Status";
+import { Users as User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -78,6 +79,10 @@ export class Clients extends BaseEntity {
   @Column()
   statusId: number;
 
+  @Field()
+  @Column()
+  userId: number;
+
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.clients)
   store: Store;
@@ -85,6 +90,10 @@ export class Clients extends BaseEntity {
   @Field(() => Status)
   @ManyToOne(() => Status, (status) => status.clients)
   status: Status;
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.clients)
+  user: User;
 
   @Field(() => String)
   @CreateDateColumn()

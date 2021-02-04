@@ -30,13 +30,14 @@ export class ClientResolver {
       console.log(error);
       return new Error(GENERIC_ERROR);
     }
-    console.log("great");
+
     let client;
 
     try {
       const newClient = await Client.create({
         ...data,
         storeId: req.session.user.storeId,
+        userId: req.session.user.id,
       }).save();
       client = newClient;
     } catch (error) {

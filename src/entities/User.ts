@@ -7,9 +7,11 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { Stores as Store } from "./Store";
 import { Roles as Role } from "./Role";
+import { Clients as Client } from "./Client";
 import { Status } from "./Status";
 import { ADMIN } from "../constants/roles";
 
@@ -60,6 +62,10 @@ export class Users extends BaseEntity {
   @Field(() => Status)
   @ManyToOne(() => Status, (status) => status.users)
   status: Status;
+
+  @Field(() => [Client])
+  @OneToMany(() => Client, (client) => client.user)
+  clients: Client[];
 
   @Field(() => String)
   @CreateDateColumn()
