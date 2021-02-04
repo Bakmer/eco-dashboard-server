@@ -33,7 +33,7 @@ export class Clients extends BaseEntity {
 
   @Field()
   @Column({ unique: true })
-  cuit: number;
+  cuit: string;
 
   @Field()
   @Column()
@@ -45,15 +45,15 @@ export class Clients extends BaseEntity {
 
   @Field()
   @Column()
-  phone_1: number;
+  phone_1: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  phone_2?: number;
+  phone_2?: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  phone_3?: number;
+  phone_3?: string;
 
   @Field()
   @Column()

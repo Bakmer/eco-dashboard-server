@@ -3,7 +3,12 @@ import { Resolver, Arg, Ctx, Mutation, Query, Authorized } from "type-graphql";
 import { getConnection } from "typeorm";
 import { COOKIE_NAME } from "../../constants";
 import messages from "../../constants/messages";
-import { UserResponse, UsernamePasswordInput, RegisterFields } from "./types";
+import {
+  UserResponse,
+  UsernamePasswordInput,
+  RegisterFields,
+  ListUsersResponse,
+} from "./types";
 import { UserInputError } from "apollo-server-express";
 
 import { Users as User } from "../../entities/User";
@@ -18,6 +23,7 @@ const {
   ME_SUCCESS,
   ROLE_NOT_FOUND,
   LOGIN_WITH_USERNAME_PASSWORD,
+  USERS_LIST_SUCCESSFUL,
 } = messages;
 
 @Resolver(User)
@@ -88,6 +94,7 @@ export class UserResolver {
         .where("user.id = :id", { id: user.id })
         .leftJoinAndSelect("user.store", "store")
         .leftJoinAndSelect("user.role", "role")
+        .leftJoinAndSelect("user.status", "status")
         .getOne();
 
       req.session.user = {
@@ -121,6 +128,7 @@ export class UserResolver {
         .where("user.id = :id", { id: userSession.id })
         .leftJoinAndSelect("user.store", "store")
         .leftJoinAndSelect("user.role", "role")
+        .leftJoinAndSelect("user.status", "status")
         .getOne();
 
       // I can also do it without query builder
@@ -130,6 +138,29 @@ export class UserResolver {
         message: ME_SUCCESS,
       };
     } catch (error) {
+      return new Error(GENERIC_ERROR);
+    }
+  }
+
+  @Query(() => ListUsersResponse)
+  @Authorized()
+  async listUsers(): Promise<ListUsersResponse> {
+    try {
+      const users = await getConnection()
+        .createQueryBuilder()
+        .select("user")
+        .from(User, "user")
+        .leftJoinAndSelect("user.store", "store")
+        .leftJoinAndSelect("user.role", "role")
+        .leftJoinAndSelect("user.status", "status")
+        .getMany();
+
+      return {
+        data: users,
+        message: USERS_LIST_SUCCESSFUL,
+      };
+    } catch (error) {
+      console.log(error);
       return new Error(GENERIC_ERROR);
     }
   }

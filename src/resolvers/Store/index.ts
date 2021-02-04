@@ -10,7 +10,8 @@ import { ADMIN } from "../../constants/roles";
 const {
   STORE_REGISTER_ERROR,
   STORE_REGISTER_SUCCESS,
-  STORE_LIST_SUCCESSFUL,
+  STORES_LIST_SUCCESSFUL,
+  GENERIC_ERROR,
 } = messages;
 
 @Resolver(Store)
@@ -42,11 +43,11 @@ export class StoreResolver {
 
       return {
         data: stores,
-        message: STORE_LIST_SUCCESSFUL,
+        message: STORES_LIST_SUCCESSFUL,
       };
     } catch (error) {
       console.log(error);
-      return error;
+      return new Error(GENERIC_ERROR);
     }
   }
 }

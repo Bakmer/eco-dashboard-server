@@ -26,6 +26,7 @@ exports.default = {
     PHONE_2_LENGTH_ERROR: "El telefono 2 debe tener por lo menos 8 caracteres",
     PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
     ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
+    USERS_LIST_SUCCESSFUL: "Listado de usuarios obtenido con exito",
     RAZON_SOCIAL_LENGTH_ERROR: "La razón social debe tener entre 3 a 50 caracteres",
     CUIT_LENGTH_ERROR: "El CUIT debe tener 11 caracteres",
     IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
@@ -36,6 +37,6 @@ exports.default = {
     STORE_REGISTER_SUCCESS: "Tienda creada con éxito",
     STORE_NAME_LENGTH_ERROR: "El nombre de la tienda debe tener entre 3 y 20 caracteres",
     STORE_REQUIRED: "Debe seleccionar una tienda",
-    STORE_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
+    STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
 };
 //# sourceMappingURL=messages.js.map

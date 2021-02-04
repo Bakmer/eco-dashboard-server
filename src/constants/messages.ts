@@ -35,6 +35,7 @@ export default {
   PHONE_2_LENGTH_ERROR: "El telefono 2 debe tener por lo menos 8 caracteres",
   PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
   ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
+  USERS_LIST_SUCCESSFUL: "Listado de usuarios obtenido con exito",
 
   // Clients
   RAZON_SOCIAL_LENGTH_ERROR:
@@ -51,5 +52,5 @@ export default {
   STORE_NAME_LENGTH_ERROR:
     "El nombre de la tienda debe tener entre 3 y 20 caracteres",
   STORE_REQUIRED: "Debe seleccionar una tienda",
-  STORE_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
+  STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
 };

@@ -48,3 +48,9 @@ export class UserResponse extends ApiResponse {
   @Field(() => User, { nullable: true })
   data?: User;
 }
+
+@ObjectType()
+export class ListUsersResponse extends ApiResponse {
+  @Field(() => [User], { nullable: true })
+  data?: User[];
+}

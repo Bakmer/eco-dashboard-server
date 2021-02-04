@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from "type-graphql";
-import { Length, Min } from "class-validator";
+import { Length, Min, MinLength } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse } from "../sharedTypes";
 import { Clients as Client } from "../../entities/Client";
@@ -37,8 +37,8 @@ export class CreateFields {
   @Length(3, 50, { message: RAZON_SOCIAL_LENGTH_ERROR })
   razon_social: string;
   @Field()
-  @Min(11, { message: CUIT_LENGTH_ERROR })
-  cuit: number;
+  @MinLength(11, { message: CUIT_LENGTH_ERROR })
+  cuit: string;
   @Field()
   @Length(3, 50, { message: IVA_ERROR })
   iva: string;
@@ -46,14 +46,14 @@ export class CreateFields {
   @Length(3, 50, { message: EMAIL_ERROR })
   email: string;
   @Field()
-  @Min(8, { message: PHONE_1_LENGTH_ERROR })
-  phone_1: number;
+  @MinLength(8, { message: PHONE_1_LENGTH_ERROR })
+  phone_1: string;
   @Field({ nullable: true })
-  @Min(8, { message: PHONE_2_LENGTH_ERROR })
-  phone_2: number;
+  @MinLength(8, { message: PHONE_2_LENGTH_ERROR })
+  phone_2: string;
   @Field({ nullable: true })
-  @Min(8, { message: PHONE_3_LENGTH_ERROR })
-  phone_3: number;
+  @MinLength(8, { message: PHONE_3_LENGTH_ERROR })
+  phone_3: string;
   @Field()
   @Length(3, 50, { message: ADDRESS_1_LENGTH_ERROR })
   address_1: string;
