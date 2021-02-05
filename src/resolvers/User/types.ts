@@ -1,7 +1,11 @@
 import { InputType, Field, ObjectType } from "type-graphql";
 import { Length, Min } from "class-validator";
 import messages from "../../constants/messages";
-import { ApiResponse } from "../sharedTypes";
+import {
+  ApiResponse,
+  PaginationFields,
+  ApiPaginatedResponse,
+} from "../sharedTypes";
 import { Users as User } from "../../entities/User";
 
 const {
@@ -43,6 +47,18 @@ export class RegisterFields {
   roleId: number;
 }
 
+@InputType()
+export class UsersPaginationFields extends PaginationFields {
+  @Field({ nullable: true })
+  field: string;
+
+  @Field({ nullable: true })
+  order_type: "ASC" | "DESC";
+
+  @Field({ nullable: true })
+  search: string;
+}
+
 @ObjectType()
 export class UserResponse extends ApiResponse {
   @Field(() => User, { nullable: true })
@@ -50,7 +66,7 @@ export class UserResponse extends ApiResponse {
 }
 
 @ObjectType()
-export class ListUsersResponse extends ApiResponse {
+export class PaginatedUsersResponse extends ApiPaginatedResponse {
   @Field(() => [User], { nullable: true })
   data?: User[];
 }

@@ -7,7 +7,8 @@ import {
   UserResponse,
   UsernamePasswordInput,
   RegisterFields,
-  ListUsersResponse,
+  PaginatedUsersResponse,
+  UsersPaginationFields,
 } from "./types";
 import { UserInputError } from "apollo-server-express";
 
@@ -142,22 +143,65 @@ export class UserResolver {
     }
   }
 
-  @Query(() => ListUsersResponse)
+  @Query(() => PaginatedUsersResponse)
   @Authorized()
-  async listUsers(): Promise<ListUsersResponse> {
+  async listUsers(
+    @Arg("vars", { nullable: true }) vars: UsersPaginationFields
+  ): Promise<PaginatedUsersResponse> {
+    const getOrderBy = () => {
+      const field = vars?.field;
+      if (!field) {
+        return "user.id";
+      }
+      if (field === "store" || field === "role" || field === "status") {
+        return `user.${field}.id`;
+      } else {
+        return `user.${field}`;
+      }
+    };
+    const search = vars?.search ? vars.search : "";
+    const page = vars?.page ? vars.page : 1;
+    const itemsToSkip = vars?.per_page ? vars.per_page * (page - 1) : 0;
+    const orderType = vars?.order_type ? vars.order_type : "ASC";
+    const perPage = vars?.per_page ? vars.per_page : 3;
+
     try {
       const users = await getConnection()
         .createQueryBuilder()
         .select("user")
         .from(User, "user")
+        .where("user.username like :username", { username: `%${search}%` })
+        .orWhere("user.name like :name", { name: `%${search}%` })
+        .orWhere("user.last_name like :last_name", {
+          last_name: `%${search}%`,
+        })
+        .orWhere("user.id = :id", { id: search })
         .leftJoinAndSelect("user.store", "store")
         .leftJoinAndSelect("user.role", "role")
         .leftJoinAndSelect("user.status", "status")
+        .skip(itemsToSkip)
+        .take(perPage)
+        .orderBy(getOrderBy(), orderType)
         .getMany();
+
+      const count = await getConnection()
+        .createQueryBuilder()
+        .select("user")
+        .from(User, "user")
+        .where("user.username like :username", { username: `%${search}%` })
+        .orWhere("user.name like :name", { name: `%${search}%` })
+        .orWhere("user.last_name like :last_name", {
+          last_name: `%${search}%`,
+        })
+        .orWhere("user.id = :id", { id: search })
+        .getCount();
 
       return {
         data: users,
         message: USERS_LIST_SUCCESSFUL,
+        page: page,
+        per_page: perPage,
+        count: count,
       };
     } catch (error) {
       console.log(error);

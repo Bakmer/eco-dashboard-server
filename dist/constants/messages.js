@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     GENERIC_ERROR: "Estamos teniendo problemas. Por favor intente nuevamente mas tarde",
+    PAGINATION_DATA_ERROR: "Ha ingresado parametros incorrectos para el paginado",
     ROLE_CREATED_SUCCESSFULLY: "Rol creado exitosamente",
     ROLE_NAME_LENGTH_ERROR: "El nombre del rol debe tener entre 3 y 20 caracteres",
     ROLE_NOT_FOUND: "El role seleccionado no existe",

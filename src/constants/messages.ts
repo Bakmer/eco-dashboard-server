@@ -2,6 +2,7 @@ export default {
   // Generics
   GENERIC_ERROR:
     "Estamos teniendo problemas. Por favor intente nuevamente mas tarde",
+  PAGINATION_DATA_ERROR: "Ha ingresado parametros incorrectos para el paginado",
 
   // Role
   ROLE_CREATED_SUCCESSFULLY: "Rol creado exitosamente",
