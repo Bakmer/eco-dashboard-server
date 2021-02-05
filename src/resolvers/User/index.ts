@@ -186,7 +186,6 @@ export class UserResolver {
 
       const count = await getConnection()
         .createQueryBuilder()
-        .select("user")
         .from(User, "user")
         .where("user.username like :username", { username: `%${search}%` })
         .orWhere("user.name like :name", { name: `%${search}%` })
