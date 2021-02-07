@@ -1,11 +1,7 @@
 import { InputType, Field, ObjectType } from "type-graphql";
 import { Length, Min } from "class-validator";
 import messages from "../../constants/messages";
-import {
-  ApiResponse,
-  PaginationFields,
-  ApiPaginatedResponse,
-} from "../sharedTypes";
+import { ApiResponse, ApiPaginatedResponse } from "../sharedTypes";
 import { Users as User } from "../../entities/User";
 
 const {
@@ -45,18 +41,6 @@ export class RegisterFields {
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
   roleId: number;
-}
-
-@InputType()
-export class UsersPaginationFields extends PaginationFields {
-  @Field({ nullable: true })
-  field: string;
-
-  @Field({ nullable: true })
-  order_type: "ASC" | "DESC";
-
-  @Field({ nullable: true })
-  search: string;
 }
 
 @ObjectType()

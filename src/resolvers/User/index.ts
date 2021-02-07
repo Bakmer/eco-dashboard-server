@@ -8,8 +8,8 @@ import {
   UsernamePasswordInput,
   RegisterFields,
   PaginatedUsersResponse,
-  UsersPaginationFields,
 } from "./types";
+import { PaginationFields, OrderType } from "../sharedTypes";
 import { UserInputError } from "apollo-server-express";
 
 import { Users as User } from "../../entities/User";
@@ -146,24 +146,29 @@ export class UserResolver {
   @Query(() => PaginatedUsersResponse)
   @Authorized()
   async listUsers(
-    @Arg("vars", { nullable: true }) vars: UsersPaginationFields
+    @Arg("vars", { nullable: true }) vars: PaginationFields
   ): Promise<PaginatedUsersResponse> {
     const getOrderBy = () => {
-      const field = vars?.field;
-      if (!field) {
+      const order_by = vars?.order_by;
+      if (!order_by) {
         return "user.id";
       }
-      if (field === "store" || field === "role" || field === "status") {
-        return `user.${field}.id`;
+      if (
+        order_by === "store" ||
+        order_by === "role" ||
+        order_by === "status"
+      ) {
+        return `${order_by}.id`;
       } else {
-        return `user.${field}`;
+        return `user.${order_by}`;
       }
     };
     const search = vars?.search ? vars.search : "";
-    const page = vars?.page ? vars.page : 1;
-    const itemsToSkip = vars?.per_page ? vars.per_page * (page - 1) : 0;
-    const orderType = vars?.order_type ? vars.order_type : "ASC";
-    const perPage = vars?.per_page ? vars.per_page : 3;
+    const page = vars?.page ? vars.page : 0;
+    const order_type: OrderType = vars?.order_type ? vars.order_type : "ASC";
+    const order_by = vars.order_by ? vars.order_by : "id";
+    const per_page = vars?.per_page ? vars.per_page : 30;
+    const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
     try {
       const users = await getConnection()
@@ -180,8 +185,8 @@ export class UserResolver {
         .leftJoinAndSelect("user.role", "role")
         .leftJoinAndSelect("user.status", "status")
         .skip(itemsToSkip)
-        .take(perPage)
-        .orderBy(getOrderBy(), orderType)
+        .take(per_page)
+        .orderBy(getOrderBy(), order_type)
         .getMany();
 
       const count = await getConnection()
@@ -197,10 +202,15 @@ export class UserResolver {
 
       return {
         data: users,
+        filters: {
+          search,
+          page,
+          per_page,
+          count,
+          order_type,
+          order_by,
+        },
         message: USERS_LIST_SUCCESSFUL,
-        page: page,
-        per_page: perPage,
-        count: count,
       };
     } catch (error) {
       console.log(error);

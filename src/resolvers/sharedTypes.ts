@@ -14,8 +14,13 @@ export class ApiResponse {
   message?: string;
 }
 
+export type OrderType = "ASC" | "DESC";
+
 @ObjectType()
-export class ApiPaginatedResponse extends ApiResponse {
+class PaginationFilters {
+  @Field({ nullable: true })
+  search?: string;
+
   @Field({ nullable: true })
   page?: number;
 
@@ -24,6 +29,18 @@ export class ApiPaginatedResponse extends ApiResponse {
 
   @Field({ nullable: true })
   count?: number;
+
+  @Field({ nullable: true })
+  order_type?: OrderType;
+
+  @Field({ nullable: true })
+  order_by?: string;
+}
+
+@ObjectType()
+export class ApiPaginatedResponse extends ApiResponse {
+  @Field({ nullable: true })
+  filters?: PaginationFilters;
 }
 
 @InputType()
@@ -33,6 +50,15 @@ export class PaginationFields {
   per_page: number;
 
   @Field({ nullable: true })
-  @Min(1, { message: PAGINATION_DATA_ERROR })
+  @Min(0, { message: PAGINATION_DATA_ERROR })
   page: number;
+
+  @Field({ nullable: true })
+  order_by: string;
+
+  @Field({ nullable: true })
+  order_type: OrderType;
+
+  @Field({ nullable: true })
+  search: string;
 }

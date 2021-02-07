@@ -72,7 +72,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                                 graphql_query_complexity_1.simpleEstimator({ defaultComplexity: 1 }),
                             ],
                         });
-                        if (complexity > 20) {
+                        if (complexity > 25) {
                             throw new Error(`Sorry, too complicated query! ${complexity} is over 20 that is the max allowed complexity.`);
                         }
                         console.log("Used query complexity points:", complexity);
