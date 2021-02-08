@@ -232,7 +232,6 @@ export class UserResolver {
         .select("user.statusId")
         .from(User, "user")
         .where("user.id = :id", { id: id })
-        .leftJoinAndSelect("user.status", "status")
         .getOne();
 
       const newStatus = status?.statusId === 1 ? 2 : 1;
