@@ -37,6 +37,9 @@ export default {
   PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
   ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
   USERS_LIST_SUCCESSFUL: "Listado de usuarios obtenido con exito",
+  CHANGE_USER_STATUS_ERROR:
+    "Hubo un problema al intentar cambiar el estado del usuario",
+  CHANGE_USER_STATUS_SUCCESS: "Estado del usuario actualizado",
 
   // Clients
   RAZON_SOCIAL_LENGTH_ERROR:

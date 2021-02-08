@@ -8,6 +8,8 @@ import {
   UsernamePasswordInput,
   RegisterFields,
   PaginatedUsersResponse,
+  ChangeUserStatusFields,
+  ChangeStatusResponse,
 } from "./types";
 import { PaginationFields, OrderType } from "../sharedTypes";
 import { UserInputError } from "apollo-server-express";
@@ -25,6 +27,7 @@ const {
   ROLE_NOT_FOUND,
   LOGIN_WITH_USERNAME_PASSWORD,
   USERS_LIST_SUCCESSFUL,
+  CHANGE_USER_STATUS_SUCCESS,
 } = messages;
 
 @Resolver(User)
@@ -211,6 +214,39 @@ export class UserResolver {
           order_by,
         },
         message: USERS_LIST_SUCCESSFUL,
+      };
+    } catch (error) {
+      console.log(error);
+      return new Error(GENERIC_ERROR);
+    }
+  }
+
+  @Mutation(() => ChangeStatusResponse)
+  @Authorized()
+  async changeUserStatus(
+    @Arg("data") { id }: ChangeUserStatusFields
+  ): Promise<ChangeStatusResponse> {
+    try {
+      const status = await getConnection()
+        .createQueryBuilder()
+        .select("user.statusId")
+        .from(User, "user")
+        .where("user.id = :id", { id: id })
+        .leftJoinAndSelect("user.status", "status")
+        .getOne();
+
+      const newStatus = status?.statusId === 1 ? 2 : 1;
+
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set({ statusId: newStatus })
+        .where("id = :id", { id: id })
+        .execute();
+
+      return {
+        data: { active: newStatus === 1 ? true : false },
+        message: CHANGE_USER_STATUS_SUCCESS,
       };
     } catch (error) {
       console.log(error);

@@ -11,6 +11,7 @@ const {
   LAST_NAME_LENGTH_ERROR,
   ROLE_REQUIRED,
   STORE_REQUIRED,
+  CHANGE_USER_STATUS_ERROR,
 } = messages;
 
 @InputType()
@@ -43,6 +44,13 @@ export class RegisterFields {
   roleId: number;
 }
 
+@InputType()
+export class ChangeUserStatusFields {
+  @Field()
+  @Min(1, { message: CHANGE_USER_STATUS_ERROR })
+  id: number;
+}
+
 @ObjectType()
 export class UserResponse extends ApiResponse {
   @Field(() => User, { nullable: true })
@@ -53,4 +61,16 @@ export class UserResponse extends ApiResponse {
 export class PaginatedUsersResponse extends ApiPaginatedResponse {
   @Field(() => [User], { nullable: true })
   data?: User[];
+}
+
+@ObjectType()
+class IsActive {
+  @Field()
+  active: boolean;
+}
+
+@ObjectType()
+export class ChangeStatusResponse extends ApiResponse {
+  @Field(() => IsActive, { nullable: true })
+  data?: IsActive;
 }
