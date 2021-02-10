@@ -20,3 +20,9 @@ export class RoleResponse extends ApiResponse {
   @Field(() => Role, { nullable: true })
   data?: Role;
 }
+
+@ObjectType()
+export class ListRolesResponse extends ApiResponse {
+  @Field(() => [Role], { nullable: true })
+  data?: Role[];
+}

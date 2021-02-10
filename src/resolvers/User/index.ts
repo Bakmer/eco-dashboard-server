@@ -244,7 +244,7 @@ export class UserResolver {
         .execute();
 
       return {
-        data: { active: newStatus === 1 ? true : false },
+        data: { id: newStatus, name: newStatus === 1 ? "Activo" : "Inactivo" },
         message: CHANGE_USER_STATUS_SUCCESS,
       };
     } catch (error) {

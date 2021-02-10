@@ -64,13 +64,16 @@ export class PaginatedUsersResponse extends ApiPaginatedResponse {
 }
 
 @ObjectType()
-class IsActive {
+class StatusFields {
   @Field()
-  active: boolean;
+  id: number;
+
+  @Field()
+  name: string;
 }
 
 @ObjectType()
 export class ChangeStatusResponse extends ApiResponse {
-  @Field(() => IsActive, { nullable: true })
-  data?: IsActive;
+  @Field(() => StatusFields, { nullable: true })
+  data?: StatusFields;
 }

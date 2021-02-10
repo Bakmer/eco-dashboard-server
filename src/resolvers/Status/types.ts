@@ -20,3 +20,9 @@ export class StatusResponse extends ApiResponse {
   @Field(() => Status, { nullable: true })
   data?: Status;
 }
+
+@ObjectType()
+export class ListStatusResponse extends ApiResponse {
+  @Field(() => [Status], { nullable: true })
+  data?: Status[];
+}
