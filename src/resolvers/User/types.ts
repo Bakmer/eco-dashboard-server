@@ -23,7 +23,7 @@ export class UsernamePasswordInput {
 }
 
 @InputType()
-export class RegisterFields {
+export class CreateUserFields {
   @Field()
   @Length(3, 50, { message: NAME_LENGTH_ERROR })
   name: string;
@@ -42,6 +42,9 @@ export class RegisterFields {
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
   roleId: number;
+  @Field()
+  @Min(1, { message: ROLE_REQUIRED })
+  statusId: number;
 }
 
 @InputType()

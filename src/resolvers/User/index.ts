@@ -6,7 +6,7 @@ import messages from "../../constants/messages";
 import {
   UserResponse,
   UsernamePasswordInput,
-  RegisterFields,
+  CreateUserFields,
   PaginatedUsersResponse,
   ChangeUserStatusFields,
   ChangeStatusResponse,
@@ -38,7 +38,7 @@ export class UserResolver {
   // }
 
   @Mutation(() => UserResponse)
-  async register(@Arg("data") data: RegisterFields): Promise<UserResponse> {
+  async createUser(@Arg("data") data: CreateUserFields): Promise<UserResponse> {
     try {
       const store = await Store.findOne({ id: data.storeId });
       if (!store) {
