@@ -6,6 +6,7 @@ import session from "express-session";
 import { createConnection } from "typeorm";
 import cors from "cors";
 import { __prod__, COOKIE_NAME } from "./constants";
+import dataSources from "./datasources";
 
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
@@ -62,6 +63,7 @@ const main = async () => {
       //   userLoader: createUserLoader(),
       //   updootLoader: createUpdootLoader(),
     }),
+    dataSources,
     plugins: [
       {
         requestDidStart: () => ({
