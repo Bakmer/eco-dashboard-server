@@ -1,11 +1,11 @@
-import { Arg, Mutation, Resolver, Authorized, Query } from "type-graphql";
+import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import { CreateStoreFields } from "./types";
-import { getConnection } from "typeorm";
 import messages from "../../constants/messages";
 import { StoreResponse, ListStoresResponse } from "./types";
 
 import { Stores as Store } from "../../entities/Store";
 import { ADMIN } from "../../constants/roles";
+import { MyContext } from "src/types/MyContext";
 
 const {
   STORE_REGISTER_ERROR,
@@ -19,10 +19,11 @@ export class StoreResolver {
   @Mutation(() => StoreResponse)
   @Authorized(ADMIN)
   async createStore(
-    @Arg("data") { name }: CreateStoreFields
+    @Arg("data") data: CreateStoreFields,
+    @Ctx() { dataSources: { storeService } }: MyContext
   ): Promise<StoreResponse> {
     try {
-      const newStore = await Store.create({ name }).save();
+      const newStore = await storeService.create(data);
 
       return { data: newStore, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
@@ -32,14 +33,11 @@ export class StoreResolver {
 
   @Query(() => ListStoresResponse)
   @Authorized()
-  async listStores(): Promise<ListStoresResponse> {
+  async listStores(
+    @Ctx() { dataSources: { storeService } }: MyContext
+  ): Promise<ListStoresResponse> {
     try {
-      const stores = await getConnection()
-        .createQueryBuilder()
-        .select("store")
-        .from(Store, "store")
-        .leftJoinAndSelect("store.users", "users")
-        .getMany();
+      const stores = await storeService.list();
 
       return {
         data: stores,

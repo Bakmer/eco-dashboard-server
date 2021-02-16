@@ -1,11 +1,11 @@
-import { Arg, Mutation, Resolver, Authorized, Query } from "type-graphql";
+import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import { CreateRoleField } from "./types";
-import { getConnection } from "typeorm";
 import messages from "../../constants/messages";
 import { RoleResponse, ListRolesResponse } from "./types";
 
 import { Roles as Role } from "../../entities/Role";
 import { ADMIN } from "../../constants/roles";
+import { MyContext } from "src/types/MyContext";
 
 const {
   ROLE_CREATED_SUCCESSFULLY,
@@ -19,10 +19,11 @@ export class RoleResolver {
   @Mutation(() => RoleResponse)
   @Authorized(ADMIN)
   async createRole(
-    @Arg("data") { name }: CreateRoleField
+    @Arg("data") { name }: CreateRoleField,
+    @Ctx() { dataSources: { roleService } }: MyContext
   ): Promise<RoleResponse> {
     try {
-      const newRole = await Role.create({ name }).save();
+      const newRole = await roleService.create(name);
 
       return { data: newRole, message: ROLE_CREATED_SUCCESSFULLY };
     } catch (error) {
@@ -32,13 +33,11 @@ export class RoleResolver {
 
   @Query(() => ListRolesResponse)
   @Authorized()
-  async listRoles(): Promise<ListRolesResponse> {
+  async listRoles(
+    @Ctx() { dataSources: { roleService } }: MyContext
+  ): Promise<ListRolesResponse> {
     try {
-      const roles = await getConnection()
-        .createQueryBuilder()
-        .select("role")
-        .from(Role, "role")
-        .getMany();
+      const roles = await roleService.list();
 
       return {
         data: roles,

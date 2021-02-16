@@ -3,9 +3,13 @@ import { Redis } from "ioredis";
 import { Session } from "express-session";
 
 import UserService from "../datasources/UserService";
+import StoreService from "../datasources/StoreService";
+import RoleService from "../datasources/RoleService";
 
 interface DataSources {
   userService: UserService;
+  storeService: StoreService;
+  roleService: RoleService;
 }
 
 export type MyContext = {

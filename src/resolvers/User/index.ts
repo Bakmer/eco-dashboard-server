@@ -15,8 +15,6 @@ import { PaginationFields } from "../sharedTypes";
 import { UserInputError } from "apollo-server-express";
 
 import { Users as User } from "../../entities/User";
-import { Stores as Store } from "../../entities/Store";
-import { Roles as Role } from "../../entities/Role";
 
 const {
   GENERIC_ERROR,
@@ -40,15 +38,16 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async createUser(
     @Arg("data") data: CreateUserFields,
-    @Ctx() { dataSources: { userService } }: MyContext
+    @Ctx()
+    { dataSources: { userService, storeService, roleService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const store = await Store.findOne({ id: data.storeId });
+      const store = await storeService.findById(data.storeId);
       if (!store) {
         return new UserInputError(STORE_NOT_FOUND_RESPONSE);
       }
 
-      const role = await Role.findOne({ id: data.roleId });
+      const role = await roleService.findById(data.roleId);
       if (!role) {
         return new UserInputError(ROLE_NOT_FOUND);
       }
