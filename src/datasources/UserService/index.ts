@@ -1,10 +1,11 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { getConnection } from "typeorm";
-import { Users as User } from "../../entities/User";
+import { User } from "../../entities/User";
 import { MyContext } from "../../types/MyContext";
 
 import {
   CreateUserFields,
+  UpdateUserFields,
   PaginatedUsersResponse,
 } from "../../resolvers/User/types";
 import { PaginationFields, OrderType } from "../../resolvers/sharedTypes";
@@ -32,7 +33,7 @@ export default class UserService extends DataSource {
       .where("user.id = :id", { id })
       .leftJoinAndSelect("user.store", "store")
       .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.status", "status")
+      .leftJoinAndSelect("user.state", "state")
       .getOne();
     // I can also do it without query builder
     // const user = await User.findOne({ id: req.session.user });
@@ -46,7 +47,7 @@ export default class UserService extends DataSource {
       .where("user.username = :username", { username })
       .leftJoinAndSelect("user.store", "store")
       .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.status", "status")
+      .leftJoinAndSelect("user.state", "state")
       .getOne();
   }
 
@@ -62,11 +63,7 @@ export default class UserService extends DataSource {
       if (!order_by) {
         return "user.id";
       }
-      if (
-        order_by === "store" ||
-        order_by === "role" ||
-        order_by === "status"
-      ) {
+      if (order_by === "store" || order_by === "role" || order_by === "state") {
         return `${order_by}.id`;
       } else {
         return `user.${order_by}`;
@@ -91,7 +88,7 @@ export default class UserService extends DataSource {
       .orWhere("user.id = :id", { id: search })
       .leftJoinAndSelect("user.store", "store")
       .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.status", "status")
+      .leftJoinAndSelect("user.state", "state")
       .skip(itemsToSkip)
       .take(per_page)
       .orderBy(getOrderBy(), order_type)
@@ -125,27 +122,38 @@ export default class UserService extends DataSource {
       .getCount();
   }
 
-  async changeStatus(id: number): Promise<number> {
-    const status = await this.getStatus(id);
+  async changeState(id: number): Promise<number> {
+    const state = await this.getState(id);
 
-    const newStatus = status?.statusId === 1 ? 2 : 1;
+    const newState = state?.stateId === 1 ? 2 : 1;
 
     await getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ statusId: newStatus })
+      .set({ stateId: newState })
       .where("id = :id", { id: id })
       .execute();
 
-    return newStatus;
+    return newState;
   }
 
-  async getStatus(id: number): Promise<{ statusId: number } | undefined> {
+  async getState(id: number): Promise<{ stateId: number } | undefined> {
     return await getConnection()
       .createQueryBuilder()
-      .select("user.statusId")
+      .select("user.stateId")
       .from(User, "user")
       .where("user.id = :id", { id: id })
       .getOne();
+  }
+
+  async update(data: UpdateUserFields): Promise<User | undefined> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set(data.user)
+      .where("id = :id", { id: data.id })
+      .execute();
+
+    return await this.findById(data.id);
   }
 }

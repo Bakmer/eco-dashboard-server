@@ -8,21 +8,22 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { User } from "./User";
+import { ClientAddress } from "./ClientAddress";
 
 @ObjectType()
 @Entity()
-export class Role extends BaseEntity {
+export class ShippingMethod extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field()
-  @Column({ unique: true })
-  name!: string;
+  @Column()
+  name: string;
 
-  @OneToMany(() => User, (user) => user.role)
-  users: User[];
+  @Field(() => [ClientAddress])
+  @OneToMany(() => ClientAddress, (address) => address.shipping_method)
+  addresses: ClientAddress[];
 
   @Field(() => String)
   @CreateDateColumn()

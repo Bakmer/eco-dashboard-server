@@ -9,15 +9,15 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Stores as Store } from "./Store";
-import { Roles as Role } from "./Role";
-import { Clients as Client } from "./Client";
-import { Status } from "./Status";
+import { Store } from "./Store";
+import { Role } from "./Role";
+import { Client } from "./Client";
+import { State } from "./State";
 import { ADMIN } from "../constants/roles";
 
 @ObjectType()
 @Entity()
-export class Users extends BaseEntity {
+export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -49,7 +49,7 @@ export class Users extends BaseEntity {
 
   @Field()
   @Column()
-  statusId: number;
+  stateId: number;
 
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.users)
@@ -59,9 +59,9 @@ export class Users extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
 
-  @Field(() => Status)
-  @ManyToOne(() => Status, (status) => status.users)
-  status: Status;
+  @Field(() => State)
+  @ManyToOne(() => State, (state) => state.users)
+  state: State;
 
   @Field(() => [Client])
   @OneToMany(() => Client, (client) => client.user)

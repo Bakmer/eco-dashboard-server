@@ -4,7 +4,7 @@ import { UserResolver } from "../resolvers/User";
 import { HelloResolver } from "../resolvers/Hello";
 import { StoreResolver } from "../resolvers/Store";
 import { RoleResolver } from "../resolvers/Role";
-import { StatusResolver } from "../resolvers/Status";
+import { StateResolver } from "../resolvers/State";
 import { ClientResolver } from "../resolvers/Client";
 
 export const createSchema = () =>
@@ -14,7 +14,7 @@ export const createSchema = () =>
       HelloResolver,
       StoreResolver,
       RoleResolver,
-      StatusResolver,
+      StateResolver,
       ClientResolver,
     ],
     authChecker: ({ context: { req } }, roles) => {

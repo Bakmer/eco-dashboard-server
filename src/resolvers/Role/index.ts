@@ -3,7 +3,7 @@ import { CreateRoleField } from "./types";
 import messages from "../../constants/messages";
 import { RoleResponse, ListRolesResponse } from "./types";
 
-import { Roles as Role } from "../../entities/Role";
+import { Role } from "../../entities/Role";
 import { ADMIN } from "../../constants/roles";
 import { MyContext } from "src/types/MyContext";
 
@@ -27,7 +27,11 @@ export class RoleResolver {
 
       return { data: newRole, message: ROLE_CREATED_SUCCESSFULLY };
     } catch (error) {
-      return new Error(ROLE_REGISTER_ERROR);
+      if (error.code === "ER_DUP_ENTRY") {
+        return new Error(error.sqlMessage);
+      } else {
+        return new Error(ROLE_REGISTER_ERROR);
+      }
     }
   }
 

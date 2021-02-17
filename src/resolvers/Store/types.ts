@@ -2,7 +2,7 @@ import { InputType, Field, ObjectType } from "type-graphql";
 import { Length } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse } from "../sharedTypes";
-import { Stores as Store } from "../../entities/Store";
+import { Store } from "../../entities/Store";
 
 const { STORE_NAME_LENGTH_ERROR } = messages;
 

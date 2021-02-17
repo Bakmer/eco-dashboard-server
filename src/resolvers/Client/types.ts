@@ -2,7 +2,7 @@ import { InputType, Field, ObjectType } from "type-graphql";
 import { Length, Min, MinLength } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse } from "../sharedTypes";
-import { Clients as Client } from "../../entities/Client";
+import { Client } from "../../entities/Client";
 
 const {
   NAME_LENGTH_ERROR,
@@ -16,7 +16,7 @@ const {
   PHONE_3_LENGTH_ERROR,
   ADDRESS_1_LENGTH_ERROR,
   STORE_REQUIRED,
-  STATUS_REQUIRED,
+  STATES_REQUIRED,
 } = messages;
 
 @ObjectType()
@@ -67,6 +67,6 @@ export class CreateFields {
   @Min(1, { message: STORE_REQUIRED })
   storeId: number;
   @Field()
-  @Min(1, { message: STATUS_REQUIRED })
-  statusId: number;
+  @Min(1, { message: STATES_REQUIRED })
+  stateId: number;
 }

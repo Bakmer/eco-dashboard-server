@@ -2,7 +2,7 @@ import { InputType, Field, ObjectType } from "type-graphql";
 import { Length, Min } from "class-validator";
 import messages from "../../constants/messages";
 import { ApiResponse, ApiPaginatedResponse } from "../sharedTypes";
-import { Users as User } from "../../entities/User";
+import { User } from "../../entities/User";
 
 const {
   USERNAME_LENGTH_ERROR,
@@ -11,7 +11,7 @@ const {
   LAST_NAME_LENGTH_ERROR,
   ROLE_REQUIRED,
   STORE_REQUIRED,
-  CHANGE_USER_STATUS_ERROR,
+  CHANGE_USER_STATE_ERROR,
 } = messages;
 
 @InputType()
@@ -44,13 +44,13 @@ export class CreateUserFields {
   roleId: number;
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
-  statusId: number;
+  stateId: number;
 }
 
 @InputType()
-export class ChangeUserStatusFields {
+export class ChangeUserStateFields {
   @Field()
-  @Min(1, { message: CHANGE_USER_STATUS_ERROR })
+  @Min(1, { message: CHANGE_USER_STATE_ERROR })
   id: number;
 }
 
@@ -67,7 +67,7 @@ export class PaginatedUsersResponse extends ApiPaginatedResponse {
 }
 
 @ObjectType()
-class StatusFields {
+class StateFields {
   @Field()
   id: number;
 
@@ -76,7 +76,15 @@ class StatusFields {
 }
 
 @ObjectType()
-export class ChangeStatusResponse extends ApiResponse {
-  @Field(() => StatusFields, { nullable: true })
-  data?: StatusFields;
+export class ChangeStateResponse extends ApiResponse {
+  @Field(() => StateFields, { nullable: true })
+  data?: StateFields;
+}
+
+@InputType()
+export class UpdateUserFields {
+  @Field({ nullable: true })
+  id: number;
+  @Field()
+  user: CreateUserFields;
 }

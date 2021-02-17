@@ -1,6 +1,6 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { getConnection } from "typeorm";
-import { Stores as Store } from "../../entities/Store";
+import { Store } from "../../entities/Store";
 import { MyContext } from "../../types/MyContext";
 
 import { CreateStoreFields } from "../../resolvers/Store/types";

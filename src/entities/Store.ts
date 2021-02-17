@@ -8,12 +8,12 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Users as User } from "./User";
-import { Clients as Client } from "./Client";
+import { User } from "./User";
+import { Client } from "./Client";
 
 @ObjectType()
 @Entity()
-export class Stores extends BaseEntity {
+export class Store extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;

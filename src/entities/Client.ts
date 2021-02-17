@@ -7,14 +7,16 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
-import { Stores as Store } from "./Store";
-import { Status } from "./Status";
-import { Users as User } from "./User";
+import { Store } from "./Store";
+import { State } from "./State";
+import { User } from "./User";
+import { ClientAddress } from "./ClientAddress";
 
 @ObjectType()
 @Entity()
-export class Clients extends BaseEntity {
+export class Client extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -45,7 +47,15 @@ export class Clients extends BaseEntity {
 
   @Field()
   @Column()
+  area_code_1: string;
+
+  @Field()
+  @Column()
   phone_1: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  area_code_2?: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
@@ -53,19 +63,11 @@ export class Clients extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  area_code_3?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   phone_3?: string;
-
-  @Field()
-  @Column()
-  address_1: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  address_2?: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  address_3?: string;
 
   @Field()
   @Column()
@@ -77,7 +79,7 @@ export class Clients extends BaseEntity {
 
   @Field()
   @Column()
-  statusId: number;
+  stateId: number;
 
   @Field()
   @Column()
@@ -87,13 +89,17 @@ export class Clients extends BaseEntity {
   @ManyToOne(() => Store, (store) => store.clients)
   store: Store;
 
-  @Field(() => Status)
-  @ManyToOne(() => Status, (status) => status.clients)
-  status: Status;
+  @Field(() => State)
+  @ManyToOne(() => State, (state) => state.clients)
+  state: State;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.clients)
   user: User;
+
+  @Field(() => [ClientAddress])
+  @OneToMany(() => ClientAddress, (address) => address.client)
+  addresses: ClientAddress[];
 
   @Field(() => String)
   @CreateDateColumn()

@@ -3,7 +3,7 @@ import { CreateStoreFields } from "./types";
 import messages from "../../constants/messages";
 import { StoreResponse, ListStoresResponse } from "./types";
 
-import { Stores as Store } from "../../entities/Store";
+import { Store } from "../../entities/Store";
 import { ADMIN } from "../../constants/roles";
 import { MyContext } from "src/types/MyContext";
 
@@ -27,7 +27,11 @@ export class StoreResolver {
 
       return { data: newStore, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
-      return new Error(STORE_REGISTER_ERROR);
+      if (error.code === "ER_DUP_ENTRY") {
+        return new Error(error.sqlMessage);
+      } else {
+        return new Error(STORE_REGISTER_ERROR);
+      }
     }
   }
 

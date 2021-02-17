@@ -1,9 +1,9 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { getConnection } from "typeorm";
-import { Role } from "../../entities/Role";
+import { State } from "../../entities/State";
 import { MyContext } from "../../types/MyContext";
 
-export default class RoleService extends DataSource {
+export default class StateService extends DataSource {
   ctx: MyContext;
 
   constructor() {
@@ -14,19 +14,19 @@ export default class RoleService extends DataSource {
     this.ctx = config.context;
   }
 
-  async create(name: string): Promise<Role> {
-    return await Role.create({ name }).save();
+  async create(name: string): Promise<State> {
+    return await State.create({ name }).save();
   }
 
-  async list(): Promise<Role[]> {
+  async list(): Promise<State[]> {
     return await getConnection()
       .createQueryBuilder()
-      .select("role")
-      .from(Role, "role")
+      .select("state")
+      .from(State, "state")
       .getMany();
   }
 
-  async findById(id: number): Promise<Role | undefined> {
-    return await Role.findOne({ id });
+  async findById(id: number): Promise<State | undefined> {
+    return await State.findOne({ id });
   }
 }

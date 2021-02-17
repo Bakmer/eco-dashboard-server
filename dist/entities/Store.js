@@ -9,46 +9,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Stores = void 0;
+exports.Store = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
 const Client_1 = require("./Client");
-let Stores = class Stores extends typeorm_1.BaseEntity {
+let Store = class Store extends typeorm_1.BaseEntity {
 };
 __decorate([
     type_graphql_1.Field(),
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], Stores.prototype, "id", void 0);
+], Store.prototype, "id", void 0);
 __decorate([
     type_graphql_1.Field(),
     typeorm_1.Column({ unique: true }),
     __metadata("design:type", String)
-], Stores.prototype, "name", void 0);
+], Store.prototype, "name", void 0);
 __decorate([
-    type_graphql_1.Field(() => [User_1.Users]),
-    typeorm_1.OneToMany(() => User_1.Users, (user) => user.store),
+    type_graphql_1.Field(() => [User_1.User]),
+    typeorm_1.OneToMany(() => User_1.User, (user) => user.store),
     __metadata("design:type", Array)
-], Stores.prototype, "users", void 0);
+], Store.prototype, "users", void 0);
 __decorate([
-    type_graphql_1.Field(() => [Client_1.Clients]),
-    typeorm_1.OneToMany(() => Client_1.Clients, (client) => client.store),
+    type_graphql_1.Field(() => [Client_1.Client]),
+    typeorm_1.OneToMany(() => Client_1.Client, (client) => client.store),
     __metadata("design:type", Array)
-], Stores.prototype, "clients", void 0);
+], Store.prototype, "clients", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], Stores.prototype, "createdAt", void 0);
+], Store.prototype, "createdAt", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], Stores.prototype, "updatedAt", void 0);
-Stores = __decorate([
+], Store.prototype, "updatedAt", void 0);
+Store = __decorate([
     type_graphql_1.ObjectType(),
     typeorm_1.Entity()
-], Stores);
-exports.Stores = Stores;
+], Store);
+exports.Store = Store;
 //# sourceMappingURL=Store.js.map

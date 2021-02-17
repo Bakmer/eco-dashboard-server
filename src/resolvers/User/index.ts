@@ -8,13 +8,14 @@ import {
   UsernamePasswordInput,
   CreateUserFields,
   PaginatedUsersResponse,
-  ChangeUserStatusFields,
-  ChangeStatusResponse,
+  ChangeUserStateFields,
+  ChangeStateResponse,
+  UpdateUserFields,
 } from "./types";
 import { PaginationFields } from "../sharedTypes";
 import { UserInputError } from "apollo-server-express";
 
-import { Users as User } from "../../entities/User";
+import { User } from "../../entities/User";
 
 const {
   GENERIC_ERROR,
@@ -25,7 +26,8 @@ const {
   ROLE_NOT_FOUND,
   LOGIN_WITH_USERNAME_PASSWORD,
   USERS_LIST_SUCCESSFUL,
-  CHANGE_USER_STATUS_SUCCESS,
+  CHANGE_USER_STATE_SUCCESS,
+  UPDATE_USER_SUCCESS,
 } = messages;
 
 @Resolver(User)
@@ -60,7 +62,11 @@ export class UserResolver {
       };
     } catch (error) {
       console.log(error);
-      return new Error(error.message);
+      if (error.code === "ER_DUP_ENTRY") {
+        return new Error(error.sqlMessage);
+      } else {
+        return new Error(GENERIC_ERROR);
+      }
     }
   }
 
@@ -135,22 +141,56 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => ChangeStatusResponse)
+  @Mutation(() => ChangeStateResponse)
   @Authorized()
-  async changeUserStatus(
-    @Arg("data") { id }: ChangeUserStatusFields,
+  async changeUserState(
+    @Arg("data") { id }: ChangeUserStateFields,
     @Ctx() { dataSources: { userService } }: MyContext
-  ): Promise<ChangeStatusResponse> {
+  ): Promise<ChangeStateResponse> {
     try {
-      const newStatus = await userService.changeStatus(id);
+      const newState = await userService.changeState(id);
 
       return {
-        data: { id: newStatus, name: newStatus === 1 ? "Activo" : "Inactivo" },
-        message: CHANGE_USER_STATUS_SUCCESS,
+        data: { id: newState, name: newState === 1 ? "Activo" : "Inactivo" },
+        message: CHANGE_USER_STATE_SUCCESS,
       };
     } catch (error) {
       console.log(error);
       return new Error(GENERIC_ERROR);
+    }
+  }
+
+  @Mutation(() => UserResponse)
+  @Authorized()
+  async updateUser(
+    @Arg("data") data: UpdateUserFields,
+    @Ctx()
+    { dataSources: { userService, storeService, roleService } }: MyContext
+  ): Promise<UserResponse> {
+    try {
+      const store = await storeService.findById(data.user.storeId);
+      if (!store) {
+        return new UserInputError(STORE_NOT_FOUND_RESPONSE);
+      }
+
+      const role = await roleService.findById(data.user.roleId);
+      if (!role) {
+        return new UserInputError(ROLE_NOT_FOUND);
+      }
+
+      const updatedUser = await userService.update(data);
+
+      return {
+        data: updatedUser,
+        message: UPDATE_USER_SUCCESS,
+      };
+    } catch (error) {
+      console.log(error);
+      if (error.code === "ER_DUP_ENTRY") {
+        return new Error(error.sqlMessage);
+      } else {
+        return new Error(GENERIC_ERROR);
+      }
     }
   }
 

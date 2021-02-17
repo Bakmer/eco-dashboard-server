@@ -13,12 +13,12 @@ export default {
   ROLE_REQUIRED: "Debe seleccionar un rol de usuario",
   ROLES_LIST_SUCCESSFUL: "Listado de roles obtenido con exito",
 
-  // Status
-  STATUS_LENGTH_ERROR:
+  // States
+  STATES_LENGTH_ERROR:
     "El nombre del estado debe tener entre 3 a 50 caracteres",
-  STATUS_REQUIRED: "Debe seleccionar un estado de usuario",
-  STATUS_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
-  STATUS_LIST_SUCCESSFUL: "Listado de estados obtenido con exito",
+  STATES_REQUIRED: "Debe seleccionar un estado de usuario",
+  STATES_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
+  STATES_LIST_SUCCESSFUL: "Listado de estados obtenido con exito",
 
   // User
   LOGIN_REGISTER_FAIL: "Usuario o contraseña incorrecto",
@@ -39,9 +39,10 @@ export default {
   PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
   ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
   USERS_LIST_SUCCESSFUL: "Listado de usuarios obtenido con exito",
-  CHANGE_USER_STATUS_ERROR:
+  CHANGE_USER_STATE_ERROR:
     "Hubo un problema al intentar cambiar el estado del usuario",
-  CHANGE_USER_STATUS_SUCCESS: "Estado del usuario actualizado",
+  CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
+  UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
 
   // Clients
   RAZON_SOCIAL_LENGTH_ERROR:

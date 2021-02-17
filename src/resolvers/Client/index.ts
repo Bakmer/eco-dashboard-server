@@ -4,11 +4,10 @@ import { UserInputError } from "apollo-server-express";
 import messages from "../../constants/messages";
 import { ClientResponse, CreateFields } from "./types";
 
-import { Clients as Client } from "../../entities/Client";
-import { Status } from "../../entities/Status";
+import { Client } from "../../entities/Client";
 
 const {
-  STATUS_NOT_FOUND_RESPONSE,
+  STATES_NOT_FOUND_RESPONSE,
   CLIENT_CREATE_SUCCESS,
   GENERIC_ERROR,
 } = messages;
@@ -19,35 +18,27 @@ export class ClientResolver {
   @Authorized()
   async createClient(
     @Arg("data") data: CreateFields,
-    @Ctx() { req }: MyContext
+    @Ctx() { dataSources: { clientService, stateService } }: MyContext
   ): Promise<ClientResponse> {
     try {
-      const status = await Status.findOne({ id: data.statusId });
-      if (!status) {
-        return new UserInputError(STATUS_NOT_FOUND_RESPONSE);
+      const state = await stateService.findById(data.stateId);
+      if (!state) {
+        return new UserInputError(STATES_NOT_FOUND_RESPONSE);
       }
+
+      const newClient = await clientService.create(data);
+
+      return {
+        data: newClient,
+        message: CLIENT_CREATE_SUCCESS,
+      };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      if (error.code === "ER_DUP_ENTRY") {
+        return new Error(error.sqlMessage);
+      } else {
+        return new Error(GENERIC_ERROR);
+      }
     }
-
-    let client;
-
-    try {
-      const newClient = await Client.create({
-        ...data,
-        storeId: req.session.user.storeId,
-        userId: req.session.user.id,
-      }).save();
-      client = newClient;
-    } catch (error) {
-      console.log(error);
-      return new Error(error.message);
-    }
-
-    return {
-      data: client,
-      message: CLIENT_CREATE_SUCCESS,
-    };
   }
 }

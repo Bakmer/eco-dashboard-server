@@ -8,12 +8,12 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Users as User } from "./User";
-import { Clients as Client } from "./Client";
+import { User } from "./User";
+import { Client } from "./Client";
 
 @ObjectType()
 @Entity()
-export class Status extends BaseEntity {
+export class State extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -22,10 +22,10 @@ export class Status extends BaseEntity {
   @Column({ unique: true })
   name!: string;
 
-  @OneToMany(() => User, (user) => user.status)
+  @OneToMany(() => User, (user) => user.state)
   users: User[];
 
-  @OneToMany(() => Client, (client) => client.status)
+  @OneToMany(() => Client, (client) => client.state)
   clients: Client[];
 
   @Field(() => String)
