@@ -21,8 +21,8 @@ export default class ClientService extends DataSource {
 
     return await Client.create({
       ...data,
-      storeId: userSession.storeId,
-      userId: userSession.id,
+      store_id: userSession.store_id,
+      user_id: userSession.id,
     }).save();
   }
 }

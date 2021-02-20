@@ -38,10 +38,10 @@ export class CreateUserFields {
   password: string;
   @Field()
   @Min(1, { message: STORE_REQUIRED })
-  storeId: number;
+  store_id: number;
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
-  roleId: number;
+  role_id: number;
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
   state_id: number;

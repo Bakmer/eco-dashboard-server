@@ -65,7 +65,7 @@ export class CreateFields {
   memo: string;
   @Field()
   @Min(1, { message: STORE_REQUIRED })
-  storeId: number;
+  store_id: number;
   @Field()
   @Min(1, { message: STATES_REQUIRED })
   state_id: number;

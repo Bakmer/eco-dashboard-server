@@ -7,6 +7,7 @@ import {
   Column,
   BaseEntity,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { Client } from "./Client";
 import { ShippingMethod } from "./ShippingMethod";
@@ -68,25 +69,31 @@ export class ClientAddress extends BaseEntity {
 
   @Field()
   @Column()
-  clientId: number;
+  client_id: number;
 
   @Field()
   @Column()
-  shippingMethodId: number;
+  shipping_method_id: number;
 
   @Field(() => Client)
   @ManyToOne(() => Client, (client) => client.addresses)
+  @JoinColumn({
+    name: "client_id",
+  })
   client: Client;
 
   @Field(() => ShippingMethod)
   @ManyToOne(() => ShippingMethod, (shipping) => shipping.addresses)
+  @JoinColumn({
+    name: "shipping_method_id",
+  })
   shipping_method: ShippingMethod;
 
   @Field(() => String)
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @Field(() => String)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

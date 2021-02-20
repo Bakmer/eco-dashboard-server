@@ -49,12 +49,12 @@ __decorate([
     type_graphql_1.Field(),
     typeorm_1.Column(),
     __metadata("design:type", Number)
-], User.prototype, "storeId", void 0);
+], User.prototype, "store_id", void 0);
 __decorate([
     type_graphql_1.Field(),
     typeorm_1.Column(),
     __metadata("design:type", Number)
-], User.prototype, "roleId", void 0);
+], User.prototype, "role_id", void 0);
 __decorate([
     type_graphql_1.Field(),
     typeorm_1.Column(),
@@ -63,11 +63,17 @@ __decorate([
 __decorate([
     type_graphql_1.Field(() => Store_1.Store),
     typeorm_1.ManyToOne(() => Store_1.Store, (store) => store.users),
+    typeorm_1.JoinColumn({
+        name: "store_id",
+    }),
     __metadata("design:type", Store_1.Store)
 ], User.prototype, "store", void 0);
 __decorate([
     type_graphql_1.Field(() => Role_1.Role),
     typeorm_1.ManyToOne(() => Role_1.Role, (role) => role.users),
+    typeorm_1.JoinColumn({
+        name: "role_id",
+    }),
     __metadata("design:type", Role_1.Role)
 ], User.prototype, "role", void 0);
 __decorate([

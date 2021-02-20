@@ -26,7 +26,7 @@ const createSchema = () => type_graphql_1.buildSchema({
             return false;
         }
         for (let i = 0; i < roles.length; i++) {
-            if (roles[i] === user.roleId) {
+            if (roles[i] === user.role_id) {
                 return true;
             }
         }

@@ -26,7 +26,7 @@ export type MyContext = {
 interface userSession extends Session {
   user: {
     id: number;
-    roleId: number;
-    storeId: number;
+    role_id: number;
+    store_id: number;
   };
 }

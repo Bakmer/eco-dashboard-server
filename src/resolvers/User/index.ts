@@ -44,12 +44,12 @@ export class UserResolver {
     { dataSources: { userService, storeService, roleService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const store = await storeService.findById(data.storeId);
+      const store = await storeService.findById(data.store_id);
       if (!store) {
         return new UserInputError(STORE_NOT_FOUND_RESPONSE);
       }
 
-      const role = await roleService.findById(data.roleId);
+      const role = await roleService.findById(data.role_id);
       if (!role) {
         return new UserInputError(ROLE_NOT_FOUND);
       }
@@ -88,8 +88,8 @@ export class UserResolver {
 
       req.session.user = {
         id: user.id,
-        roleId: user.roleId,
-        storeId: user.storeId,
+        role_id: user.role_id,
+        store_id: user.store_id,
       };
       return {
         data: user,
@@ -168,12 +168,12 @@ export class UserResolver {
     { dataSources: { userService, storeService, roleService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const store = await storeService.findById(data.user.storeId);
+      const store = await storeService.findById(data.user.store_id);
       if (!store) {
         return new UserInputError(STORE_NOT_FOUND_RESPONSE);
       }
 
-      const role = await roleService.findById(data.user.roleId);
+      const role = await roleService.findById(data.user.role_id);
       if (!role) {
         return new UserInputError(ROLE_NOT_FOUND);
       }

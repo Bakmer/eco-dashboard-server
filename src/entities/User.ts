@@ -42,11 +42,11 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  storeId: number;
+  store_id: number;
 
   @Field()
   @Column()
-  roleId: number;
+  role_id: number;
 
   @Field()
   @Column()
@@ -54,10 +54,16 @@ export class User extends BaseEntity {
 
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.users)
+  @JoinColumn({
+    name: "store_id",
+  })
   store: Store;
 
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({
+    name: "role_id",
+  })
   role: Role;
 
   @Field(() => State)

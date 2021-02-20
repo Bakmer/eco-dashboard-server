@@ -32,9 +32,9 @@ export class Store extends BaseEntity {
 
   @Field(() => String)
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @Field(() => String)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

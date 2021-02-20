@@ -76,14 +76,21 @@ export class Client extends BaseEntity {
 
   @Field()
   @Column()
-  storeId: number;
+  store_id: number;
 
   @Field()
   @Column()
-  userId: number;
+  state_id: number;
+
+  @Field()
+  @Column()
+  user_id: number;
 
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.clients)
+  @JoinColumn({
+    name: "store_id",
+  })
   store: Store;
 
   @Field(() => State)
@@ -95,6 +102,9 @@ export class Client extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.clients)
+  @JoinColumn({
+    name: "user_id",
+  })
   user: User;
 
   @Field(() => [ClientAddress])
@@ -103,9 +113,9 @@ export class Client extends BaseEntity {
 
   @Field(() => String)
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @Field(() => String)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }

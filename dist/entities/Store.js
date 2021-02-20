@@ -40,12 +40,12 @@ __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], Store.prototype, "createdAt", void 0);
+], Store.prototype, "created_at", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], Store.prototype, "updatedAt", void 0);
+], Store.prototype, "updated_at", void 0);
 Store = __decorate([
     type_graphql_1.ObjectType(),
     typeorm_1.Entity()
