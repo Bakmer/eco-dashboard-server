@@ -59,7 +59,7 @@ __decorate([
     type_graphql_1.Field(),
     typeorm_1.Column(),
     __metadata("design:type", Number)
-], User.prototype, "stateId", void 0);
+], User.prototype, "state_id", void 0);
 __decorate([
     type_graphql_1.Field(() => Store_1.Store),
     typeorm_1.ManyToOne(() => Store_1.Store, (store) => store.users),
@@ -73,6 +73,9 @@ __decorate([
 __decorate([
     type_graphql_1.Field(() => State_1.State),
     typeorm_1.ManyToOne(() => State_1.State, (state) => state.users),
+    typeorm_1.JoinColumn({
+        name: "state_id",
+    }),
     __metadata("design:type", State_1.State)
 ], User.prototype, "state", void 0);
 __decorate([
@@ -84,12 +87,12 @@ __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
+], User.prototype, "created_at", void 0);
 __decorate([
     type_graphql_1.Field(() => String),
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
+], User.prototype, "updated_at", void 0);
 User = __decorate([
     type_graphql_1.ObjectType(),
     typeorm_1.Entity()

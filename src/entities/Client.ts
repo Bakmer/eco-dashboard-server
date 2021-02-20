@@ -8,6 +8,7 @@ import {
   BaseEntity,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from "typeorm";
 import { Store } from "./Store";
 import { State } from "./State";
@@ -79,10 +80,6 @@ export class Client extends BaseEntity {
 
   @Field()
   @Column()
-  stateId: number;
-
-  @Field()
-  @Column()
   userId: number;
 
   @Field(() => Store)
@@ -91,6 +88,9 @@ export class Client extends BaseEntity {
 
   @Field(() => State)
   @ManyToOne(() => State, (state) => state.clients)
+  @JoinColumn({
+    name: "state_id",
+  })
   state: State;
 
   @Field(() => User)

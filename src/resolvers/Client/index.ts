@@ -21,7 +21,7 @@ export class ClientResolver {
     @Ctx() { dataSources: { clientService, stateService } }: MyContext
   ): Promise<ClientResponse> {
     try {
-      const state = await stateService.findById(data.stateId);
+      const state = await stateService.findById(data.state_id);
       if (!state) {
         return new UserInputError(STATES_NOT_FOUND_RESPONSE);
       }

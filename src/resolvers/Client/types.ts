@@ -68,5 +68,5 @@ export class CreateFields {
   storeId: number;
   @Field()
   @Min(1, { message: STATES_REQUIRED })
-  stateId: number;
+  state_id: number;
 }

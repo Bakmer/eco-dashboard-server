@@ -125,22 +125,22 @@ export default class UserService extends DataSource {
   async changeState(id: number): Promise<number> {
     const state = await this.getState(id);
 
-    const newState = state?.stateId === 1 ? 2 : 1;
+    const newState = state?.state_id === 1 ? 2 : 1;
 
     await getConnection()
       .createQueryBuilder()
       .update(User)
-      .set({ stateId: newState })
+      .set({ state_id: newState })
       .where("id = :id", { id: id })
       .execute();
 
     return newState;
   }
 
-  async getState(id: number): Promise<{ stateId: number } | undefined> {
+  async getState(id: number): Promise<{ state_id: number } | undefined> {
     return await getConnection()
       .createQueryBuilder()
-      .select("user.stateId")
+      .select("user.state_id")
       .from(User, "user")
       .where("user.id = :id", { id: id })
       .getOne();

@@ -44,7 +44,7 @@ export class CreateUserFields {
   roleId: number;
   @Field()
   @Min(1, { message: ROLE_REQUIRED })
-  stateId: number;
+  state_id: number;
 }
 
 @InputType()

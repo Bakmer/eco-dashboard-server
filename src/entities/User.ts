@@ -8,6 +8,7 @@ import {
   BaseEntity,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from "typeorm";
 import { Store } from "./Store";
 import { Role } from "./Role";
@@ -49,7 +50,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  stateId: number;
+  state_id: number;
 
   @Field(() => Store)
   @ManyToOne(() => Store, (store) => store.users)
@@ -61,6 +62,9 @@ export class User extends BaseEntity {
 
   @Field(() => State)
   @ManyToOne(() => State, (state) => state.users)
+  @JoinColumn({
+    name: "state_id",
+  })
   state: State;
 
   @Field(() => [Client])
@@ -69,9 +73,9 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @Field(() => String)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated_at: Date;
 }
