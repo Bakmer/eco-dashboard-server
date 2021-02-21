@@ -1,7 +1,8 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
-import { getConnection } from "typeorm";
 import { User } from "../../entities/User";
 import { MyContext } from "../../types/MyContext";
+import { capitalize } from "../../utils";
+import { UserRepository } from "../../repositories/UserRepository";
 
 import {
   CreateUserFields,
@@ -21,40 +22,27 @@ export default class UserService extends DataSource {
     this.ctx = config.context;
   }
 
-  async create(data: CreateUserFields): Promise<User> {
-    return await User.create(data).save();
+  create(data: CreateUserFields): Promise<User> {
+    return UserRepository.create({
+      ...data,
+      username: capitalize(data.username),
+      name: capitalize(data.name),
+      last_name: capitalize(data.last_name),
+    });
   }
 
-  async findById(id: number): Promise<User | undefined> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select("user")
-      .from(User, "user")
-      .where("user.id = :id", { id })
-      .leftJoinAndSelect("user.store", "store")
-      .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.state", "state")
-      .getOne();
-    // I can also do it without query builder
-    // const user = await User.findOne({ id: req.session.user });
+  findById(id: number): Promise<User | undefined> {
+    return UserRepository.findById(id);
   }
 
-  async findByUsername(username: string): Promise<User | undefined> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select("user")
-      .from(User, "user")
-      .where("user.username = :username", { username })
-      .leftJoinAndSelect("user.store", "store")
-      .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.state", "state")
-      .getOne();
+  findByUsername(username: string): Promise<User | undefined> {
+    return UserRepository.findByUsername(username);
   }
 
-  async me(): Promise<User | undefined> {
+  me(): Promise<User | undefined> {
     const userSessionId = this.ctx.req.session.user.id;
 
-    return await this.findById(userSessionId);
+    return this.findById(userSessionId);
   }
 
   async list(vars: PaginationFields): Promise<PaginatedUsersResponse> {
@@ -76,25 +64,15 @@ export default class UserService extends DataSource {
     const per_page = vars?.per_page ? vars.per_page : 30;
     const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
-    const users = await getConnection()
-      .createQueryBuilder()
-      .select("user")
-      .from(User, "user")
-      .where("user.username like :username", { username: `%${search}%` })
-      .orWhere("user.name like :name", { name: `%${search}%` })
-      .orWhere("user.last_name like :last_name", {
-        last_name: `%${search}%`,
-      })
-      .orWhere("user.id = :id", { id: search })
-      .leftJoinAndSelect("user.store", "store")
-      .leftJoinAndSelect("user.role", "role")
-      .leftJoinAndSelect("user.state", "state")
-      .skip(itemsToSkip)
-      .take(per_page)
-      .orderBy(getOrderBy(), order_type)
-      .getMany();
+    const users = await UserRepository.list(
+      search,
+      itemsToSkip,
+      per_page,
+      getOrderBy(),
+      order_type
+    );
 
-    const count = await this.count(search);
+    const count = await UserRepository.count(search);
 
     return {
       data: users,
@@ -109,50 +87,18 @@ export default class UserService extends DataSource {
     };
   }
 
-  async count(search: string = ""): Promise<number> {
-    return await getConnection()
-      .createQueryBuilder()
-      .from(User, "user")
-      .where("user.username like :username", { username: `%${search}%` })
-      .orWhere("user.name like :name", { name: `%${search}%` })
-      .orWhere("user.last_name like :last_name", {
-        last_name: `%${search}%`,
-      })
-      .orWhere("user.id = :id", { id: search })
-      .getCount();
-  }
-
   async changeState(id: number): Promise<number> {
-    const state = await this.getState(id);
+    const state = await UserRepository.getState(id);
 
     const newState = state?.state_id === 1 ? 2 : 1;
 
-    await getConnection()
-      .createQueryBuilder()
-      .update(User)
-      .set({ state_id: newState })
-      .where("id = :id", { id: id })
-      .execute();
+    await UserRepository.changeState(id, newState);
 
     return newState;
   }
 
-  async getState(id: number): Promise<{ state_id: number } | undefined> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select("user.state_id")
-      .from(User, "user")
-      .where("user.id = :id", { id: id })
-      .getOne();
-  }
-
   async update(data: UpdateUserFields): Promise<User | undefined> {
-    await getConnection()
-      .createQueryBuilder()
-      .update(User)
-      .set(data.user)
-      .where("id = :id", { id: data.id })
-      .execute();
+    await UserRepository.update(data);
 
     return await this.findById(data.id);
   }
