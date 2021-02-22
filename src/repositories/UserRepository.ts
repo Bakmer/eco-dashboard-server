@@ -3,7 +3,7 @@ import { getConnection } from "typeorm";
 
 import { CreateUserFields, UpdateUserFields } from "../resolvers/User/types";
 
-export const UserRepository = {
+export default {
   create(data: CreateUserFields): Promise<User> {
     return User.create(data).save();
   },

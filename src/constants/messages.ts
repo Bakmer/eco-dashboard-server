@@ -12,6 +12,7 @@ export default {
   ROLE_REGISTER_ERROR: "Hubo un problema al intentar crear el role",
   ROLE_REQUIRED: "Debe seleccionar un rol de usuario",
   ROLES_LIST_SUCCESSFUL: "Listado de roles obtenido con exito",
+  ROLE_ALREADY_EXISTS: "El role ya se encuentra registrado",
 
   // States
   STATES_LENGTH_ERROR:
@@ -43,6 +44,7 @@ export default {
     "Hubo un problema al intentar cambiar el estado del usuario",
   CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
   UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
+  USER_ALREADY_EXISTS: "El nombre de usuario ya se encuentra registrado",
 
   // Clients
   RAZON_SOCIAL_LENGTH_ERROR:
@@ -60,4 +62,5 @@ export default {
     "El nombre de la tienda debe tener entre 3 y 20 caracteres",
   STORE_REQUIRED: "Debe seleccionar una tienda",
   STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
+  STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
 };

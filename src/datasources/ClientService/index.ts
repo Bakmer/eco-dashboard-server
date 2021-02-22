@@ -1,9 +1,12 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
-// import { getConnection } from "typeorm";
 import { Client } from "../../entities/Client";
 import { MyContext } from "../../types/MyContext";
+import { StateRepository, ClientRepository } from "../../repositories";
+import messages from "../../constants/messages";
 
 import { CreateFields } from "../../resolvers/Client/types";
+
+const { STATES_NOT_FOUND_RESPONSE } = messages;
 
 export default class ClientService extends DataSource {
   ctx: MyContext;
@@ -17,12 +20,19 @@ export default class ClientService extends DataSource {
   }
 
   async create(data: CreateFields): Promise<Client> {
-    const userSession = this.ctx.req.session.user;
+    const stateExists = await StateRepository.findById(data.state_id);
+    if (!stateExists) {
+      throw { InputErr: STATES_NOT_FOUND_RESPONSE };
+    }
 
-    return await Client.create({
+    const userSession = this.ctx.req.session.user;
+    const store_id = data.store_id ? data.store_id : userSession.store_id;
+    const user_id = userSession.id;
+
+    return ClientRepository.create({
       ...data,
-      store_id: userSession.store_id,
-      user_id: userSession.id,
-    }).save();
+      store_id,
+      user_id,
+    });
   }
 }

@@ -13,18 +13,14 @@ import {
   UpdateUserFields,
 } from "./types";
 import { PaginationFields } from "../sharedTypes";
-import { UserInputError } from "apollo-server-express";
+import { handleError } from "../../utils";
 
 import { User } from "../../entities/User";
 
 const {
   GENERIC_ERROR,
-  LOGIN_REGISTER_FAIL,
   REGISTER_SUCCESS,
-  STORE_NOT_FOUND_RESPONSE,
   ME_SUCCESS,
-  ROLE_NOT_FOUND,
-  LOGIN_WITH_USERNAME_PASSWORD,
   USERS_LIST_SUCCESSFUL,
   CHANGE_USER_STATE_SUCCESS,
   UPDATE_USER_SUCCESS,
@@ -41,19 +37,9 @@ export class UserResolver {
   async createUser(
     @Arg("data") data: CreateUserFields,
     @Ctx()
-    { dataSources: { userService, storeService, roleService } }: MyContext
+    { dataSources: { userService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const store = await storeService.findById(data.store_id);
-      if (!store) {
-        return new UserInputError(STORE_NOT_FOUND_RESPONSE);
-      }
-
-      const role = await roleService.findById(data.role_id);
-      if (!role) {
-        return new UserInputError(ROLE_NOT_FOUND);
-      }
-
       const newUser = await userService.create(data);
 
       return {
@@ -62,55 +48,32 @@ export class UserResolver {
       };
     } catch (error) {
       console.log(error);
-      if (error.code === "ER_DUP_ENTRY") {
-        return new Error(error.sqlMessage);
-      } else {
-        return new Error(GENERIC_ERROR);
-      }
+      return handleError(error);
     }
   }
 
   @Mutation(() => UserResponse)
   async login(
     @Arg("data") { username, password }: UsernamePasswordInput,
-    @Ctx() { req, dataSources: { userService } }: MyContext
+    @Ctx() { dataSources: { userService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const user = await userService.findByUsername(username);
-      if (!user) {
-        return new UserInputError(LOGIN_REGISTER_FAIL);
-      }
+      const user = await userService.login(username, password);
 
-      const validatePassword = user.password === password;
-      if (!validatePassword) {
-        return new UserInputError(LOGIN_REGISTER_FAIL);
-      }
-
-      req.session.user = {
-        id: user.id,
-        role_id: user.role_id,
-        store_id: user.store_id,
-      };
       return {
         data: user,
         message: "",
       };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      return handleError(error);
     }
   }
 
   @Query(() => UserResponse)
   async me(
-    @Ctx() { req, dataSources: { userService } }: MyContext
+    @Ctx() { dataSources: { userService } }: MyContext
   ): Promise<UserResponse> {
-    const userSession = req.session.user;
-
-    if (!userSession) {
-      return new Error(LOGIN_WITH_USERNAME_PASSWORD);
-    }
-
     try {
       const user = await userService.me();
 
@@ -119,7 +82,8 @@ export class UserResolver {
         message: ME_SUCCESS,
       };
     } catch (error) {
-      return new Error(GENERIC_ERROR);
+      console.log(error);
+      return handleError(error);
     }
   }
 
@@ -132,12 +96,14 @@ export class UserResolver {
     try {
       const list = await userService.list(vars);
 
-      list.message = USERS_LIST_SUCCESSFUL;
-
-      return list;
+      return {
+        data: list.data,
+        filters: list.filters,
+        message: USERS_LIST_SUCCESSFUL,
+      };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      return handleError(error);
     }
   }
 
@@ -156,7 +122,7 @@ export class UserResolver {
       };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      return handleError(GENERIC_ERROR);
     }
   }
 
@@ -165,19 +131,9 @@ export class UserResolver {
   async updateUser(
     @Arg("data") data: UpdateUserFields,
     @Ctx()
-    { dataSources: { userService, storeService, roleService } }: MyContext
+    { dataSources: { userService } }: MyContext
   ): Promise<UserResponse> {
     try {
-      const store = await storeService.findById(data.user.store_id);
-      if (!store) {
-        return new UserInputError(STORE_NOT_FOUND_RESPONSE);
-      }
-
-      const role = await roleService.findById(data.user.role_id);
-      if (!role) {
-        return new UserInputError(ROLE_NOT_FOUND);
-      }
-
       const updatedUser = await userService.update(data);
 
       return {
@@ -186,11 +142,7 @@ export class UserResolver {
       };
     } catch (error) {
       console.log(error);
-      if (error.code === "ER_DUP_ENTRY") {
-        return new Error(error.sqlMessage);
-      } else {
-        return new Error(GENERIC_ERROR);
-      }
+      return handleError(error);
     }
   }
 

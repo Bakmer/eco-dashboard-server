@@ -2,17 +2,13 @@ import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import { CreateStoreFields } from "./types";
 import messages from "../../constants/messages";
 import { StoreResponse, ListStoresResponse } from "./types";
+import { handleError } from "../../utils";
 
 import { Store } from "../../entities/Store";
 import { ADMIN } from "../../constants/roles";
 import { MyContext } from "src/types/MyContext";
 
-const {
-  STORE_REGISTER_ERROR,
-  STORE_REGISTER_SUCCESS,
-  STORES_LIST_SUCCESSFUL,
-  GENERIC_ERROR,
-} = messages;
+const { STORE_REGISTER_SUCCESS, STORES_LIST_SUCCESSFUL } = messages;
 
 @Resolver(Store)
 export class StoreResolver {
@@ -27,11 +23,7 @@ export class StoreResolver {
 
       return { data: newStore, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
-      if (error.code === "ER_DUP_ENTRY") {
-        return new Error(error.sqlMessage);
-      } else {
-        return new Error(STORE_REGISTER_ERROR);
-      }
+      return handleError(error);
     }
   }
 
@@ -49,7 +41,7 @@ export class StoreResolver {
       };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      return handleError(error);
     }
   }
 }

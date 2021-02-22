@@ -1,16 +1,12 @@
 import { MyContext } from "src/types/MyContext";
 import { Resolver, Arg, Ctx, Mutation, Authorized } from "type-graphql";
-import { UserInputError } from "apollo-server-express";
 import messages from "../../constants/messages";
 import { ClientResponse, CreateFields } from "./types";
+import { handleError } from "../../utils";
 
 import { Client } from "../../entities/Client";
 
-const {
-  STATES_NOT_FOUND_RESPONSE,
-  CLIENT_CREATE_SUCCESS,
-  GENERIC_ERROR,
-} = messages;
+const { CLIENT_CREATE_SUCCESS } = messages;
 
 @Resolver(Client)
 export class ClientResolver {
@@ -18,14 +14,9 @@ export class ClientResolver {
   @Authorized()
   async createClient(
     @Arg("data") data: CreateFields,
-    @Ctx() { dataSources: { clientService, stateService } }: MyContext
+    @Ctx() { dataSources: { clientService } }: MyContext
   ): Promise<ClientResponse> {
     try {
-      const state = await stateService.findById(data.state_id);
-      if (!state) {
-        return new UserInputError(STATES_NOT_FOUND_RESPONSE);
-      }
-
       const newClient = await clientService.create(data);
 
       return {
@@ -34,11 +25,7 @@ export class ClientResolver {
       };
     } catch (error) {
       console.log(error);
-      if (error.code === "ER_DUP_ENTRY") {
-        return new Error(error.sqlMessage);
-      } else {
-        return new Error(GENERIC_ERROR);
-      }
+      return handleError(error);
     }
   }
 }

@@ -1,13 +1,13 @@
 import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import messages from "../../constants/messages";
 import { StateResponse, ListStatesResponse, CreateStateFields } from "./types";
+import { handleError } from "../../utils";
 
 import { State } from "../../entities/State";
 import { ADMIN } from "../../constants/roles";
 import { MyContext } from "src/types/MyContext";
 
 const {
-  STORE_REGISTER_ERROR,
   STORE_REGISTER_SUCCESS,
   STATES_LIST_SUCCESSFUL,
   GENERIC_ERROR,
@@ -26,7 +26,7 @@ export class StateResolver {
 
       return { data: newState, message: STORE_REGISTER_SUCCESS };
     } catch (error) {
-      return new Error(STORE_REGISTER_ERROR);
+      return handleError(error);
     }
   }
 

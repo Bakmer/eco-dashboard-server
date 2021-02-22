@@ -9,6 +9,7 @@ exports.default = {
     ROLE_REGISTER_ERROR: "Hubo un problema al intentar crear el role",
     ROLE_REQUIRED: "Debe seleccionar un rol de usuario",
     ROLES_LIST_SUCCESSFUL: "Listado de roles obtenido con exito",
+    ROLE_ALREADY_EXISTS: "El role ya se encuentra registrado",
     STATES_LENGTH_ERROR: "El nombre del estado debe tener entre 3 a 50 caracteres",
     STATES_REQUIRED: "Debe seleccionar un estado de usuario",
     STATES_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
@@ -33,6 +34,7 @@ exports.default = {
     CHANGE_USER_STATE_ERROR: "Hubo un problema al intentar cambiar el estado del usuario",
     CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
     UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
+    USER_ALREADY_EXISTS: "El nombre de usuario ya se encuentra registrado",
     RAZON_SOCIAL_LENGTH_ERROR: "La razón social debe tener entre 3 a 50 caracteres",
     CUIT_LENGTH_ERROR: "El CUIT debe tener 11 caracteres",
     IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
@@ -44,5 +46,6 @@ exports.default = {
     STORE_NAME_LENGTH_ERROR: "El nombre de la tienda debe tener entre 3 y 20 caracteres",
     STORE_REQUIRED: "Debe seleccionar una tienda",
     STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
+    STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
 };
 //# sourceMappingURL=messages.js.map

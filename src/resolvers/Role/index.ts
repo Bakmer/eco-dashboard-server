@@ -2,17 +2,13 @@ import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import { CreateRoleField } from "./types";
 import messages from "../../constants/messages";
 import { RoleResponse, ListRolesResponse } from "./types";
+import { handleError } from "../../utils";
 
 import { Role } from "../../entities/Role";
 import { ADMIN } from "../../constants/roles";
 import { MyContext } from "src/types/MyContext";
 
-const {
-  ROLE_CREATED_SUCCESSFULLY,
-  ROLE_REGISTER_ERROR,
-  ROLES_LIST_SUCCESSFUL,
-  GENERIC_ERROR,
-} = messages;
+const { ROLE_CREATED_SUCCESSFULLY, ROLES_LIST_SUCCESSFUL } = messages;
 
 @Resolver(Role)
 export class RoleResolver {
@@ -27,11 +23,7 @@ export class RoleResolver {
 
       return { data: newRole, message: ROLE_CREATED_SUCCESSFULLY };
     } catch (error) {
-      if (error.code === "ER_DUP_ENTRY") {
-        return new Error(error.sqlMessage);
-      } else {
-        return new Error(ROLE_REGISTER_ERROR);
-      }
+      return handleError(error);
     }
   }
 
@@ -49,7 +41,7 @@ export class RoleResolver {
       };
     } catch (error) {
       console.log(error);
-      return new Error(GENERIC_ERROR);
+      return handleError(error);
     }
   }
 }

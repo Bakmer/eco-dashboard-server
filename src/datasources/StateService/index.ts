@@ -1,7 +1,7 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
-import { getConnection } from "typeorm";
 import { State } from "../../entities/State";
 import { MyContext } from "../../types/MyContext";
+import { StateRepository } from "../../repositories";
 
 export default class StateService extends DataSource {
   ctx: MyContext;
@@ -14,19 +14,11 @@ export default class StateService extends DataSource {
     this.ctx = config.context;
   }
 
-  async create(name: string): Promise<State> {
-    return await State.create({ name }).save();
+  create(name: string): Promise<State> {
+    return StateRepository.create(name);
   }
 
-  async list(): Promise<State[]> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select("state")
-      .from(State, "state")
-      .getMany();
-  }
-
-  async findById(id: number): Promise<State | undefined> {
-    return await State.findOne({ id });
+  list(): Promise<State[]> {
+    return StateRepository.list();
   }
 }

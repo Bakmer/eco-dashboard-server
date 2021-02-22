@@ -63,10 +63,12 @@ export class CreateFields {
   address_3: string;
   @Field()
   memo: string;
-  @Field()
+  @Field({ nullable: true })
   @Min(1, { message: STORE_REQUIRED })
   store_id: number;
   @Field()
   @Min(1, { message: STATES_REQUIRED })
   state_id: number;
+  @Field({ nullable: true })
+  user_id: number;
 }

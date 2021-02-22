@@ -1,7 +1,10 @@
 import { DataSource, DataSourceConfig } from "apollo-datasource";
-import { getConnection } from "typeorm";
 import { Role } from "../../entities/Role";
 import { MyContext } from "../../types/MyContext";
+import { RoleRepository } from "../../repositories";
+import messages from "../../constants/messages";
+
+const { ROLE_ALREADY_EXISTS } = messages;
 
 export default class RoleService extends DataSource {
   ctx: MyContext;
@@ -15,18 +18,15 @@ export default class RoleService extends DataSource {
   }
 
   async create(name: string): Promise<Role> {
-    return await Role.create({ name }).save();
+    const roleExists = await RoleRepository.findByName(name);
+    if (roleExists) {
+      throw { InputErr: ROLE_ALREADY_EXISTS };
+    }
+
+    return RoleRepository.create(name);
   }
 
-  async list(): Promise<Role[]> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select("role")
-      .from(Role, "role")
-      .getMany();
-  }
-
-  async findById(id: number): Promise<Role | undefined> {
-    return await Role.findOne({ id });
+  list(): Promise<Role[]> {
+    return RoleRepository.list();
   }
 }
