@@ -8,11 +8,11 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { ClientAddress } from "./ClientAddress";
+import { Billing } from "./Billing";
 
 @ObjectType()
 @Entity()
-export class ShippingMethod extends BaseEntity {
+export class Iva extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,9 +21,9 @@ export class ShippingMethod extends BaseEntity {
   @Column()
   name: string;
 
-  @Field(() => [ClientAddress])
-  @OneToMany(() => ClientAddress, (address) => address.shipping_method)
-  addresses: ClientAddress[];
+  @Field(() => [Billing])
+  @OneToMany(() => Billing, (billing) => billing.iva)
+  billings: Billing[];
 
   @Field(() => String)
   @CreateDateColumn()

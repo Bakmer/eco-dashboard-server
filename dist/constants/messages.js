@@ -40,6 +40,7 @@ exports.default = {
     IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
     EMAIL_ERROR: "Ingrese un email valido",
     CLIENT_CREATE_SUCCESS: "El cliente ha sido creado con éxito",
+    CLIENTS_LIST_SUCCESSFUL: "Listado de clientes obtenido con exito",
     STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
     STORE_REGISTER_ERROR: "Hubo un problema al intentar crear la tienda",
     STORE_REGISTER_SUCCESS: "Tienda creada con éxito",
@@ -47,5 +48,7 @@ exports.default = {
     STORE_REQUIRED: "Debe seleccionar una tienda",
     STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
     STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
+    DISCOUNT_NOT_FOUND_RESPONSE: "No existe el descuento seleccionado",
+    DISCOUNT_REQUIRED: "Debe seleccionar un descuento para el cliente",
 };
 //# sourceMappingURL=messages.js.map

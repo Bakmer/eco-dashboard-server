@@ -53,6 +53,7 @@ export default {
   IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
   EMAIL_ERROR: "Ingrese un email valido",
   CLIENT_CREATE_SUCCESS: "El cliente ha sido creado con éxito",
+  CLIENTS_LIST_SUCCESSFUL: "Listado de clientes obtenido con exito",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
@@ -63,4 +64,8 @@ export default {
   STORE_REQUIRED: "Debe seleccionar una tienda",
   STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
   STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
+
+  // Discount
+  DISCOUNT_NOT_FOUND_RESPONSE: "No existe el descuento seleccionado",
+  DISCOUNT_REQUIRED: "Debe seleccionar un descuento para el cliente",
 };

@@ -13,7 +13,11 @@ import {
 import { Store } from "./Store";
 import { State } from "./State";
 import { User } from "./User";
-import { ClientAddress } from "./ClientAddress";
+import { Address } from "./Address";
+import { Shipping } from "./Shipping";
+import { Billing } from "./Billing";
+import { Phone } from "./Phone";
+import { Discount } from "./Discount";
 
 @ObjectType()
 @Entity()
@@ -32,43 +36,7 @@ export class Client extends BaseEntity {
 
   @Field()
   @Column()
-  razon_social: string;
-
-  @Field()
-  @Column({ unique: true })
-  cuit: string;
-
-  @Field()
-  @Column()
-  iva: string;
-
-  @Field()
-  @Column({ unique: true })
   email: string;
-
-  @Field()
-  @Column()
-  area_code_1: string;
-
-  @Field()
-  @Column()
-  phone_1: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  area_code_2?: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  phone_2?: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  area_code_3?: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  phone_3?: string;
 
   @Field()
   @Column()
@@ -81,6 +49,10 @@ export class Client extends BaseEntity {
   @Field()
   @Column()
   state_id: number;
+
+  @Field()
+  @Column()
+  discount_id: number;
 
   @Field()
   @Column()
@@ -100,6 +72,13 @@ export class Client extends BaseEntity {
   })
   state: State;
 
+  @Field(() => Discount)
+  @ManyToOne(() => Discount, (discount) => discount.clients)
+  @JoinColumn({
+    name: "discount_id",
+  })
+  discount: Discount;
+
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.clients)
   @JoinColumn({
@@ -107,9 +86,21 @@ export class Client extends BaseEntity {
   })
   user: User;
 
-  @Field(() => [ClientAddress])
-  @OneToMany(() => ClientAddress, (address) => address.client)
-  addresses: ClientAddress[];
+  @Field(() => [Phone], { nullable: true })
+  @OneToMany(() => Phone, (phone) => phone.client, { nullable: true })
+  phones: Phone[];
+
+  @Field(() => [Shipping], { nullable: true })
+  @OneToMany(() => Shipping, (shipping) => shipping.client, { nullable: true })
+  shippings: Shipping[];
+
+  @Field(() => [Billing], { nullable: true })
+  @OneToMany(() => Billing, (billing) => billing.client, { nullable: true })
+  billings: Billing[];
+
+  @Field(() => [Address], { nullable: true })
+  @OneToMany(() => Address, (address) => address.client, { nullable: true })
+  addresses: Address[];
 
   @Field(() => String)
   @CreateDateColumn()

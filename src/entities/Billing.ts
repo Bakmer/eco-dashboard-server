@@ -10,11 +10,11 @@ import {
   JoinColumn,
 } from "typeorm";
 import { Client } from "./Client";
-import { ShippingMethod } from "./ShippingMethod";
+import { Iva } from "./Iva";
 
 @ObjectType()
 @Entity()
-export class ClientAddress extends BaseEntity {
+export class Billing extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -37,6 +37,10 @@ export class ClientAddress extends BaseEntity {
 
   @Field()
   @Column()
+  memo: string;
+
+  @Field()
+  @Column({ unique: true })
   cuit: string;
 
   @Field()
@@ -53,41 +57,25 @@ export class ClientAddress extends BaseEntity {
 
   @Field()
   @Column()
-  area_code_1: string;
-
-  @Field()
-  @Column()
-  phone_1: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  area_code_2?: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  phone_2?: string;
-
-  @Field()
-  @Column()
   client_id: number;
 
   @Field()
   @Column()
-  shipping_method_id: number;
+  iva_id: number;
 
   @Field(() => Client)
-  @ManyToOne(() => Client, (client) => client.addresses)
+  @ManyToOne(() => Client, (client) => client.billings)
   @JoinColumn({
     name: "client_id",
   })
   client: Client;
 
-  @Field(() => ShippingMethod)
-  @ManyToOne(() => ShippingMethod, (shipping) => shipping.addresses)
+  @Field(() => Iva)
+  @ManyToOne(() => Iva, (iva) => iva.billings)
   @JoinColumn({
-    name: "shipping_method_id",
+    name: "iva_id",
   })
-  shipping_method: ShippingMethod;
+  iva: Iva;
 
   @Field(() => String)
   @CreateDateColumn()

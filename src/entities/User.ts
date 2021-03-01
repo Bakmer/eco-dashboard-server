@@ -28,12 +28,12 @@ export class User extends BaseEntity {
   username!: string;
 
   @Field()
-  @Column({ nullable: true })
-  name?: string;
+  @Column()
+  name: string;
 
   @Field()
-  @Column({ nullable: true })
-  last_name?: string;
+  @Column()
+  last_name: string;
 
   @Field()
   @Authorized(ADMIN)
