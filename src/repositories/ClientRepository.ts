@@ -51,10 +51,15 @@ export default {
       .orWhere("client.last_name like :last_name", {
         last_name: `%${search}%`,
       })
+      .orWhere("client.email like :email", { email: `%${search}%` })
+      .orWhere("client.memo like :memo", { memo: `%${search}%` })
       .orWhere("client.id = :id", { id: search })
       .leftJoinAndSelect("client.store", "store")
       .leftJoinAndSelect("client.discount", "discount")
       .leftJoinAndSelect("client.state", "state")
+      .leftJoinAndSelect("client.phones", "phones")
+      .leftJoinAndSelect("client.shippings", "shippings")
+      .leftJoinAndSelect("shippings.transport", "transport")
       .skip(itemsToSkip)
       .take(per_page)
       .orderBy(order_by, order_type)
@@ -70,6 +75,26 @@ export default {
         last_name: `%${search}%`,
       })
       .orWhere("client.id = :id", { id: search })
+      .orWhere("client.email = :email", { email: search })
+      .orWhere("client.memo = :memo", { memo: search })
       .getCount();
+  },
+
+  async changeState(id: number, newState: number): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Client)
+      .set({ state_id: newState })
+      .where("id = :id", { id: id })
+      .execute();
+  },
+
+  getState(id: number): Promise<{ state_id: number } | undefined> {
+    return getConnection()
+      .createQueryBuilder()
+      .select("client.state_id")
+      .from(Client, "client")
+      .where("client.id = :id", { id: id })
+      .getOne();
   },
 };

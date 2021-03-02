@@ -73,11 +73,11 @@ export class Shipping extends BaseEntity {
   })
   transport: Transport;
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

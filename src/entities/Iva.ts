@@ -25,11 +25,11 @@ export class Iva extends BaseEntity {
   @OneToMany(() => Billing, (billing) => billing.iva)
   billings: Billing[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

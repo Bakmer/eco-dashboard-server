@@ -3,7 +3,7 @@ import { GraphQLJSONObject } from "graphql-type-json";
 import { Min } from "class-validator";
 import messages from "../constants/messages";
 
-const { PAGINATION_DATA_ERROR } = messages;
+const { PAGINATION_DATA_ERROR, CHANGE_STATE_ERROR } = messages;
 
 @ObjectType()
 export class ApiResponse {
@@ -61,4 +61,26 @@ export class PaginationFields {
 
   @Field({ nullable: true })
   search: string;
+}
+
+@InputType()
+export class ChangeStateFields {
+  @Field()
+  @Min(1, { message: CHANGE_STATE_ERROR })
+  id: number;
+}
+
+@ObjectType()
+class StateFields {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+}
+
+@ObjectType()
+export class ChangeStateResponse extends ApiResponse {
+  @Field(() => StateFields, { nullable: true })
+  data?: StateFields;
 }

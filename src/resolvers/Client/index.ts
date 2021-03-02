@@ -8,11 +8,20 @@ import {
   GetUserFields,
   PaginatedClientsResponse,
 } from "./types";
-import { PaginationFields } from "../sharedTypes";
+import {
+  PaginationFields,
+  ChangeStateFields,
+  ChangeStateResponse,
+} from "../sharedTypes";
 
 import { Client } from "../../entities/Client";
 
-const { CLIENT_CREATE_SUCCESS, CLIENTS_LIST_SUCCESSFUL } = messages;
+const {
+  CLIENT_CREATE_SUCCESS,
+  CLIENTS_LIST_SUCCESSFUL,
+  GENERIC_ERROR,
+  CHANGE_CLIENT_STATE_SUCCESS,
+} = messages;
 
 @Resolver(Client)
 export class ClientResolver {
@@ -70,6 +79,25 @@ export class ClientResolver {
     } catch (error) {
       console.log(error);
       return handleError(error);
+    }
+  }
+
+  @Mutation(() => ChangeStateResponse)
+  @Authorized()
+  async changeClientState(
+    @Arg("data") { id }: ChangeStateFields,
+    @Ctx() { dataSources: { clientService } }: MyContext
+  ): Promise<ChangeStateResponse> {
+    try {
+      const newState = await clientService.changeState(id);
+
+      return {
+        data: { id: newState, name: newState === 1 ? "Activo" : "Inactivo" },
+        message: CHANGE_CLIENT_STATE_SUCCESS,
+      };
+    } catch (error) {
+      console.log(error);
+      return handleError(GENERIC_ERROR);
     }
   }
 }

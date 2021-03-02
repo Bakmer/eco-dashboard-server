@@ -64,7 +64,11 @@ export default class ClientService extends DataSource {
       if (!order_by) {
         return "client.id";
       }
-      if (order_by === "store" || order_by === "role" || order_by === "state") {
+      if (
+        order_by === "store" ||
+        order_by === "state" ||
+        order_by === "discount"
+      ) {
         return `${order_by}.id`;
       } else {
         return `client.${order_by}`;
@@ -73,7 +77,7 @@ export default class ClientService extends DataSource {
     const search = vars?.search ? vars.search : "";
     const page = vars?.page ? vars.page : 0;
     const order_type: OrderType = vars?.order_type ? vars.order_type : "DESC";
-    const order_by = vars.order_by ? vars.order_by : "id";
+    const order_by = vars.order_by ? vars.order_by : "created_at";
     const per_page = vars?.per_page ? vars.per_page : 30;
     const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
@@ -98,5 +102,18 @@ export default class ClientService extends DataSource {
         order_by,
       },
     };
+  }
+
+  async changeState(id: number): Promise<number> {
+    const state = await ClientRepository.getState(id);
+    if (!state) {
+      throw { InputErr: STATES_NOT_FOUND_RESPONSE };
+    }
+
+    const newState = state.state_id === 1 ? 2 : 1;
+
+    await ClientRepository.changeState(id, newState);
+
+    return newState;
   }
 }

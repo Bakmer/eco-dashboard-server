@@ -20,6 +20,7 @@ export default {
   STATES_REQUIRED: "Debe seleccionar un estado de usuario",
   STATES_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
   STATES_LIST_SUCCESSFUL: "Listado de estados obtenido con exito",
+  CHANGE_STATE_ERROR: "Hubo un problema al intentar cambiar el estado",
 
   // User
   LOGIN_REGISTER_FAIL: "Usuario o contraseña incorrecto",
@@ -40,8 +41,6 @@ export default {
   PHONE_3_LENGTH_ERROR: "El telefono 3 debe tener por lo menos 8 caracteres",
   ADDRESS_1_LENGTH_ERROR: "Ingrese una dirección",
   USERS_LIST_SUCCESSFUL: "Listado de usuarios obtenido con exito",
-  CHANGE_USER_STATE_ERROR:
-    "Hubo un problema al intentar cambiar el estado del usuario",
   CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
   UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
   USER_ALREADY_EXISTS: "El nombre de usuario ya se encuentra registrado",
@@ -54,6 +53,7 @@ export default {
   EMAIL_ERROR: "Ingrese un email valido",
   CLIENT_CREATE_SUCCESS: "El cliente ha sido creado con éxito",
   CLIENTS_LIST_SUCCESSFUL: "Listado de clientes obtenido con exito",
+  CHANGE_CLIENT_STATE_SUCCESS: "Estado del cliente actualizado",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",

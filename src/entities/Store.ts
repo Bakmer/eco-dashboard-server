@@ -30,11 +30,11 @@ export class Store extends BaseEntity {
   @OneToMany(() => Client, (client) => client.store)
   clients: Client[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

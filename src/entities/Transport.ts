@@ -25,11 +25,11 @@ export class Transport extends BaseEntity {
   @OneToMany(() => Shipping, (shipping) => shipping.transport)
   shippings: Shipping[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

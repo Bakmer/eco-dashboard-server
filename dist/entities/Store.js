@@ -37,12 +37,12 @@ __decorate([
     __metadata("design:type", Array)
 ], Store.prototype, "clients", void 0);
 __decorate([
-    type_graphql_1.Field(() => String),
+    type_graphql_1.Field(() => Date),
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", Date)
 ], Store.prototype, "created_at", void 0);
 __decorate([
-    type_graphql_1.Field(() => String),
+    type_graphql_1.Field(() => Date),
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
 ], Store.prototype, "updated_at", void 0);

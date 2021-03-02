@@ -8,11 +8,13 @@ import {
   UsernamePasswordInput,
   CreateUserFields,
   PaginatedUsersResponse,
-  ChangeUserStateFields,
-  ChangeStateResponse,
   UpdateUserFields,
 } from "./types";
-import { PaginationFields } from "../sharedTypes";
+import {
+  PaginationFields,
+  ChangeStateFields,
+  ChangeStateResponse,
+} from "../sharedTypes";
 import { handleError } from "../../utils";
 
 import { User } from "../../entities/User";
@@ -110,7 +112,7 @@ export class UserResolver {
   @Mutation(() => ChangeStateResponse)
   @Authorized()
   async changeUserState(
-    @Arg("data") { id }: ChangeUserStateFields,
+    @Arg("data") { id }: ChangeStateFields,
     @Ctx() { dataSources: { userService } }: MyContext
   ): Promise<ChangeStateResponse> {
     try {

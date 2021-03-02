@@ -77,11 +77,11 @@ export class Billing extends BaseEntity {
   })
   iva: Iva;
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

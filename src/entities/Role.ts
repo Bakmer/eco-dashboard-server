@@ -24,11 +24,11 @@ export class Role extends BaseEntity {
   @OneToMany(() => User, (user) => user.role)
   users: User[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

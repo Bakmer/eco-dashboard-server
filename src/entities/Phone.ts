@@ -24,11 +24,11 @@ export class Phone extends BaseEntity {
 
   @Field()
   @Column()
-  area_code_1: string;
+  area_code: string;
 
   @Field()
   @Column()
-  phone_1: string;
+  phone: string;
 
   @Field()
   @Column()
@@ -41,11 +41,11 @@ export class Phone extends BaseEntity {
   })
   client: Client;
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

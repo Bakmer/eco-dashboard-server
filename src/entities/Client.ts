@@ -86,27 +86,27 @@ export class Client extends BaseEntity {
   })
   user: User;
 
-  @Field(() => [Phone], { nullable: true })
-  @OneToMany(() => Phone, (phone) => phone.client, { nullable: true })
+  @Field(() => [Phone])
+  @OneToMany(() => Phone, (phone) => phone.client)
   phones: Phone[];
 
-  @Field(() => [Shipping], { nullable: true })
-  @OneToMany(() => Shipping, (shipping) => shipping.client, { nullable: true })
+  @Field(() => [Shipping])
+  @OneToMany(() => Shipping, (shipping) => shipping.client)
   shippings: Shipping[];
 
-  @Field(() => [Billing], { nullable: true })
-  @OneToMany(() => Billing, (billing) => billing.client, { nullable: true })
+  @Field(() => [Billing])
+  @OneToMany(() => Billing, (billing) => billing.client)
   billings: Billing[];
 
-  @Field(() => [Address], { nullable: true })
-  @OneToMany(() => Address, (address) => address.client, { nullable: true })
+  @Field(() => [Address])
+  @OneToMany(() => Address, (address) => address.client)
   addresses: Address[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

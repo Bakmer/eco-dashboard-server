@@ -77,11 +77,11 @@ export class User extends BaseEntity {
   @OneToMany(() => Client, (client) => client.user)
   clients: Client[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }

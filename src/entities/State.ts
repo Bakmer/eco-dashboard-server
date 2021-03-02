@@ -28,11 +28,11 @@ export class State extends BaseEntity {
   @OneToMany(() => Client, (client) => client.state)
   clients: Client[];
 
-  @Field(() => String)
+  @Field(() => Date)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
 }
