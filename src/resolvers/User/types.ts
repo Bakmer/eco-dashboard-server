@@ -65,3 +65,9 @@ export class UpdateUserFields {
   @Field()
   user: CreateUserFields;
 }
+
+@InputType()
+export class DeleteUserFields {
+  @Field({ nullable: true })
+  id: number;
+}

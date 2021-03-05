@@ -99,6 +99,11 @@ __decorate([
     typeorm_1.UpdateDateColumn(),
     __metadata("design:type", Date)
 ], User.prototype, "updated_at", void 0);
+__decorate([
+    type_graphql_1.Field(() => Date),
+    typeorm_1.DeleteDateColumn(),
+    __metadata("design:type", Date)
+], User.prototype, "deleted_at", void 0);
 User = __decorate([
     type_graphql_1.ObjectType(),
     typeorm_1.Entity()

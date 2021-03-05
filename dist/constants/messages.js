@@ -35,6 +35,8 @@ exports.default = {
     CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
     UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
     USER_ALREADY_EXISTS: "El nombre de usuario ya se encuentra registrado",
+    DELETE_USER_ERROR: "El usuario que desea eliminar no existe o ya fue elimnado",
+    DELETE_USER_SUCCESS: "El usuario ha sido eliminado",
     RAZON_SOCIAL_LENGTH_ERROR: "La razón social debe tener entre 3 a 50 caracteres",
     CUIT_LENGTH_ERROR: "El CUIT debe tener 11 caracteres",
     IVA_ERROR: "Debe seleccionar el tipo de contribuyente",

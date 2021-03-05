@@ -99,4 +99,13 @@ export default {
       .where("id = :id", { id: data.id })
       .execute();
   },
+
+  async delete(id: number): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(User)
+      .where("id = :id", { id })
+      .execute();
+  },
 };

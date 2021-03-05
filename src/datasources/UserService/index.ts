@@ -23,6 +23,7 @@ const {
   ROLE_NOT_FOUND,
   USER_ALREADY_EXISTS,
   STATES_NOT_FOUND_RESPONSE,
+  DELETE_USER_ERROR,
 } = messages;
 
 export default class UserService extends DataSource {
@@ -164,5 +165,14 @@ export default class UserService extends DataSource {
     await UserRepository.update(data);
 
     return UserRepository.findById(data.id);
+  }
+
+  async delete(id: number): Promise<void> {
+    const userExists = await UserRepository.findById(id);
+    if (!userExists) {
+      throw { InputErr: DELETE_USER_ERROR };
+    }
+
+    await UserRepository.delete(id);
   }
 }

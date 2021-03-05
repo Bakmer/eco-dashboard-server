@@ -8,7 +8,7 @@ const { PAGINATION_DATA_ERROR, CHANGE_STATE_ERROR } = messages;
 @ObjectType()
 export class ApiResponse {
   @Field(() => GraphQLJSONObject, { nullable: true })
-  data?: object;
+  data?: object | null;
 
   @Field({ nullable: true })
   message?: string;

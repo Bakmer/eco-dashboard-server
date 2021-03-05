@@ -9,11 +9,13 @@ import {
   CreateUserFields,
   PaginatedUsersResponse,
   UpdateUserFields,
+  DeleteUserFields,
 } from "./types";
 import {
   PaginationFields,
   ChangeStateFields,
   ChangeStateResponse,
+  ApiResponse,
 } from "../sharedTypes";
 import { handleError } from "../../utils";
 
@@ -26,6 +28,7 @@ const {
   USERS_LIST_SUCCESSFUL,
   CHANGE_USER_STATE_SUCCESS,
   UPDATE_USER_SUCCESS,
+  DELETE_USER_SUCCESS,
 } = messages;
 
 @Resolver(User)
@@ -141,6 +144,26 @@ export class UserResolver {
       return {
         data: updatedUser,
         message: UPDATE_USER_SUCCESS,
+      };
+    } catch (error) {
+      console.log(error);
+      return handleError(error);
+    }
+  }
+
+  @Mutation(() => ApiResponse)
+  @Authorized()
+  async deleteUser(
+    @Arg("data") { id }: DeleteUserFields,
+    @Ctx()
+    { dataSources: { userService } }: MyContext
+  ): Promise<ApiResponse> {
+    try {
+      await userService.delete(id);
+
+      return {
+        data: { id },
+        message: DELETE_USER_SUCCESS,
       };
     } catch (error) {
       console.log(error);
