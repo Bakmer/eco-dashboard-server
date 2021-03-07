@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Column,
   BaseEntity,
   ManyToOne,
@@ -64,14 +65,18 @@ export class Billing extends BaseEntity {
   iva_id: number;
 
   @Field(() => Client)
-  @ManyToOne(() => Client, (client) => client.billings)
+  @ManyToOne(() => Client, (client) => client.billings, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({
     name: "client_id",
   })
   client: Client;
 
   @Field(() => Iva)
-  @ManyToOne(() => Iva, (iva) => iva.billings)
+  @ManyToOne(() => Iva, (iva) => iva.billings, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({
     name: "iva_id",
   })
@@ -84,4 +89,8 @@ export class Billing extends BaseEntity {
   @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Field(() => Date)
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

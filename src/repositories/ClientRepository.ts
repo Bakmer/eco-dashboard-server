@@ -8,6 +8,15 @@ export default {
     return Client.create(data).save();
   },
 
+  simpleFindById(id: number): Promise<Client | undefined> {
+    return getConnection()
+      .createQueryBuilder()
+      .select("client")
+      .from(Client, "client")
+      .where("client.id = :id", { id })
+      .getOne();
+  },
+
   findById(id: number): Promise<Client | undefined> {
     return getConnection()
       .createQueryBuilder()
@@ -33,6 +42,26 @@ export default {
       .select("client")
       .from(Client, "client")
       .where("client.name = :name", { name })
+      .getOne();
+  },
+
+  findWithDeleted(id: number): Promise<Client | undefined> {
+    return getConnection()
+      .createQueryBuilder()
+      .select("client")
+      .withDeleted()
+      .from(Client, "client")
+      .where("client.id = :id", { id })
+      .leftJoinAndSelect("client.store", "store")
+      .leftJoinAndSelect("client.discount", "discount")
+      .leftJoinAndSelect("client.state", "state")
+      .leftJoinAndSelect("client.user", "user")
+      .leftJoinAndSelect("client.phones", "phones")
+      .leftJoinAndSelect("client.shippings", "shippings")
+      .leftJoinAndSelect("shippings.transport", "transport")
+      .leftJoinAndSelect("client.billings", "billings")
+      .leftJoinAndSelect("billings.iva", "iva")
+      .leftJoinAndSelect("client.addresses", "addresses")
       .getOne();
   },
 
@@ -96,5 +125,39 @@ export default {
       .from(Client, "client")
       .where("client.id = :id", { id: id })
       .getOne();
+  },
+
+  async softDelete(id: number, email: string): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Client)
+      .set({ email: `${email}::${new Date()}` })
+      .where("id = :id", { id })
+      .execute();
+
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
+  },
+
+  async restore(id: number): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .restore()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
+  },
+
+  async destroy(id: number): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
   },
 };

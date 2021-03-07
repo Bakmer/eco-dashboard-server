@@ -5,6 +5,10 @@ import {
   StateRepository,
   ClientRepository,
   DiscountRepository,
+  AddressRepository,
+  BillingRepository,
+  PhoneRepository,
+  ShippingRepository,
 } from "../../repositories";
 import messages from "../../constants/messages";
 import { capitalize } from "../../utils";
@@ -15,7 +19,13 @@ import {
 } from "../../resolvers/Client/types";
 import { PaginationFields, OrderType } from "../../resolvers/sharedTypes";
 
-const { STATES_NOT_FOUND_RESPONSE, DISCOUNT_NOT_FOUND_RESPONSE } = messages;
+const {
+  STATES_NOT_FOUND_RESPONSE,
+  DISCOUNT_NOT_FOUND_RESPONSE,
+  DELETE_CLIENT_ERROR,
+  FIND_CLIENT_ERROR,
+  RESTORE_CLIENT_ERROR,
+} = messages;
 
 export default class ClientService extends DataSource {
   ctx: MyContext;
@@ -29,13 +39,13 @@ export default class ClientService extends DataSource {
   }
 
   async create(data: CreateFields): Promise<Client | undefined> {
-    const stateExists = await StateRepository.findById(data.state_id);
-    if (!stateExists) {
+    const state = await StateRepository.findById(data.state_id);
+    if (!state) {
       throw { InputErr: STATES_NOT_FOUND_RESPONSE };
     }
 
-    const discountExists = await DiscountRepository.findById(data.discount_id);
-    if (!discountExists) {
+    const discount = await DiscountRepository.findById(data.discount_id);
+    if (!discount) {
       throw { InputErr: DISCOUNT_NOT_FOUND_RESPONSE };
     }
 
@@ -115,5 +125,84 @@ export default class ClientService extends DataSource {
     await ClientRepository.changeState(id, newState);
 
     return newState;
+  }
+
+  async delete(id: number): Promise<void> {
+    const client = await ClientRepository.findById(id);
+    if (!client) {
+      throw { InputErr: DELETE_CLIENT_ERROR };
+    }
+
+    await ClientRepository.softDelete(id, client.email);
+
+    if (client.addresses.length) {
+      for (let i = 0; i < client.addresses.length; i++) {
+        AddressRepository.softDelete(client.addresses[i].id);
+      }
+    }
+
+    if (client.phones.length) {
+      for (let i = 0; i < client.phones.length; i++) {
+        PhoneRepository.softDelete(client.phones[i].id);
+      }
+    }
+
+    if (client.billings.length) {
+      for (let i = 0; i < client.billings.length; i++) {
+        BillingRepository.softDelete(client.billings[i].id);
+      }
+    }
+
+    if (client.shippings.length) {
+      for (let i = 0; i < client.shippings.length; i++) {
+        ShippingRepository.softDelete(client.shippings[i].id);
+      }
+    }
+  }
+
+  async restore(id: number): Promise<Client> {
+    const client = await ClientRepository.findWithDeleted(id);
+    if (!client) {
+      throw { InputErr: FIND_CLIENT_ERROR };
+    } else if (!client.deleted_at) {
+      throw { InputErr: RESTORE_CLIENT_ERROR };
+    }
+
+    await ClientRepository.restore(id);
+
+    if (client.addresses.length) {
+      for (let i = 0; i < client.addresses.length; i++) {
+        AddressRepository.restore(client.addresses[i].id);
+      }
+    }
+
+    if (client.phones.length) {
+      for (let i = 0; i < client.phones.length; i++) {
+        PhoneRepository.restore(client.phones[i].id);
+      }
+    }
+
+    if (client.billings.length) {
+      for (let i = 0; i < client.billings.length; i++) {
+        BillingRepository.restore(client.billings[i].id);
+      }
+    }
+
+    if (client.shippings.length) {
+      for (let i = 0; i < client.shippings.length; i++) {
+        ShippingRepository.restore(client.shippings[i].id);
+      }
+    }
+
+    return client;
+  }
+
+  async destroy(id: number): Promise<void> {
+    const client = await ClientRepository.findWithDeleted(id);
+    if (!client) {
+      throw { InputErr: FIND_CLIENT_ERROR };
+    }
+
+    await ClientRepository.destroy(id);
   }
 }

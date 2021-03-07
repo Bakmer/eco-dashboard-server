@@ -127,7 +127,7 @@ export class UserResolver {
       };
     } catch (error) {
       console.log(error);
-      return handleError(GENERIC_ERROR);
+      return handleError(error);
     }
   }
 
@@ -166,7 +166,6 @@ export class UserResolver {
         message: DELETE_USER_SUCCESS,
       };
     } catch (error) {
-      console.log(error);
       return handleError(error);
     }
   }

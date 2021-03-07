@@ -68,6 +68,6 @@ export class UpdateUserFields {
 
 @InputType()
 export class DeleteUserFields {
-  @Field({ nullable: true })
+  @Field()
   id: number;
 }

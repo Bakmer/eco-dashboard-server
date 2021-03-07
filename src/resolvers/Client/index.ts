@@ -7,11 +7,13 @@ import {
   CreateFields,
   GetUserFields,
   PaginatedClientsResponse,
+  DeleteClientFields,
 } from "./types";
 import {
   PaginationFields,
   ChangeStateFields,
   ChangeStateResponse,
+  ApiResponse,
 } from "../sharedTypes";
 
 import { Client } from "../../entities/Client";
@@ -21,6 +23,9 @@ const {
   CLIENTS_LIST_SUCCESSFUL,
   GENERIC_ERROR,
   CHANGE_CLIENT_STATE_SUCCESS,
+  DELETE_CLIENT_SUCCESS,
+  RESTORE_CLIENT_SUCCESS,
+  DESTROY_CLIENT_SUCCESS,
 } = messages;
 
 @Resolver(Client)
@@ -98,6 +103,63 @@ export class ClientResolver {
     } catch (error) {
       console.log(error);
       return handleError(GENERIC_ERROR);
+    }
+  }
+
+  @Mutation(() => ApiResponse)
+  @Authorized()
+  async deleteClient(
+    @Arg("data") { id }: DeleteClientFields,
+    @Ctx()
+    { dataSources: { clientService } }: MyContext
+  ): Promise<ApiResponse> {
+    try {
+      await clientService.delete(id);
+
+      return {
+        data: { id },
+        message: DELETE_CLIENT_SUCCESS,
+      };
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+  @Mutation(() => ClientResponse)
+  @Authorized()
+  async restoreClient(
+    @Arg("data") { id }: DeleteClientFields,
+    @Ctx()
+    { dataSources: { clientService } }: MyContext
+  ): Promise<ClientResponse> {
+    try {
+      const client = await clientService.restore(id);
+
+      return {
+        data: client,
+        message: RESTORE_CLIENT_SUCCESS,
+      };
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+  @Mutation(() => ApiResponse)
+  @Authorized()
+  async destroyClient(
+    @Arg("data") { id }: DeleteClientFields,
+    @Ctx()
+    { dataSources: { clientService } }: MyContext
+  ): Promise<ApiResponse> {
+    try {
+      await clientService.destroy(id);
+
+      return {
+        data: { id },
+        message: DESTROY_CLIENT_SUCCESS,
+      };
+    } catch (error) {
+      return handleError(error);
     }
   }
 }

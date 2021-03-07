@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Column,
   BaseEntity,
   ManyToOne,
@@ -109,4 +110,8 @@ export class Client extends BaseEntity {
   @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Field(() => Date)
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

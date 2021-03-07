@@ -63,3 +63,9 @@ export class PaginatedClientsResponse extends ApiPaginatedResponse {
   @Field(() => [Client], { nullable: true })
   data?: Client[];
 }
+
+@InputType()
+export class DeleteClientFields {
+  @Field()
+  id: number;
+}

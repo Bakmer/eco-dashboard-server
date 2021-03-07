@@ -4,6 +4,10 @@ import User from "./UserRepository";
 import State from "./StateRepository";
 import Client from "./ClientRepository";
 import Discount from "./DiscountRepository";
+import Phone from "./PhoneRepository";
+import Address from "./AddressRepository";
+import Billing from "./BillingRepository";
+import Shipping from "./ShippingRepository";
 
 export const UserRepository = User;
 export const StoreRepository = Store;
@@ -11,3 +15,7 @@ export const RoleRepository = Role;
 export const StateRepository = State;
 export const ClientRepository = Client;
 export const DiscountRepository = Discount;
+export const PhoneRepository = Phone;
+export const AddressRepository = Address;
+export const BillingRepository = Billing;
+export const ShippingRepository = Shipping;

@@ -22,7 +22,7 @@ const {
   STORE_NOT_FOUND_RESPONSE,
   ROLE_NOT_FOUND,
   USER_ALREADY_EXISTS,
-  STATES_NOT_FOUND_RESPONSE,
+  USER_NOT_FOUND,
   DELETE_USER_ERROR,
 } = messages;
 
@@ -38,18 +38,18 @@ export default class UserService extends DataSource {
   }
 
   async create(data: CreateUserFields): Promise<User> {
-    const userExists = await UserRepository.findByUsername(data.username);
-    if (userExists) {
+    const user = await UserRepository.findByUsername(data.username);
+    if (user) {
       throw { Err: USER_ALREADY_EXISTS };
     }
 
-    const storeExists = await StoreRepository.findById(data.store_id);
-    if (!storeExists) {
+    const store = await StoreRepository.findById(data.store_id);
+    if (!store) {
       throw { InputErr: STORE_NOT_FOUND_RESPONSE };
     }
 
-    const roleExists = await RoleRepository.findById(data.role_id);
-    if (!roleExists) {
+    const role = await RoleRepository.findById(data.role_id);
+    if (!role) {
       throw { InputErr: ROLE_NOT_FOUND };
     }
 
@@ -134,12 +134,12 @@ export default class UserService extends DataSource {
   }
 
   async changeState(id: number): Promise<number> {
-    const state = await UserRepository.getState(id);
-    if (!state) {
-      throw { InputErr: STATES_NOT_FOUND_RESPONSE };
+    const user = await UserRepository.findById(id);
+    if (!user) {
+      throw { Err: USER_NOT_FOUND };
     }
 
-    const newState = state.state_id === 1 ? 2 : 1;
+    const newState = user.state_id === 1 ? 2 : 1;
 
     await UserRepository.changeState(id, newState);
 
@@ -147,18 +147,18 @@ export default class UserService extends DataSource {
   }
 
   async update(data: UpdateUserFields): Promise<User | undefined> {
-    const userExists = await UserRepository.findByUsername(data.user.username);
-    if (userExists && userExists.id !== data.id) {
+    const user = await UserRepository.findByUsername(data.user.username);
+    if (user && user.id !== data.id) {
       throw { Err: USER_ALREADY_EXISTS };
     }
 
-    const storeExists = await StoreRepository.findById(data.user.store_id);
-    if (!storeExists) {
+    const store = await StoreRepository.findById(data.user.store_id);
+    if (!store) {
       throw { InputErr: STORE_NOT_FOUND_RESPONSE };
     }
 
-    const roleExists = await RoleRepository.findById(data.user.role_id);
-    if (!roleExists) {
+    const role = await RoleRepository.findById(data.user.role_id);
+    if (!role) {
       throw { InputErr: ROLE_NOT_FOUND };
     }
 
@@ -168,11 +168,11 @@ export default class UserService extends DataSource {
   }
 
   async delete(id: number): Promise<void> {
-    const userExists = await UserRepository.findById(id);
-    if (!userExists) {
+    const user = await UserRepository.findById(id);
+    if (!user) {
       throw { InputErr: DELETE_USER_ERROR };
     }
 
-    await UserRepository.delete(id);
+    await UserRepository.softDelete(id, user.username);
   }
 }

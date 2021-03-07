@@ -82,15 +82,6 @@ export default {
       .execute();
   },
 
-  getState(id: number): Promise<{ state_id: number } | undefined> {
-    return getConnection()
-      .createQueryBuilder()
-      .select("user.state_id")
-      .from(User, "user")
-      .where("user.id = :id", { id: id })
-      .getOne();
-  },
-
   async update(data: UpdateUserFields): Promise<void> {
     await getConnection()
       .createQueryBuilder()
@@ -100,7 +91,14 @@ export default {
       .execute();
   },
 
-  async delete(id: number): Promise<void> {
+  async softDelete(id: number, username: string): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set({ username: `${username}::${new Date()}` })
+      .where("id = :id", { id })
+      .execute();
+
     await getConnection()
       .createQueryBuilder()
       .softDelete()

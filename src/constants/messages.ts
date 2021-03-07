@@ -57,6 +57,13 @@ export default {
   CLIENT_CREATE_SUCCESS: "El cliente ha sido creado con éxito",
   CLIENTS_LIST_SUCCESSFUL: "Listado de clientes obtenido con exito",
   CHANGE_CLIENT_STATE_SUCCESS: "Estado del cliente actualizado",
+  DELETE_CLIENT_SUCCESS: "El cliente ha sido eliminado",
+  DELETE_CLIENT_ERROR:
+    "El cliente que desea eliminar no existe o ya fue elimnado",
+  RESTORE_CLIENT_SUCCESS: "El cliente ha sido recuperado con exito",
+  FIND_CLIENT_ERROR: "Cliente no encontrado",
+  RESTORE_CLIENT_ERROR: "El cliente ya se encuentra recuperado",
+  DESTROY_CLIENT_SUCCESS: "El cliente ha sido eliminado definitivamente",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",

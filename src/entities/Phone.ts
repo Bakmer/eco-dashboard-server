@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
   Column,
   BaseEntity,
   ManyToOne,
@@ -35,7 +36,9 @@ export class Phone extends BaseEntity {
   client_id: number;
 
   @Field(() => Client)
-  @ManyToOne(() => Client, (client) => client.phones)
+  @ManyToOne(() => Client, (client) => client.phones, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({
     name: "client_id",
   })
@@ -48,4 +51,8 @@ export class Phone extends BaseEntity {
   @Field(() => Date)
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Field(() => Date)
+  @DeleteDateColumn()
+  deleted_at: Date;
 }
