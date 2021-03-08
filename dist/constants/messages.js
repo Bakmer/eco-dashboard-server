@@ -50,6 +50,9 @@ exports.default = {
     FIND_CLIENT_ERROR: "Cliente no encontrado",
     RESTORE_CLIENT_ERROR: "El cliente ya se encuentra recuperado",
     DESTROY_CLIENT_SUCCESS: "El cliente ha sido eliminado definitivamente",
+    EMAIL_LENGHT_ERROR: "El mail debe tener entre 3 a 50 caracteres",
+    UPDATE_CLIENT_SUCCESS: "Cliente actualizado con exito",
+    CLIENT_NOT_FOUND: "Cliente no encontrado",
     STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
     STORE_REGISTER_ERROR: "Hubo un problema al intentar crear la tienda",
     STORE_REGISTER_SUCCESS: "Tienda creada con éxito",
@@ -59,5 +62,8 @@ exports.default = {
     STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
     DISCOUNT_NOT_FOUND_RESPONSE: "No existe el descuento seleccionado",
     DISCOUNT_REQUIRED: "Debe seleccionar un descuento para el cliente",
+    DISCOUNT_CREATED_SUCCESSFULLY: "Descuento creado exitosamente",
+    DISCOUNTS_LIST_SUCCESSFUL: "Listado de descuentos obtenido con exito",
+    DISCOUNT_ALREADY_EXISTS: "El descuento ya se encuentra registrado",
 };
 //# sourceMappingURL=messages.js.map

@@ -10,6 +10,15 @@ export default {
     return Discount.findOne({ id });
   },
 
+  findByName(percentage: number): Promise<Discount | undefined> {
+    return getConnection()
+      .createQueryBuilder()
+      .select("discount")
+      .from(Discount, "discount")
+      .where("discount.percentage = :percentage", { percentage })
+      .getOne();
+  },
+
   list(): Promise<Discount[]> {
     return getConnection()
       .createQueryBuilder()

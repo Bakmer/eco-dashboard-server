@@ -7,6 +7,7 @@ import StoreService from "../datasources/StoreService";
 import RoleService from "../datasources/RoleService";
 import StateService from "../datasources/StateService";
 import ClientService from "../datasources/ClientService";
+import DiscountService from "../datasources/DiscountService";
 
 interface DataSources {
   userService: UserService;
@@ -14,6 +15,7 @@ interface DataSources {
   roleService: RoleService;
   stateService: StateService;
   clientService: ClientService;
+  discountService: DiscountService;
 }
 
 export type MyContext = {

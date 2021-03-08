@@ -1,13 +1,11 @@
 export default {
   // Generics
-  GENERIC_ERROR:
-    "Estamos teniendo problemas. Por favor intente nuevamente mas tarde",
+  GENERIC_ERROR: "Estamos teniendo problemas. Por favor intente nuevamente mas tarde",
   PAGINATION_DATA_ERROR: "Ha ingresado parametros incorrectos para el paginado",
 
   // Role
   ROLE_CREATED_SUCCESSFULLY: "Rol creado exitosamente",
-  ROLE_NAME_LENGTH_ERROR:
-    "El nombre del rol debe tener entre 3 y 20 caracteres",
+  ROLE_NAME_LENGTH_ERROR: "El nombre del rol debe tener entre 3 y 20 caracteres",
   ROLE_NOT_FOUND: "El role seleccionado no existe",
   ROLE_REGISTER_ERROR: "Hubo un problema al intentar crear el role",
   ROLE_REQUIRED: "Debe seleccionar un rol de usuario",
@@ -15,8 +13,7 @@ export default {
   ROLE_ALREADY_EXISTS: "El role ya se encuentra registrado",
 
   // States
-  STATES_LENGTH_ERROR:
-    "El nombre del estado debe tener entre 3 a 50 caracteres",
+  STATES_LENGTH_ERROR: "El nombre del estado debe tener entre 3 a 50 caracteres",
   STATES_REQUIRED: "Debe seleccionar un estado de usuario",
   STATES_NOT_FOUND_RESPONSE: "No existe el estado seleccionado",
   STATES_LIST_SUCCESSFUL: "Listado de estados obtenido con exito",
@@ -29,8 +26,7 @@ export default {
   USER_NOT_FOUND: "Usuario no encontrado",
   ME_SUCCESS: "Datos de usuario",
   NOT_AUTHENTICATED: "Debe iniciar sesión",
-  USERNAME_LENGTH_ERROR:
-    "El nombre de usuario debe tener entre 3 a 50 caracteres",
+  USERNAME_LENGTH_ERROR: "El nombre de usuario debe tener entre 3 a 50 caracteres",
   PASSWORD_LENGTH_ERROR: "La contraseña debe tener entre 3 a 50 caracteres",
   SUCCESSFUL_LOGOUT: "Successful logout",
   NAME_LENGTH_ERROR: "El nombre debe tener entre 3 a 50 caracteres",
@@ -44,13 +40,11 @@ export default {
   CHANGE_USER_STATE_SUCCESS: "Estado del usuario actualizado",
   UPDATE_USER_SUCCESS: "Usuario actualizado con exito",
   USER_ALREADY_EXISTS: "El nombre de usuario ya se encuentra registrado",
-  DELETE_USER_ERROR:
-    "El usuario que desea eliminar no existe o ya fue elimnado",
+  DELETE_USER_ERROR: "El usuario que desea eliminar no existe o ya fue elimnado",
   DELETE_USER_SUCCESS: "El usuario ha sido eliminado",
 
   // Clients
-  RAZON_SOCIAL_LENGTH_ERROR:
-    "La razón social debe tener entre 3 a 50 caracteres",
+  RAZON_SOCIAL_LENGTH_ERROR: "La razón social debe tener entre 3 a 50 caracteres",
   CUIT_LENGTH_ERROR: "El CUIT debe tener 11 caracteres",
   IVA_ERROR: "Debe seleccionar el tipo de contribuyente",
   EMAIL_ERROR: "Ingrese un email valido",
@@ -58,19 +52,20 @@ export default {
   CLIENTS_LIST_SUCCESSFUL: "Listado de clientes obtenido con exito",
   CHANGE_CLIENT_STATE_SUCCESS: "Estado del cliente actualizado",
   DELETE_CLIENT_SUCCESS: "El cliente ha sido eliminado",
-  DELETE_CLIENT_ERROR:
-    "El cliente que desea eliminar no existe o ya fue elimnado",
+  DELETE_CLIENT_ERROR: "El cliente que desea eliminar no existe o ya fue elimnado",
   RESTORE_CLIENT_SUCCESS: "El cliente ha sido recuperado con exito",
   FIND_CLIENT_ERROR: "Cliente no encontrado",
   RESTORE_CLIENT_ERROR: "El cliente ya se encuentra recuperado",
   DESTROY_CLIENT_SUCCESS: "El cliente ha sido eliminado definitivamente",
+  EMAIL_LENGHT_ERROR: "El mail debe tener entre 3 a 50 caracteres",
+  UPDATE_CLIENT_SUCCESS: "Cliente actualizado con exito",
+  CLIENT_NOT_FOUND: "Cliente no encontrado",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
   STORE_REGISTER_ERROR: "Hubo un problema al intentar crear la tienda",
   STORE_REGISTER_SUCCESS: "Tienda creada con éxito",
-  STORE_NAME_LENGTH_ERROR:
-    "El nombre de la tienda debe tener entre 3 y 20 caracteres",
+  STORE_NAME_LENGTH_ERROR: "El nombre de la tienda debe tener entre 3 y 20 caracteres",
   STORE_REQUIRED: "Debe seleccionar una tienda",
   STORES_LIST_SUCCESSFUL: "Listado de tiendas obtenido con exito",
   STORE_ALREADY_EXISTS: "La tienda ya se encuentra registrada",
@@ -78,4 +73,7 @@ export default {
   // Discount
   DISCOUNT_NOT_FOUND_RESPONSE: "No existe el descuento seleccionado",
   DISCOUNT_REQUIRED: "Debe seleccionar un descuento para el cliente",
+  DISCOUNT_CREATED_SUCCESSFULLY: "Descuento creado exitosamente",
+  DISCOUNTS_LIST_SUCCESSFUL: "Listado de descuentos obtenido con exito",
+  DISCOUNT_ALREADY_EXISTS: "El descuento ya se encuentra registrado",
 };

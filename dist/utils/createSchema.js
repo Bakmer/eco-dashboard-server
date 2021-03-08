@@ -8,6 +8,7 @@ const Store_1 = require("../resolvers/Store");
 const Role_1 = require("../resolvers/Role");
 const State_1 = require("../resolvers/State");
 const Client_1 = require("../resolvers/Client");
+const Discount_1 = require("../resolvers/Discount");
 const createSchema = () => type_graphql_1.buildSchema({
     resolvers: [
         User_1.UserResolver,
@@ -16,6 +17,7 @@ const createSchema = () => type_graphql_1.buildSchema({
         Role_1.RoleResolver,
         State_1.StateResolver,
         Client_1.ClientResolver,
+        Discount_1.DiscountResolver,
     ],
     authChecker: ({ context: { req } }, roles) => {
         const user = req.session.user;

@@ -9,14 +9,12 @@ import {
   BillingRepository,
   PhoneRepository,
   ShippingRepository,
+  StoreRepository,
 } from "../../repositories";
 import messages from "../../constants/messages";
 import { capitalize } from "../../utils";
 
-import {
-  CreateFields,
-  PaginatedClientsResponse,
-} from "../../resolvers/Client/types";
+import { CreateFields, PaginatedClientsResponse, UpdateFields } from "../../resolvers/Client/types";
 import { PaginationFields, OrderType } from "../../resolvers/sharedTypes";
 
 const {
@@ -25,6 +23,8 @@ const {
   DELETE_CLIENT_ERROR,
   FIND_CLIENT_ERROR,
   RESTORE_CLIENT_ERROR,
+  STORE_NOT_FOUND_RESPONSE,
+  CLIENT_NOT_FOUND,
 } = messages;
 
 export default class ClientService extends DataSource {
@@ -39,19 +39,32 @@ export default class ClientService extends DataSource {
   }
 
   async create(data: CreateFields): Promise<Client | undefined> {
-    const state = await StateRepository.findById(data.state_id);
-    if (!state) {
+    const validations = await Promise.all([
+      StateRepository.findById(data.state_id),
+      DiscountRepository.findById(data.discount_id),
+      data.store_id ? StoreRepository.findById(data.store_id) : undefined,
+    ]);
+
+    if (!validations[0]) {
       throw { InputErr: STATES_NOT_FOUND_RESPONSE };
     }
 
-    const discount = await DiscountRepository.findById(data.discount_id);
-    if (!discount) {
+    if (!validations[1]) {
       throw { InputErr: DISCOUNT_NOT_FOUND_RESPONSE };
     }
 
     const userSession = this.ctx.req.session.user;
-    const store_id = data.store_id ? data.store_id : userSession.store_id;
     const user_id = userSession.id;
+    let store_id;
+
+    if (data.store_id) {
+      if (!validations[2]) {
+        throw { InputErr: STORE_NOT_FOUND_RESPONSE };
+      }
+      store_id = data.store_id;
+    } else {
+      store_id = userSession.store_id;
+    }
 
     const newClient = await ClientRepository.create({
       ...data,
@@ -74,11 +87,7 @@ export default class ClientService extends DataSource {
       if (!order_by) {
         return "client.id";
       }
-      if (
-        order_by === "store" ||
-        order_by === "state" ||
-        order_by === "discount"
-      ) {
+      if (order_by === "store" || order_by === "state" || order_by === "discount") {
         return `${order_by}.id`;
       } else {
         return `client.${order_by}`;
@@ -91,23 +100,18 @@ export default class ClientService extends DataSource {
     const per_page = vars?.per_page ? vars.per_page : 30;
     const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
-    const users = await ClientRepository.list(
-      search,
-      itemsToSkip,
-      per_page,
-      getOrderBy(),
-      order_type
-    );
-
-    const count = await ClientRepository.count(search);
+    const listData = await Promise.all([
+      ClientRepository.list(search, itemsToSkip, per_page, getOrderBy(), order_type),
+      ClientRepository.count(search),
+    ]);
 
     return {
-      data: users,
+      data: listData[0],
       filters: {
         search,
         page,
         per_page,
-        count,
+        count: listData[1],
         order_type,
         order_by,
       },
@@ -125,6 +129,35 @@ export default class ClientService extends DataSource {
     await ClientRepository.changeState(id, newState);
 
     return newState;
+  }
+
+  async update(data: UpdateFields): Promise<Client | undefined> {
+    const validations = await Promise.all([
+      ClientRepository.simpleFindById(data.id),
+      StateRepository.findById(data.client.state_id),
+      DiscountRepository.findById(data.client.discount_id),
+      StoreRepository.findById(data.client.store_id),
+    ]);
+
+    if (!validations[0]) {
+      throw { InputErr: CLIENT_NOT_FOUND };
+    }
+
+    if (!validations[1]) {
+      throw { InputErr: STATES_NOT_FOUND_RESPONSE };
+    }
+
+    if (!validations[2]) {
+      throw { InputErr: DISCOUNT_NOT_FOUND_RESPONSE };
+    }
+
+    if (!validations[3]) {
+      throw { InputErr: STORE_NOT_FOUND_RESPONSE };
+    }
+
+    await ClientRepository.update(data);
+
+    return ClientRepository.findById(data.id);
   }
 
   async delete(id: number): Promise<void> {

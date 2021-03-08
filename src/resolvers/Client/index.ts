@@ -8,13 +8,9 @@ import {
   GetUserFields,
   PaginatedClientsResponse,
   DeleteClientFields,
+  UpdateFields,
 } from "./types";
-import {
-  PaginationFields,
-  ChangeStateFields,
-  ChangeStateResponse,
-  ApiResponse,
-} from "../sharedTypes";
+import { PaginationFields, ChangeStateFields, ChangeStateResponse, ApiResponse } from "../sharedTypes";
 
 import { Client } from "../../entities/Client";
 
@@ -26,6 +22,7 @@ const {
   DELETE_CLIENT_SUCCESS,
   RESTORE_CLIENT_SUCCESS,
   DESTROY_CLIENT_SUCCESS,
+  UPDATE_CLIENT_SUCCESS,
 } = messages;
 
 @Resolver(Client)
@@ -42,6 +39,25 @@ export class ClientResolver {
       return {
         data: newClient,
         message: CLIENT_CREATE_SUCCESS,
+      };
+    } catch (error) {
+      console.log(error);
+      return handleError(error);
+    }
+  }
+
+  @Mutation(() => ClientResponse)
+  @Authorized()
+  async updateClient(
+    @Arg("data") data: UpdateFields,
+    @Ctx() { dataSources: { clientService } }: MyContext
+  ): Promise<ClientResponse> {
+    try {
+      const updatedClient = await clientService.update(data);
+
+      return {
+        data: updatedClient,
+        message: UPDATE_CLIENT_SUCCESS,
       };
     } catch (error) {
       console.log(error);

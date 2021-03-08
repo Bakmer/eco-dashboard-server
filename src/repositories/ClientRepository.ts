@@ -1,7 +1,7 @@
 import { Client } from "../entities/Client";
 import { getConnection } from "typeorm";
 
-import { CreateFields } from "../resolvers/Client/types";
+import { CreateFields, UpdateFields } from "../resolvers/Client/types";
 
 export default {
   async create(data: CreateFields): Promise<Client> {
@@ -135,29 +135,23 @@ export default {
       .where("id = :id", { id })
       .execute();
 
-    await getConnection()
-      .createQueryBuilder()
-      .softDelete()
-      .from(Client)
-      .where("id = :id", { id })
-      .execute();
+    await getConnection().createQueryBuilder().softDelete().from(Client).where("id = :id", { id }).execute();
   },
 
   async restore(id: number): Promise<void> {
-    await getConnection()
-      .createQueryBuilder()
-      .restore()
-      .from(Client)
-      .where("id = :id", { id })
-      .execute();
+    await getConnection().createQueryBuilder().restore().from(Client).where("id = :id", { id }).execute();
   },
 
   async destroy(id: number): Promise<void> {
+    await getConnection().createQueryBuilder().delete().from(Client).where("id = :id", { id }).execute();
+  },
+
+  async update(data: UpdateFields): Promise<void> {
     await getConnection()
       .createQueryBuilder()
-      .delete()
-      .from(Client)
-      .where("id = :id", { id })
+      .update(Client)
+      .set(data.client)
+      .where("id = :id", { id: data.id })
       .execute();
   },
 };

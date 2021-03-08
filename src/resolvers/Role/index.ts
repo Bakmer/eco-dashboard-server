@@ -1,7 +1,6 @@
 import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
-import { CreateRoleField } from "./types";
 import messages from "../../constants/messages";
-import { RoleResponse, ListRolesResponse } from "./types";
+import { RoleResponse, ListRolesResponse, CreateRoleField } from "./types";
 import { handleError } from "../../utils";
 
 import { Role } from "../../entities/Role";

@@ -3,6 +3,7 @@ import StoreService from "./StoreService";
 import RoleService from "./RoleService";
 import StateService from "./StateService";
 import ClientService from "./ClientService";
+import DiscountService from "./DiscountService";
 
 export default () => ({
   userService: new UserService(),
@@ -10,4 +11,5 @@ export default () => ({
   roleService: new RoleService(),
   stateService: new StateService(),
   clientService: new ClientService(),
+  discountService: new DiscountService(),
 });

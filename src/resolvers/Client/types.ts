@@ -11,6 +11,7 @@ const {
   STATES_REQUIRED,
   GENERIC_ERROR,
   DISCOUNT_REQUIRED,
+  EMAIL_LENGHT_ERROR,
 } = messages;
 
 @ObjectType()
@@ -30,6 +31,7 @@ export class CreateFields {
   last_name: string;
 
   @Field()
+  @Length(3, 50, { message: EMAIL_LENGHT_ERROR })
   email: string;
 
   @Field()
@@ -49,6 +51,15 @@ export class CreateFields {
 
   @Field({ nullable: true })
   user_id: number;
+}
+
+@InputType()
+export class UpdateFields {
+  @Field()
+  @Min(1, { message: STORE_REQUIRED })
+  id: number;
+  @Field()
+  client: CreateFields;
 }
 
 @InputType()

@@ -6,6 +6,7 @@ import { StoreResolver } from "../resolvers/Store";
 import { RoleResolver } from "../resolvers/Role";
 import { StateResolver } from "../resolvers/State";
 import { ClientResolver } from "../resolvers/Client";
+import { DiscountResolver } from "../resolvers/Discount";
 
 export const createSchema = () =>
   buildSchema({
@@ -16,6 +17,7 @@ export const createSchema = () =>
       RoleResolver,
       StateResolver,
       ClientResolver,
+      DiscountResolver,
     ],
     authChecker: ({ context: { req } }, roles) => {
       const user = req.session.user;

@@ -2,18 +2,10 @@ import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { User } from "../../entities/User";
 import { MyContext } from "../../types/MyContext";
 import { capitalize } from "../../utils";
-import {
-  UserRepository,
-  StoreRepository,
-  RoleRepository,
-} from "../../repositories";
+import { UserRepository, StoreRepository, RoleRepository } from "../../repositories";
 import messages from "../../constants/messages";
 
-import {
-  CreateUserFields,
-  UpdateUserFields,
-  PaginatedUsersResponse,
-} from "../../resolvers/User/types";
+import { CreateUserFields, UpdateUserFields, PaginatedUsersResponse } from "../../resolvers/User/types";
 import { PaginationFields, OrderType } from "../../resolvers/sharedTypes";
 
 const {
@@ -38,18 +30,21 @@ export default class UserService extends DataSource {
   }
 
   async create(data: CreateUserFields): Promise<User> {
-    const user = await UserRepository.findByUsername(data.username);
-    if (user) {
+    const validations = await Promise.all([
+      UserRepository.findByUsername(data.username),
+      StoreRepository.findById(data.store_id),
+      RoleRepository.findById(data.role_id),
+    ]);
+
+    if (validations[0]) {
       throw { Err: USER_ALREADY_EXISTS };
     }
 
-    const store = await StoreRepository.findById(data.store_id);
-    if (!store) {
+    if (!validations[1]) {
       throw { InputErr: STORE_NOT_FOUND_RESPONSE };
     }
 
-    const role = await RoleRepository.findById(data.role_id);
-    if (!role) {
+    if (!validations[2]) {
       throw { InputErr: ROLE_NOT_FOUND };
     }
 
@@ -110,23 +105,18 @@ export default class UserService extends DataSource {
     const per_page = vars?.per_page ? vars.per_page : 30;
     const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
-    const users = await UserRepository.list(
-      search,
-      itemsToSkip,
-      per_page,
-      getOrderBy(),
-      order_type
-    );
-
-    const count = await UserRepository.count(search);
+    const listData = await Promise.all([
+      UserRepository.list(search, itemsToSkip, per_page, getOrderBy(), order_type),
+      UserRepository.count(search),
+    ]);
 
     return {
-      data: users,
+      data: listData[0],
       filters: {
         search,
         page,
         per_page,
-        count,
+        count: listData[1],
         order_type,
         order_by,
       },
@@ -147,18 +137,21 @@ export default class UserService extends DataSource {
   }
 
   async update(data: UpdateUserFields): Promise<User | undefined> {
-    const user = await UserRepository.findByUsername(data.user.username);
-    if (user && user.id !== data.id) {
+    const validations = await Promise.all([
+      UserRepository.findByUsername(data.user.username),
+      StoreRepository.findById(data.user.store_id),
+      RoleRepository.findById(data.user.role_id),
+    ]);
+
+    if (validations[0] && validations[0].id !== data.id) {
       throw { Err: USER_ALREADY_EXISTS };
     }
 
-    const store = await StoreRepository.findById(data.user.store_id);
-    if (!store) {
+    if (!validations[1]) {
       throw { InputErr: STORE_NOT_FOUND_RESPONSE };
     }
 
-    const role = await RoleRepository.findById(data.user.role_id);
-    if (!role) {
+    if (!validations[2]) {
       throw { InputErr: ROLE_NOT_FOUND };
     }
 
