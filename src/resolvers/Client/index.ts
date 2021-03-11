@@ -10,7 +10,7 @@ import {
   DeleteClientFields,
   UpdateFields,
 } from "./types";
-import { PaginationFields, ChangeStateFields, ChangeStateResponse, ApiResponse } from "../sharedTypes";
+import { PaginationFields, ChangeStateFields, ApiResponse } from "../sharedTypes";
 
 import { Client } from "../../entities/Client";
 
@@ -103,17 +103,17 @@ export class ClientResolver {
     }
   }
 
-  @Mutation(() => ChangeStateResponse)
+  @Mutation(() => ClientResponse)
   @Authorized()
   async changeClientState(
     @Arg("data") { id }: ChangeStateFields,
     @Ctx() { dataSources: { clientService } }: MyContext
-  ): Promise<ChangeStateResponse> {
+  ): Promise<ClientResponse> {
     try {
-      const newState = await clientService.changeState(id);
+      const updatedClient = await clientService.changeState(id);
 
       return {
-        data: { id: newState, name: newState === 1 ? "Activo" : "Inactivo" },
+        data: updatedClient,
         message: CHANGE_CLIENT_STATE_SUCCESS,
       };
     } catch (error) {

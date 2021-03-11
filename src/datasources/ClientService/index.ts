@@ -118,7 +118,7 @@ export default class ClientService extends DataSource {
     };
   }
 
-  async changeState(id: number): Promise<number> {
+  async changeState(id: number): Promise<Client | undefined> {
     const state = await ClientRepository.getState(id);
     if (!state) {
       throw { InputErr: STATES_NOT_FOUND_RESPONSE };
@@ -128,7 +128,7 @@ export default class ClientService extends DataSource {
 
     await ClientRepository.changeState(id, newState);
 
-    return newState;
+    return ClientRepository.findById(id);
   }
 
   async update(data: UpdateFields): Promise<Client | undefined> {

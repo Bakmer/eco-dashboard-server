@@ -123,8 +123,8 @@ export default class UserService extends DataSource {
     };
   }
 
-  async changeState(id: number): Promise<number> {
-    const user = await UserRepository.findById(id);
+  async changeState(id: number): Promise<User | undefined> {
+    const user = await UserRepository.simpleFindById(id);
     if (!user) {
       throw { Err: USER_NOT_FOUND };
     }
@@ -133,7 +133,7 @@ export default class UserService extends DataSource {
 
     await UserRepository.changeState(id, newState);
 
-    return newState;
+    return UserRepository.findById(id);
   }
 
   async update(data: UpdateUserFields): Promise<User | undefined> {

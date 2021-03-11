@@ -8,6 +8,15 @@ export default {
     return User.create(data).save();
   },
 
+  simpleFindById(id: number): Promise<User | undefined> {
+    return getConnection()
+      .createQueryBuilder()
+      .select("user")
+      .from(User, "user")
+      .where("user.id = :id", { id })
+      .getOne();
+  },
+
   findById(id: number): Promise<User | undefined> {
     return getConnection()
       .createQueryBuilder()
@@ -83,12 +92,7 @@ export default {
   },
 
   async update(data: UpdateUserFields): Promise<void> {
-    await getConnection()
-      .createQueryBuilder()
-      .update(User)
-      .set(data.user)
-      .where("id = :id", { id: data.id })
-      .execute();
+    await getConnection().createQueryBuilder().update(User).set(data.user).where("id = :id", { id: data.id }).execute();
   },
 
   async softDelete(id: number, username: string): Promise<void> {
@@ -99,11 +103,6 @@ export default {
       .where("id = :id", { id })
       .execute();
 
-    await getConnection()
-      .createQueryBuilder()
-      .softDelete()
-      .from(User)
-      .where("id = :id", { id })
-      .execute();
+    await getConnection().createQueryBuilder().softDelete().from(User).where("id = :id", { id }).execute();
   },
 };

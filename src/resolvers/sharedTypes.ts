@@ -69,18 +69,3 @@ export class ChangeStateFields {
   @Min(1, { message: CHANGE_STATE_ERROR })
   id: number;
 }
-
-@ObjectType()
-class StateFields {
-  @Field()
-  id: number;
-
-  @Field()
-  name: string;
-}
-
-@ObjectType()
-export class ChangeStateResponse extends ApiResponse {
-  @Field(() => StateFields, { nullable: true })
-  data?: StateFields;
-}

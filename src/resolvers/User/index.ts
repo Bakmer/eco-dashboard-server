@@ -11,12 +11,7 @@ import {
   UpdateUserFields,
   DeleteUserFields,
 } from "./types";
-import {
-  PaginationFields,
-  ChangeStateFields,
-  ChangeStateResponse,
-  ApiResponse,
-} from "../sharedTypes";
+import { PaginationFields, ChangeStateFields, ApiResponse } from "../sharedTypes";
 import { handleError } from "../../utils";
 
 import { User } from "../../entities/User";
@@ -76,9 +71,7 @@ export class UserResolver {
   }
 
   @Query(() => UserResponse)
-  async me(
-    @Ctx() { dataSources: { userService } }: MyContext
-  ): Promise<UserResponse> {
+  async me(@Ctx() { dataSources: { userService } }: MyContext): Promise<UserResponse> {
     try {
       const user = await userService.me();
 
@@ -112,17 +105,17 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => ChangeStateResponse)
+  @Mutation(() => UserResponse)
   @Authorized()
   async changeUserState(
     @Arg("data") { id }: ChangeStateFields,
     @Ctx() { dataSources: { userService } }: MyContext
-  ): Promise<ChangeStateResponse> {
+  ): Promise<UserResponse> {
     try {
-      const newState = await userService.changeState(id);
+      const updatedUser = await userService.changeState(id);
 
       return {
-        data: { id: newState, name: newState === 1 ? "Activo" : "Inactivo" },
+        data: updatedUser,
         message: CHANGE_USER_STATE_SUCCESS,
       };
     } catch (error) {
