@@ -155,7 +155,14 @@ export default class ClientService extends DataSource {
       throw { InputErr: STORE_NOT_FOUND_RESPONSE };
     }
 
-    await ClientRepository.update(data);
+    await ClientRepository.update({
+      ...data,
+      client: {
+        ...data.client,
+        name: capitalize(data.client.name),
+        last_name: capitalize(data.client.last_name),
+      },
+    });
 
     return ClientRepository.findById(data.id);
   }
