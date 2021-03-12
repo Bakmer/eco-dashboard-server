@@ -77,8 +77,14 @@ export default class ClientService extends DataSource {
     return ClientRepository.findById(newClient.id);
   }
 
-  findById(id: number): Promise<Client | undefined> {
-    return ClientRepository.findById(id);
+  async findById(id: number): Promise<Client | undefined> {
+    const client = await ClientRepository.findById(id);
+
+    if (!client) {
+      throw { Err: CLIENT_NOT_FOUND };
+    }
+
+    return client;
   }
 
   async list(vars: PaginationFields): Promise<PaginatedClientsResponse> {
