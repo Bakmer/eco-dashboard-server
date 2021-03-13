@@ -65,5 +65,6 @@ exports.default = {
     DISCOUNT_CREATED_SUCCESSFULLY: "Descuento creado exitosamente",
     DISCOUNTS_LIST_SUCCESSFUL: "Listado de descuentos obtenido con exito",
     DISCOUNT_ALREADY_EXISTS: "El descuento ya se encuentra registrado",
+    PHONE_CREATED_SUCCESSFULLY: "Teléfono añadido exitosamente",
 };
 //# sourceMappingURL=messages.js.map

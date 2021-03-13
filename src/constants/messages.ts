@@ -76,4 +76,7 @@ export default {
   DISCOUNT_CREATED_SUCCESSFULLY: "Descuento creado exitosamente",
   DISCOUNTS_LIST_SUCCESSFUL: "Listado de descuentos obtenido con exito",
   DISCOUNT_ALREADY_EXISTS: "El descuento ya se encuentra registrado",
+
+  // Phone
+  PHONE_CREATED_SUCCESSFULLY: "Teléfono añadido exitosamente",
 };
