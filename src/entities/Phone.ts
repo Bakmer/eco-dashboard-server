@@ -25,11 +25,11 @@ export class Phone extends BaseEntity {
 
   @Field()
   @Column()
-  area_code: number;
+  area_code: string;
 
   @Field()
   @Column()
-  phone: number;
+  phone: string;
 
   @Field()
   @Column()

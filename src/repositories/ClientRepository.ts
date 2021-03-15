@@ -127,7 +127,7 @@ export default {
       .getOne();
   },
 
-  async softDelete(id: number, email: string): Promise<void> {
+  async delete(id: number, email: string): Promise<void> {
     await getConnection()
       .createQueryBuilder()
       .update(Client)

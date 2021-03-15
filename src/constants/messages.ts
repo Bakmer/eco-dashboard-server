@@ -60,6 +60,7 @@ export default {
   EMAIL_LENGHT_ERROR: "El mail debe tener entre 3 a 50 caracteres",
   UPDATE_CLIENT_SUCCESS: "Cliente actualizado con exito",
   CLIENT_NOT_FOUND: "Cliente no encontrado",
+  CLIENT_REQUIRED: "Debe seleccionar un cliente",
 
   // Store
   STORE_NOT_FOUND_RESPONSE: "No existe la tienda seleccionada",
@@ -79,4 +80,9 @@ export default {
 
   // Phone
   PHONE_CREATED_SUCCESSFULLY: "Teléfono añadido exitosamente",
+  DELETE_PHONE_SUCCESS: "Teléfono eliminado",
+  DELETE_PHONE_ERROR: "El teléfono que desea eliminar no existe o ya fue elimnado",
+  UPDATE_PHONE_SUCCESS: "Teléfono actualizado",
+  PHONE_REQUIRED: "Debe seleccionar un teléfono",
+  PHONE_NOT_FOUND: "Teléfono no encontrado",
 };

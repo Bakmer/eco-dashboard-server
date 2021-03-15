@@ -179,29 +179,29 @@ export default class ClientService extends DataSource {
       throw { InputErr: DELETE_CLIENT_ERROR };
     }
 
-    await ClientRepository.softDelete(id, client.email);
+    await ClientRepository.delete(id, client.email);
 
     if (client.addresses.length) {
       for (let i = 0; i < client.addresses.length; i++) {
-        AddressRepository.softDelete(client.addresses[i].id);
+        AddressRepository.delete(client.addresses[i].id);
       }
     }
 
     if (client.phones.length) {
       for (let i = 0; i < client.phones.length; i++) {
-        PhoneRepository.softDelete(client.phones[i].id);
+        PhoneRepository.delete(client.phones[i].id);
       }
     }
 
     if (client.billings.length) {
       for (let i = 0; i < client.billings.length; i++) {
-        BillingRepository.softDelete(client.billings[i].id);
+        BillingRepository.delete(client.billings[i].id);
       }
     }
 
     if (client.shippings.length) {
       for (let i = 0; i < client.shippings.length; i++) {
-        ShippingRepository.softDelete(client.shippings[i].id);
+        ShippingRepository.delete(client.shippings[i].id);
       }
     }
   }

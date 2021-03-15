@@ -26,10 +26,6 @@ export class Billing extends BaseEntity {
 
   @Field()
   @Column()
-  last_name: string;
-
-  @Field()
-  @Column()
   street: string;
 
   @Field()
