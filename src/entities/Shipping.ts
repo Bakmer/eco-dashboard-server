@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import { Client } from "./Client";
 import { Transport } from "./Transport";
+import { GraphQLJSONObject } from "graphql-type-json";
 
 @ObjectType()
 @Entity()
@@ -40,13 +41,13 @@ export class Shipping extends BaseEntity {
   @Column()
   cuit: string;
 
-  @Field()
-  @Column()
-  province: string;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Column({ type: "json", nullable: true })
+  province: object;
 
-  @Field()
-  @Column()
-  location: string;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  @Column({ type: "json", nullable: true })
+  location: object;
 
   @Field()
   @Column()

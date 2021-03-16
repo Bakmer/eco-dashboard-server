@@ -5,6 +5,8 @@ import StateService from "./StateService";
 import ClientService from "./ClientService";
 import DiscountService from "./DiscountService";
 import PhoneService from "./PhoneService";
+import ShippingService from "./ShippingService";
+import GeorefAPIService from "./GeorefAPIService";
 
 export default () => ({
   userService: new UserService(),
@@ -14,4 +16,6 @@ export default () => ({
   clientService: new ClientService(),
   discountService: new DiscountService(),
   phoneService: new PhoneService(),
+  shippingService: new ShippingService(),
+  georefAPIService: new GeorefAPIService(),
 });

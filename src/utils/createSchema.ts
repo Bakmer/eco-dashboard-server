@@ -8,6 +8,8 @@ import { StateResolver } from "../resolvers/State";
 import { ClientResolver } from "../resolvers/Client";
 import { DiscountResolver } from "../resolvers/Discount";
 import { PhoneResolver } from "../resolvers/Phone";
+import { ShippingResolver } from "../resolvers/Shipping";
+import { GeorefAPI } from "../resolvers/GeorefAPI";
 
 export const createSchema = () =>
   buildSchema({
@@ -20,6 +22,8 @@ export const createSchema = () =>
       ClientResolver,
       DiscountResolver,
       PhoneResolver,
+      ShippingResolver,
+      GeorefAPI,
     ],
     authChecker: ({ context: { req } }, roles) => {
       const user = req.session.user;

@@ -10,6 +10,8 @@ const State_1 = require("../resolvers/State");
 const Client_1 = require("../resolvers/Client");
 const Discount_1 = require("../resolvers/Discount");
 const Phone_1 = require("../resolvers/Phone");
+const Shipping_1 = require("../resolvers/Shipping");
+const GeorefAPI_1 = require("../resolvers/GeorefAPI");
 const createSchema = () => type_graphql_1.buildSchema({
     resolvers: [
         User_1.UserResolver,
@@ -20,6 +22,8 @@ const createSchema = () => type_graphql_1.buildSchema({
         Client_1.ClientResolver,
         Discount_1.DiscountResolver,
         Phone_1.PhoneResolver,
+        Shipping_1.ShippingResolver,
+        GeorefAPI_1.GeorefAPI,
     ],
     authChecker: ({ context: { req } }, roles) => {
         const user = req.session.user;

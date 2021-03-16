@@ -8,7 +8,7 @@ import { capitalize } from "../../utils";
 
 const { CLIENT_NOT_FOUND, DELETE_PHONE_ERROR, PHONE_NOT_FOUND, GENERIC_ERROR } = messages;
 
-export default class DiscountService extends DataSource {
+export default class PhoneService extends DataSource {
   ctx: MyContext;
 
   constructor() {

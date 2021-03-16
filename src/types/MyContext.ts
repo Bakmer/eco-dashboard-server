@@ -9,6 +9,8 @@ import StateService from "../datasources/StateService";
 import ClientService from "../datasources/ClientService";
 import DiscountService from "../datasources/DiscountService";
 import PhoneService from "../datasources/PhoneService";
+import ShippingService from "../datasources/ShippingService";
+import GeorefAPIService from "../datasources/GeorefAPIService";
 
 interface DataSources {
   userService: UserService;
@@ -18,6 +20,8 @@ interface DataSources {
   clientService: ClientService;
   discountService: DiscountService;
   phoneService: PhoneService;
+  shippingService: ShippingService;
+  georefAPIService: GeorefAPIService;
 }
 
 export type MyContext = {

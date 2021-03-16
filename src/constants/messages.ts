@@ -85,4 +85,19 @@ export default {
   UPDATE_PHONE_SUCCESS: "Teléfono actualizado",
   PHONE_REQUIRED: "Debe seleccionar un teléfono",
   PHONE_NOT_FOUND: "Teléfono no encontrado",
+
+  // Shipping
+  TRANSPORT_REQUIRED: "Debe seleccionar un transporte",
+  SHIPPING_REQUIRED: "Debe seleccionar un método de envío",
+  DELETE_SHIPPING_ERROR: "El método de envío que desea eliminar no existe o ya fue elimnado",
+  SHIPPING_NOT_FOUND: "Método de envío no encontrado",
+
+  // Georef API
+  LIST_PROVINCES_SUCCESSFUL: "Listado de provincias obtenido con éxito",
+  LIST_LOCATIONS_SUCCESSFUL: "Listado de localidades obtenido con éxito",
+  GET_PROVINCE_SUCCESSFUL: "Provincia obtenida con éxito",
+  GET_LOCATION_SUCCESSFUL: "Localidad obtenida con éxito",
+  GET_LOCATIONS_ERROR: "No se han encontrado localidades para la provincia seleccionada",
+  GET_LOCATION_ERROR: "No se ha encontrado la localidad en la provincia seleccionada",
+  GET_PROVINCE_ERROR: "No se ha encontrado la provincia seleccionada",
 };
