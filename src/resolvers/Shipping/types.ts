@@ -20,9 +20,9 @@ export class CreateShippingFields {
   @Field()
   cuit: string;
   @Field()
-  province_id: string;
+  province_id: string; // Georef api uses string for id
   @Field()
-  location_id: string;
+  location_id: string; // Georef api uses string for id
   @Field()
   postal_code: string;
   @Field()
