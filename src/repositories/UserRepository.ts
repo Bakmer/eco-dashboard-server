@@ -3,7 +3,7 @@ import { getConnection } from "typeorm";
 
 import { CreateUserFields, UpdateUserFields } from "../resolvers/User/types";
 
-export default {
+export const UserRepository = {
   create(data: CreateUserFields): Promise<User> {
     return User.create(data).save();
   },
@@ -92,7 +92,12 @@ export default {
   },
 
   async update(data: UpdateUserFields): Promise<void> {
-    await getConnection().createQueryBuilder().update(User).set(data.user).where("id = :id", { id: data.id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .update(User)
+      .set(data.user)
+      .where("id = :id", { id: data.id })
+      .execute();
   },
 
   async softDelete(id: number, username: string): Promise<void> {
@@ -103,6 +108,11 @@ export default {
       .where("id = :id", { id })
       .execute();
 
-    await getConnection().createQueryBuilder().softDelete().from(User).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(User)
+      .where("id = :id", { id })
+      .execute();
   },
 };

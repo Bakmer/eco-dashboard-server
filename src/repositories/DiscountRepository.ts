@@ -1,7 +1,7 @@
 import { Discount } from "../entities/Discount";
 import { getConnection } from "typeorm";
 
-export default {
+export const DiscountRepository = {
   create(percentage: number): Promise<Discount> {
     return Discount.create({ percentage }).save();
   },

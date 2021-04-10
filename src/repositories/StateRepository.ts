@@ -1,7 +1,7 @@
 import { State } from "../entities/State";
 import { getConnection } from "typeorm";
 
-export default {
+export const StateRepository = {
   create(name: string): Promise<State> {
     return State.create({ name }).save();
   },

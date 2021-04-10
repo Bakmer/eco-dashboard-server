@@ -1,7 +1,7 @@
 import { Store } from "../entities/Store";
 import { getConnection } from "typeorm";
 
-export default {
+export const StoreRepository = {
   create(name: string): Promise<Store> {
     return Store.create({ name }).save();
   },

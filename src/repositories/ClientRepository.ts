@@ -3,7 +3,7 @@ import { getConnection } from "typeorm";
 
 import { CreateFields, UpdateFields } from "../resolvers/Client/types";
 
-export default {
+export const ClientRepository = {
   async create(data: CreateFields): Promise<Client> {
     return Client.create(data).save();
   },
@@ -135,15 +135,30 @@ export default {
       .where("id = :id", { id })
       .execute();
 
-    await getConnection().createQueryBuilder().softDelete().from(Client).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async restore(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().restore().from(Client).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .restore()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async destroy(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().delete().from(Client).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Client)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async update(data: UpdateFields): Promise<void> {

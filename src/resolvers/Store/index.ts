@@ -2,7 +2,7 @@ import { Arg, Mutation, Resolver, Authorized, Query, Ctx } from "type-graphql";
 import { CreateStoreFields } from "./types";
 import messages from "../../constants/messages";
 import { StoreResponse, ListStoresResponse } from "./types";
-import { handleError } from "../../utils";
+import { handleError, capitalize } from "../../utils";
 
 import { Store } from "../../entities/Store";
 import { ADMIN } from "../../constants/roles";
@@ -19,7 +19,9 @@ export class StoreResolver {
     @Ctx() { dataSources: { storeService } }: MyContext
   ): Promise<StoreResponse> {
     try {
-      const newStore = await storeService.create(data);
+      const newStore = await storeService.create({
+        name: capitalize(data.name),
+      });
 
       return { data: newStore, message: STORE_REGISTER_SUCCESS };
     } catch (error) {

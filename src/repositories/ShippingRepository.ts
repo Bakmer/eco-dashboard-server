@@ -1,8 +1,11 @@
 import { Shipping } from "../entities/Shipping";
 import { getConnection } from "typeorm";
-import { UpdateShippingFields, CreateShipping } from "../resolvers/Shipping/types";
+import {
+  UpdateShippingFields,
+  CreateShipping,
+} from "../resolvers/Shipping/types";
 
-export default {
+export const ShippingRepository = {
   create(data: CreateShipping): Promise<Shipping> {
     return Shipping.create(data).save();
   },
@@ -18,11 +21,21 @@ export default {
   },
 
   async delete(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().softDelete().from(Shipping).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(Shipping)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async restore(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().restore().from(Shipping).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .restore()
+      .from(Shipping)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async update(data: UpdateShippingFields): Promise<void> {

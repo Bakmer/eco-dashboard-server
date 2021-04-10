@@ -2,10 +2,18 @@ import { DataSource, DataSourceConfig } from "apollo-datasource";
 import { User } from "../../entities/User";
 import { MyContext } from "../../types/MyContext";
 import { capitalize } from "../../utils";
-import { UserRepository, StoreRepository, RoleRepository } from "../../repositories";
+import {
+  UserRepository,
+  StoreRepository,
+  RoleRepository,
+} from "../../repositories";
 import messages from "../../constants/messages";
 
-import { CreateUserFields, UpdateUserFields, PaginatedUsersResponse } from "../../resolvers/User/types";
+import {
+  CreateUserFields,
+  UpdateUserFields,
+  PaginatedUsersResponse,
+} from "../../resolvers/User/types";
 import { PaginationFields, OrderType } from "../../resolvers/sharedTypes";
 
 const {
@@ -106,7 +114,13 @@ export default class UserService extends DataSource {
     const itemsToSkip = vars?.per_page ? vars.per_page * page : 0;
 
     const listData = await Promise.all([
-      UserRepository.list(search, itemsToSkip, per_page, getOrderBy(), order_type),
+      UserRepository.list(
+        search,
+        itemsToSkip,
+        per_page,
+        getOrderBy(),
+        order_type
+      ),
       UserRepository.count(search),
     ]);
 

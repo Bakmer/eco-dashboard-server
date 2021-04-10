@@ -1,7 +1,7 @@
 import { Role } from "../entities/Role";
 import { getConnection } from "typeorm";
 
-export default {
+export const RoleRepository = {
   create(name: string): Promise<Role> {
     return Role.create({ name }).save();
   },

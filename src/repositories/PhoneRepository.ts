@@ -2,7 +2,7 @@ import { Phone } from "../entities/Phone";
 import { getConnection } from "typeorm";
 import { CreatePhoneFields, UpdatePhoneFields } from "../resolvers/Phone/types";
 
-export default {
+export const PhoneRepository = {
   create(data: CreatePhoneFields): Promise<Phone> {
     return Phone.create(data).save();
   },
@@ -17,11 +17,21 @@ export default {
   },
 
   async delete(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().softDelete().from(Phone).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .softDelete()
+      .from(Phone)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async restore(id: number): Promise<void> {
-    await getConnection().createQueryBuilder().restore().from(Phone).where("id = :id", { id }).execute();
+    await getConnection()
+      .createQueryBuilder()
+      .restore()
+      .from(Phone)
+      .where("id = :id", { id })
+      .execute();
   },
 
   async update(data: UpdatePhoneFields): Promise<void> {
