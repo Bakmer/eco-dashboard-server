@@ -13,7 +13,7 @@ import { Client } from "./Client";
 
 @ObjectType()
 @Entity()
-export class Store extends BaseEntity {
+export class State extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -22,12 +22,10 @@ export class Store extends BaseEntity {
   @Column({ unique: true })
   name!: string;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.store)
+  @OneToMany(() => User, (user) => user.state)
   users: User[];
 
-  @Field(() => [Client])
-  @OneToMany(() => Client, (client) => client.store)
+  @OneToMany(() => Client, (client) => client.state)
   clients: Client[];
 
   @Field(() => Date)

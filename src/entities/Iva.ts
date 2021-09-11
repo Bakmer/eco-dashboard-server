@@ -8,27 +8,22 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { User } from "./User";
-import { Client } from "./Client";
+import { Billing } from "./Billing";
 
 @ObjectType()
 @Entity()
-export class Store extends BaseEntity {
+export class Iva extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field()
-  @Column({ unique: true })
-  name!: string;
+  @Column()
+  name: string;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.store)
-  users: User[];
-
-  @Field(() => [Client])
-  @OneToMany(() => Client, (client) => client.store)
-  clients: Client[];
+  @Field(() => [Billing])
+  @OneToMany(() => Billing, (billing) => billing.iva)
+  billings: Billing[];
 
   @Field(() => Date)
   @CreateDateColumn()

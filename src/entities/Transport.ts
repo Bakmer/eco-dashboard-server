@@ -8,27 +8,22 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { User } from "./User";
-import { Client } from "./Client";
+import { Shipping } from "./Shipping";
 
 @ObjectType()
 @Entity()
-export class Store extends BaseEntity {
+export class Transport extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field()
-  @Column({ unique: true })
-  name!: string;
+  @Column()
+  name: string;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.store)
-  users: User[];
-
-  @Field(() => [Client])
-  @OneToMany(() => Client, (client) => client.store)
-  clients: Client[];
+  @Field(() => [Shipping])
+  @OneToMany(() => Shipping, (shipping) => shipping.transport)
+  shippings: Shipping[];
 
   @Field(() => Date)
   @CreateDateColumn()

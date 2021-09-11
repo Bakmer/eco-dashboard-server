@@ -9,11 +9,10 @@ import {
   OneToMany,
 } from "typeorm";
 import { User } from "./User";
-import { Client } from "./Client";
 
 @ObjectType()
 @Entity()
-export class Store extends BaseEntity {
+export class Role extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -22,13 +21,8 @@ export class Store extends BaseEntity {
   @Column({ unique: true })
   name!: string;
 
-  @Field(() => [User])
-  @OneToMany(() => User, (user) => user.store)
+  @OneToMany(() => User, (user) => user.role)
   users: User[];
-
-  @Field(() => [Client])
-  @OneToMany(() => Client, (client) => client.store)
-  clients: Client[];
 
   @Field(() => Date)
   @CreateDateColumn()
