@@ -15,8 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-datasource": "^0.7.3",
-    "apollo-datasource-rest": "^0.10.0",
+    "apollo-datasource": "^3.0.0",
+    "apollo-datasource-rest": "^3.0.0",
     "apollo-server-express": "^2.19.0",
     "class-validator": "^0.13.1",
     "connect-redis": "^5.0.0",
@@ -25,12 +25,12 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "graphql": "^15.4.0",
-    "graphql-query-complexity": "^0.7.2",
+    "graphql-query-complexity": "^0.8.1",
     "ioredis": "^4.19.2",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.34"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.16",
